@@ -1,0 +1,4 @@
+<bitmap android:src="@drawable/play_time_bg"
+    android:alpha="0.2"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</bitmap>

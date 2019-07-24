@@ -1,0 +1,6 @@
+<animated-rotate
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:drawable="@drawable/news_refresh"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</animated-rotate>

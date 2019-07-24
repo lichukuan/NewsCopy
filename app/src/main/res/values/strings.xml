@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">仿今日头条</string>
+    <string name="main_home_label">首页</string>
+    <string name="main_video_label">西瓜视频</string>
+    <string name="main_short_video_label">小视频</string>
+    <string name="main_person_label">我的</string>
+</resources>
