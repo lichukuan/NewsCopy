@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
@@ -37,6 +39,11 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     private List<CardsBean> liveBeans;
 
+    public static final int TYPE_REFRESH = -1;
+
+    private boolean isNeedRefresh=false;
+    private boolean isRefreshOver = false;
+
     public VideoAdapter(int type, Fragment fragment) {
         this.type = type;
         this.fragment = fragment;
@@ -61,11 +68,18 @@ public class VideoAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void refresh(){
+        isNeedRefresh=true;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layoutId = 0;
         switch (viewType){
+            case TYPE_REFRESH:
+                View view2=LayoutInflater.from(context).inflate(R.layout.recycler_item_load,parent,false);
+                return  new LoadHolder(view2);
             case TYPE_LIVE:
                 layoutId=R.layout.recycler_item_video_live;
                 View view = LayoutInflater.from(context).inflate(layoutId,parent,false);
@@ -80,6 +94,17 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (position == getItemCount()-1){
+            LoadHolder loadHolder = (LoadHolder) holder;
+            if (isRefreshOver)
+                loadHolder.refreshItem.setVisibility(View.INVISIBLE);
+            if (isNeedRefresh)
+                loadHolder.refreshItem.setVisibility(View.VISIBLE);
+            isNeedRefresh=false;
+            isRefreshOver=false;
+            return;
+        }
+        Log.d("===VideoAdapter===",TYPE_LIVE+"");
          if (type==TYPE_NORMAL){
              ChannelBaseInfoBean bean = channelBeans.get(position);
              NormalViewHolder normalViewHolder= (NormalViewHolder) holder;
@@ -94,6 +119,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
              normalViewHolder.normalVideo.setOnClickListener(v -> showWebInfo(subNeedPath(TYPE_NORMAL,bean.getVideoId())));
          }else {
             CardsBean bean=liveBeans.get(position);
+             Log.d("==VideoAdapter==","直播的布局");
             LiveViewHolder liveViewHolder= (LiveViewHolder) holder;
             liveViewHolder.lookNum.setText(bean.getHotNum());
             liveViewHolder.userName.setText(bean.getAuthorName());
@@ -123,6 +149,8 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        if (position==getItemCount()-1)
+            return TYPE_REFRESH;
         return type;
     }
 
@@ -130,9 +158,9 @@ public class VideoAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         switch (type){
             case TYPE_LIVE:
-                return liveBeans.size();
+                return liveBeans.size()+1;
             default:
-                return channelBeans.size();
+                return channelBeans.size()+1;
         }
     }
 
@@ -167,6 +195,14 @@ public class VideoAdapter extends RecyclerView.Adapter {
             lookNum=itemView.findViewById(R.id.lookNum);
             title=itemView.findViewById(R.id.live_title);
             liveVideo=itemView.findViewById(R.id.live_video);
+        }
+    }
+
+    class LoadHolder extends RecyclerView.ViewHolder{
+        LinearLayout refreshItem;
+        LoadHolder(View itemView) {
+            super(itemView);
+            refreshItem=itemView.findViewById(R.id.item_refresh);
         }
     }
 

@@ -45,6 +45,7 @@ public class VideoFragment extends Fragment {
                 .getStringSet(VideoDepository.VIDEO_ALL_TYPE,new HashSet<>());
         types.addAll(other);
         String[] s = changeSetToArray(types);
+        Log.d("====types====", Arrays.toString(s));
         for (int i = 0; i < s.length; i++) {
             tabLayout.addTab(tabLayout.newTab().setText(s[i]));
         }

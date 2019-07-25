@@ -26,10 +26,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<DataBean> dataBeanList=new ArrayList<>();
     private Context context;
     private Fragment fragment;
+    private boolean isNeedRefresh=false;
+    private boolean isRefreshOver = false;
     public static final int TYPE_TOP=-1;
     public static final int TYPE_ONE=0;
     public static final int TYPE_BIG=1;
     public static final int TYPE_THREE=2;
+    public static final int TYPE_REFRESH=3;
 
     public NewsAdapter() {
     }
@@ -40,6 +43,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.fragment=fragment;
     }
 
+    public void refresh(){
+        isNeedRefresh=true;
+    }
+
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getContext();
@@ -47,6 +54,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setDataBeanList(List<DataBean> dataBeanList) {
         this.dataBeanList.addAll(0,dataBeanList);
+        isRefreshOver = true;
         notifyDataSetChanged();
     }
 
@@ -63,6 +71,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case TYPE_THREE:
                 View view3 = LayoutInflater.from(context).inflate(R.layout.recycler_item_news_three,parent,false);
                 return new ThreeViewHolder(view3);
+            case TYPE_REFRESH:
+                View view4=LayoutInflater.from(context).inflate(R.layout.recycler_item_load,parent,false);
+                return  new LoadHolder(view4);
             case TYPE_ONE:
             default:
                 View view2 = LayoutInflater.from(context).inflate(R.layout.recycler_item_news_one,parent,false);
@@ -73,6 +84,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if (position==getItemCount()-1)
+            return TYPE_REFRESH;
         final List list = dataBeanList.get(position).getImage_list();
         if (list==null){
             return TYPE_TOP;
@@ -92,6 +105,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (position == getItemCount()-1){
+            LoadHolder loadHolder = (LoadHolder) holder;
+            if (isRefreshOver)
+               loadHolder.refreshItem.setVisibility(View.INVISIBLE);
+            if (isNeedRefresh)
+                loadHolder.refreshItem.setVisibility(View.VISIBLE);
+            isNeedRefresh=false;
+            isRefreshOver=false;
+            return;
+        }
         DataBean bean=dataBeanList.get(position);
         if (holder instanceof BigViewHolder){
             BigViewHolder bigViewHolder = (BigViewHolder) holder;
@@ -164,7 +187,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataBeanList.size();
+        return dataBeanList.size()+1;
     }
 
     class BigViewHolder extends RecyclerView.ViewHolder{
@@ -230,6 +253,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             source=itemView.findViewById(R.id.from);
             comment=itemView.findViewById(R.id.commentCount);
             top=itemView.findViewById(R.id.top);
+        }
+    }
+
+    class LoadHolder extends RecyclerView.ViewHolder{
+        LinearLayout refreshItem;
+         LoadHolder(View itemView) {
+            super(itemView);
+            refreshItem=itemView.findViewById(R.id.item_refresh);
         }
     }
 }

@@ -29,6 +29,10 @@ public class ItemNormalNewsFragment extends Fragment {
     NewsType type=null;
     LiveData<NewsBean> newsBeanLiveData;
     NewsAdapter adapter;
+    private int refreshNum = 1;
+    //用来标记是否正在向上滑动
+    private boolean isSlidingUpward = false;
+
 
     public String getName() {
         return name;
@@ -57,6 +61,33 @@ public class ItemNormalNewsFragment extends Fragment {
         adapter=new NewsAdapter();
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                // 当不滑动时
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    //获取最后一个完全显示的itemPosition
+                    int lastItemPosition = manager.findLastCompletelyVisibleItemPosition();
+                    int itemCount = manager.getItemCount();
+                    // 判断是否滑动到了最后一个item，并且是向上滑动
+                    if (lastItemPosition == (itemCount - 1) && isSlidingUpward) {
+                        //加载更多
+                        adapter.refresh();
+                        pullData(0,++refreshNum,type);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 大于0表示正在向上滑动，小于等于0表示停止或向下滑动
+                isSlidingUpward = dy > 0;
+            }
+        });
         newsActivity= (NewsActivity) getActivity();
         if (name!=null&type!=null)
            pullData(0,1,type);

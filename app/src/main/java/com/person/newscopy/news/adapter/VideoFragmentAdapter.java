@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+
 import com.person.newscopy.news.fragment.ItemNormalVideoFragment;
 
 public class VideoFragmentAdapter extends FragmentStatePagerAdapter {
@@ -19,6 +21,7 @@ public class VideoFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         ItemNormalVideoFragment fragment = new ItemNormalVideoFragment();
+        Log.d("==VideoFragmentAdapter",types[position]);
         fragment.setType(types[position]);
         return fragment;
     }

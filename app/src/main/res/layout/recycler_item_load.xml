@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/item_refresh"
+    android:visibility="invisible"
+    android:layout_height="50dp">
+   <TextView
+       android:gravity="end|center_vertical"
+       android:text="正在努力加载"
+       android:layout_weight="5"
+       android:textSize="15sp"
+       android:layout_width="0dp"
+       android:layout_height="match_parent" />
+    <TextView
+        android:layout_weight="4"
+        android:drawableStart="@drawable/refresh_1_xml"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+</LinearLayout>
