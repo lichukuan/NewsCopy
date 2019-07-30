@@ -12,75 +12,75 @@ import rx.Observable;
 public interface NewsInterface {
 
     @GET(NewsApi.NEWS.FEED_NEWS_ALL)
-    Observable<NewsBean> feedAllNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedAllNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_HOT)
-    Observable<NewsBean> feedHomeHotNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedHomeHotNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_TECH)
-    Observable<NewsBean> feedTechNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedTechNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_WORLD)
-    Observable<NewsBean> feedWorldNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedWorldNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_POLITICS)
-    Observable<NewsBean> feedPoliticsNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedPoliticsNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_LOTTERY)
-    Observable<NewsBean> feedLotteryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedLotteryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_SPORTS)
-    Observable<NewsBean> feedSportsNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedSportsNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_SOCIETY)
-    Observable<NewsBean> feedSocietyNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedSocietyNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_HOME)
-    Observable<NewsBean> feedHomeNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedHomeNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_INTERNET)
-    Observable<NewsBean> feedInternetNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedInternetNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_SOFTWARE)
-    Observable<NewsBean> feedSoftwareNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedSoftwareNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_SMART_HOME)
-    Observable<NewsBean> feedSmartHomeNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedSmartHomeNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_ENTERTAINMENT)
-    Observable<NewsBean> feedEntertainmentNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedEntertainmentNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_MOVIE)
-    Observable<NewsBean> feedMovieNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedMovieNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_TELEPLAY)
-    Observable<NewsBean> feedTeleplayNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedTeleplayNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_SHOWS)
-    Observable<NewsBean> feedShowsNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedShowsNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_GOSSIP)
-    Observable<NewsBean> feedGossipNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedGossipNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_GAME)
-    Observable<NewsBean> feedGameNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedGameNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_NBA)
-    Observable<NewsBean> feedNBANews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedNBANews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_CAR)
-    Observable<NewsBean> feedCARNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedCARNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_FINANCE)
-    Observable<NewsBean> feedFinanceNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedFinanceNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_STOCK)
-    Observable<NewsBean> feedStockNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedStockNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_FUNNY)
-    Observable<NewsBean> feedFunnyNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedFunnyNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_MILITARY)
-    Observable<NewsBean> feedMilitaryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedMilitaryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_BABY)
-    Observable<NewsBean> feedBabyNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedBabyNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_FOOD)
-    Observable<NewsBean> feedFoodNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedFoodNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_FASHION)
-    Observable<NewsBean> feedFashionNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedFashionNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_DISCOVERY)
-    Observable<NewsBean> feedDiscoveryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedDiscoveryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_REGIMEN)
-    Observable<NewsBean> feedRegimenNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedRegimenNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_HISTORY)
-    Observable<NewsBean> feedHistoryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedHistoryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_ESSAY)
-    Observable<NewsBean> feedEssayNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedEssayNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_TRAVEL)
-    Observable<NewsBean> feedTravelNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedTravelNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_HOT_GALLERY)
-    Observable<NewsBean> feedHotGalleryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedHotGalleryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_GALLERY_OLD_PICTURE)
-    Observable<NewsBean> feedOldPictureGalleryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedOldPictureGalleryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
     @GET(NewsApi.NEWS.FEED_NEWS_GALLERY_PHOTOGRATHY)
-    Observable<NewsBean> feedPhotographyGalleryNews(@Query("min_behot_time") int time,@Query("widen")int widen);
+    Observable<NewsBean> feedPhotographyGalleryNews(@Query("max_behot_time_tmp") int time1,@Query("max_behot_time") int time,@Query("widen")int widen);
 
     @GET(NewsApi.COMMENT_AND_REPLY.COMMENT_REPLY)
     Observable<ReplyBean> feedReply(@Query("comment_id")String commentId,@Query("dongtai_id")String dongtaiId,@Query("offset")int offset,@Query("count")int count);

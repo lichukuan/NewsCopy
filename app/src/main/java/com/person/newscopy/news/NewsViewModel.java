@@ -22,8 +22,13 @@ public class NewsViewModel extends AndroidViewModel {
 
     public LiveData<NewsBean> getNews(String name, NewsRequirement require){
         newsDepository.requirePickData(name,require);
-        return newsDepository.getNewsBean(name);
+        return newsDepository.getNewsBean(require.getType());
     }
+
+    public void pullData(String name, NewsRequirement require){
+        newsDepository.requirePickData(name,require);
+    }
+
 
     public LiveData<CommentBean> getComment(String name, NewsRequirement require){
         newsDepository.requirePickData(name,require);

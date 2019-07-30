@@ -47,9 +47,10 @@ public class ItemNormalVideoFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
         newsActivity= (NewsActivity) getActivity();
-        if ("直播".equals(type))
-           adapter=new VideoAdapter(VideoAdapter.TYPE_LIVE,this);
-        else if (type!=null) {
+        if ("直播".equals(type)) {
+            adapter = new VideoAdapter(VideoAdapter.TYPE_LIVE, this);
+            pullVideoData(type,BaseUtil.getTime()+"",20);
+        }else if (type!=null) {
             adapter = new VideoAdapter(VideoAdapter.TYPE_NORMAL, this);
             pullVideoData(type, BaseUtil.getTime()+"",20);
         }
@@ -86,7 +87,7 @@ public class ItemNormalVideoFragment extends Fragment {
 
     private void pullVideoData(String type,String maxTime,int count){
         if ("直播".equals(type))
-            newsActivity.getLive(type,maxTime,count).observe(this, videoLiveBean -> {
+            newsActivity.getLive(maxTime,count).observe(this, videoLiveBean -> {
                   adapter.setLiveBeans(videoLiveBean.getData().getLivingFeed().getCards());
             });
         else

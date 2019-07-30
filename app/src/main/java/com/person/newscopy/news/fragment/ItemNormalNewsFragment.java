@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
+import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsAdapter;
 import com.person.newscopy.news.depository.NewsRequirement;
@@ -75,7 +76,15 @@ public class ItemNormalNewsFragment extends Fragment {
                     if (lastItemPosition == (itemCount - 1) && isSlidingUpward) {
                         //加载更多
                         adapter.refresh();
-                        pullData(0,++refreshNum,type);
+                        ++refreshNum;
+                        int time = (int) (BaseUtil.getTime()-refreshNum*60*30);
+                        Log.d("===========","time = "+time);
+                        NewsRequirement requirement=new NewsRequirement();
+                        requirement.setNews(true);
+                        requirement.setType(type);
+                        requirement.setTime(time);
+                        requirement.setWiden(1);
+                        newsActivity.pullData(name,requirement);
                     }
                 }
 
@@ -108,6 +117,9 @@ public class ItemNormalNewsFragment extends Fragment {
         requirement.setTime(time);
         requirement.setWiden(widen);
         newsBeanLiveData=newsActivity.getNewsBean(name,requirement);
-        newsBeanLiveData.observe(this, newsBean -> adapter.setDataBeanList(newsBean.getData()));
+        newsBeanLiveData.observe(this, beans -> {
+            adapter.setDataBeanList(beans.getData());
+        }
+        );
     }
 }

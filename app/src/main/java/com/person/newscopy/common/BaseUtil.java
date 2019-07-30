@@ -17,7 +17,6 @@ public final class BaseUtil {
         }else {
             time = System.currentTimeMillis();
         }
-        Log.d("==time===",time+"");
         return time;
     }
 

@@ -146,6 +146,10 @@ public class NewsActivity extends AppCompatActivity {
         return newsViewModel.getReply(name,requirement);
     }
 
+    public void pullData(String name,NewsRequirement requirement){
+        newsViewModel.pullData(name,requirement);
+    }
+
     public LiveData<HotNewsBean> getHotNews(String name, NewsRequirement requirement){
         return newsViewModel.getHotNews(name,requirement);
     }
@@ -158,8 +162,8 @@ public class NewsActivity extends AppCompatActivity {
         return videoViewModel.getHot(type,maxTime,count);
     }
 
-    public LiveData<VideoLiveBean> getLive(String type, String maxTime, int count){
-        return videoViewModel.getLiveInfo(type,maxTime,count);
+    public LiveData<VideoLiveBean> getLive( String maxTime, int count){
+        return videoViewModel.getLiveInfo(maxTime,count);
     }
 
     public LiveData<VideoSearchBean> getSearchInfo(String type, String maxTime, int count){

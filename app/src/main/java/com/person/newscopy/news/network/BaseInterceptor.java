@@ -17,13 +17,11 @@ public class BaseInterceptor implements Interceptor {
         Request request = chain.request();
         if (BaseUtil.getNetType()!= NetState.NOT_NET) {
             Response response = chain.proceed(request);
-            int maxTime = 2;
-            if (NewsDepository.isloadCache)
-                maxTime = 20;
             return response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
-                    .header("Cache-Control", "public, max-age=" + maxTime)
+                    .header("Cache-Control", "no-cache")
+                    .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0")
                     .build();
         } else {
             //无网络时强制使用缓存数据

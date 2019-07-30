@@ -39,6 +39,7 @@ public class NewsInNetProvide {
                            .newBuilder()
                    .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),NEWS_CACHE_STORAGE),MAX_CACHE_SPACE))
                    .addInterceptor(new BaseInterceptor())
+                   .addNetworkInterceptor(new BaseInterceptor())
                    .build())
                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                    .addConverterFactory(GsonConverterFactory.create())
@@ -59,109 +60,109 @@ public class NewsInNetProvide {
        Observable<NewsBean> observable = null;
        switch (type){
            case All:
-               observable=provide.feedAllNews(time,widen);
+               observable=provide.feedAllNews(time,time,widen);
                break;
            case HOT:
-               observable=provide.feedHomeHotNews(time,widen);
+               observable=provide.feedHomeHotNews(time,time,widen);
                break;
            case TECH:
-               observable=provide.feedTechNews(time,widen);
+               observable=provide.feedTechNews(time,time,widen);
                break;
            case WORLD:
-               observable=provide.feedWorldNews(time,widen);
+               observable=provide.feedWorldNews(time,time,widen);
                break;
            case POLITICS:
-               observable=provide.feedPoliticsNews(time,widen);
+               observable=provide.feedPoliticsNews(time,time,widen);
                break;
            case LOTTERY:
-               observable=provide.feedLotteryNews(time,widen);
+               observable=provide.feedLotteryNews(time,time,widen);
                break;
            case SPORTS:
-               observable=provide.feedSportsNews(time,widen);
+               observable=provide.feedSportsNews(time,time,widen);
                break;
            case SOCIETY:
-               observable=provide.feedSocietyNews(time,widen);
+               observable=provide.feedSocietyNews(time,time,widen);
                break;
            case HOME:
-               observable=provide.feedHomeNews(time,widen);
+               observable=provide.feedHomeNews(time,time,widen);
                break;
            case INTERNET:
-               observable=provide.feedInternetNews(time,widen);
+               observable=provide.feedInternetNews(time,time,widen);
                break;
            case SOFTWARE:
-               observable=provide.feedSoftwareNews(time,widen);
+               observable=provide.feedSoftwareNews(time,time,widen);
                break;
            case SMART_HOME:
-               observable=provide.feedSmartHomeNews(time,widen);
+               observable=provide.feedSmartHomeNews(time,time,widen);
                break;
            case ENTERTAINMENT:
-               observable=provide.feedEntertainmentNews(time,widen);
+               observable=provide.feedEntertainmentNews(time,time,widen);
                break;
            case MOVIE:
-               observable=provide.feedMovieNews(time,widen);
+               observable=provide.feedMovieNews(time,time,widen);
                break;
            case TELEPLAY:
-               observable=provide.feedTeleplayNews(time,widen);
+               observable=provide.feedTeleplayNews(time,time,widen);
                break;
            case SHOWS:
-               observable=provide.feedShowsNews(time,widen);
+               observable=provide.feedShowsNews(time,time,widen);
                break;
            case GOSSIP:
-               observable=provide.feedGossipNews(time,widen);
+               observable=provide.feedGossipNews(time,time,widen);
                break;
            case NBA:
-              observable=provide.feedNBANews(time,widen);
+              observable=provide.feedNBANews(time,time,widen);
               break;
            case GAME:
-               observable=provide.feedGameNews(time,widen);
+               observable=provide.feedGameNews(time,time,widen);
                break;
            case CAR:
-               observable=provide.feedCARNews(time,widen);
+               observable=provide.feedCARNews(time,time,widen);
                break;
            case FINANCE:
-               observable=provide.feedFinanceNews(time,widen);
+               observable=provide.feedFinanceNews(time,time,widen);
                break;
            case STOCK:
-               observable=provide.feedStockNews(time,widen);
+               observable=provide.feedStockNews(time,time,widen);
                break;
            case FUNNY:
-               observable=provide.feedFunnyNews(time,widen);
+               observable=provide.feedFunnyNews(time,time,widen);
                break;
            case MILITARY:
-               observable=provide.feedMilitaryNews(time,widen);
+               observable=provide.feedMilitaryNews(time,time,widen);
                break;
            case BABY:
-               observable=provide.feedBabyNews(time,widen);
+               observable=provide.feedBabyNews(time,time,widen);
                break;
            case FOOD:
-               observable=provide.feedFoodNews(time,widen);
+               observable=provide.feedFoodNews(time,time,widen);
                break;
            case FASHION:
-               observable=provide.feedFashionNews(time,widen);
+               observable=provide.feedFashionNews(time,time,widen);
                break;
            case DISCOVERY:
-               observable=provide.feedDiscoveryNews(time,widen);
+               observable=provide.feedDiscoveryNews(time,time,widen);
                break;
            case REGIMEN:
-               observable=provide.feedRegimenNews(time,widen);
+               observable=provide.feedRegimenNews(time,time,widen);
                break;
            case HISTORY:
-               observable=provide.feedHistoryNews(time,widen);
+               observable=provide.feedHistoryNews(time,time,widen);
                break;
            case ESSAY:
-               observable=provide.feedEssayNews(time,widen);
+               observable=provide.feedEssayNews(time,time,widen);
                break;
            case TRAVEL:
-               observable=provide.feedTravelNews(time,widen);
+               observable=provide.feedTravelNews(time,time,widen);
                break;
            case HOT_GALLERY:
-               observable=provide.feedHotGalleryNews(time,widen);
+               observable=provide.feedHotGalleryNews(time,time,widen);
                break;
            case OLD_PICTURE:
-               observable=provide.feedOldPictureGalleryNews(time,widen);
+               observable=provide.feedOldPictureGalleryNews(time,time,widen);
                break;
            case GALLERY_PHOTOGRATHY:
-               observable=provide.feedPhotographyGalleryNews(time,widen);
+               observable=provide.feedPhotographyGalleryNews(time,time,widen);
                break;
            default:
                return ;

@@ -84,7 +84,6 @@ public class VideoAdapter extends RecyclerView.Adapter {
                 layoutId=R.layout.recycler_item_video_live;
                 View view = LayoutInflater.from(context).inflate(layoutId,parent,false);
                 return new LiveViewHolder(view);
-            case TYPE_NORMAL:
                 default:
                 layoutId= R.layout.recycler_item_video_normal;
                 View view1 = LayoutInflater.from(context).inflate(layoutId,parent,false);
@@ -104,7 +103,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
             isRefreshOver=false;
             return;
         }
-        Log.d("===VideoAdapter===",TYPE_LIVE+"");
+        Log.d("===VideoAdapter===",type+"");
          if (type==TYPE_NORMAL){
              ChannelBaseInfoBean bean = channelBeans.get(position);
              NormalViewHolder normalViewHolder= (NormalViewHolder) holder;

@@ -52,10 +52,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.context = fragment.getContext();
     }
 
-    public void setDataBeanList(List<DataBean> dataBeanList) {
-        this.dataBeanList.addAll(0,dataBeanList);
+    public void setDataBeanList(List<DataBean> beans) {
+        int startSize = dataBeanList.size();
+        int count = beans.size();
+        //这里还要判断是否有重复项
+        dataBeanList.addAll(beans);
         isRefreshOver = true;
-        notifyDataSetChanged();
+        if (startSize!=0)
+            notifyItemRangeInserted(startSize,count);
+        else
+            notifyDataSetChanged();
     }
 
     @NonNull

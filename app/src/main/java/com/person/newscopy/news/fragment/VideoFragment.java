@@ -39,8 +39,8 @@ public class VideoFragment extends Fragment {
         more=view.findViewById(R.id.more);
         search=view.findViewById(R.id.search);
         release=view.findViewById(R.id.release);
-        types.add("推荐");
-        types.add("直播");
+//        types.add("推荐");
+//        types.add("直播");
         Set<String> other=getActivity().getSharedPreferences(VideoDepository.VIDEO_TYPE,0)
                 .getStringSet(VideoDepository.VIDEO_ALL_TYPE,new HashSet<>());
         types.addAll(other);
@@ -73,9 +73,11 @@ public class VideoFragment extends Fragment {
     }
 
     private String[] changeSetToArray(Set<String> sets){
-        String[] strs = new String[sets.size()];
+        String[] strs = new String[sets.size()+2];
+        strs[0]="推荐";
+        strs[1]="直播";
         Iterator<String> iterator = sets.iterator();
-        int i = 0;
+        int i = 2;
         while (iterator.hasNext()) {
             strs[i] = iterator.next();
             i++;

@@ -34,8 +34,8 @@ public class VideoViewModel extends AndroidViewModel {
         return depository.getSearchData();
     }
 
-    public LiveData<VideoLiveBean> getLiveInfo(String type,String maxTime,int count){
-        depository.pickVideoData(type,maxTime,count);
+    public LiveData<VideoLiveBean> getLiveInfo(String maxTime,int count){
+        depository.pickVideoData(VideoDepository.VIDEO_LIVE,maxTime,count);
         return depository.getLiveData();
     }
 }

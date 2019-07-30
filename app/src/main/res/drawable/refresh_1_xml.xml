@@ -1,7 +1,7 @@
-<bitmap
+<animated-rotate
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/refresh1"
+    android:drawable="@drawable/refresh1"
     android:pivotX="50%"
     android:pivotY="50%"
     >
-</bitmap>
+</animated-rotate>

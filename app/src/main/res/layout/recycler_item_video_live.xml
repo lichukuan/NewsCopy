@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_marginBottom="10dp"
     android:id="@+id/live_video"
-    android:layout_height="250dp">
+    android:layout_height="300dp">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -17,9 +17,13 @@
             <ImageView
                 android:id="@+id/live_user_icon"
                 android:layout_width="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/icon_circle"
                 android:layout_height="50dp" />
             <TextView
                 android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
                 android:id="@+id/live_user_name"
                 android:gravity="center_vertical|start"
                 android:layout_width="0dp"
@@ -32,13 +36,17 @@
         </LinearLayout>
         <TextView
             android:id="@+id/live_title"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_height="170dp">
+            android:layout_marginTop="10dp"
+            android:layout_height="200dp">
             <ImageView
                 android:id="@+id/video_image"
                 android:scaleType="fitXY"
@@ -54,7 +62,11 @@
                 android:background="@drawable/video_red_bg"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content" />
-
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/video_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/lookNum"
                 android:layout_marginTop="10dp"

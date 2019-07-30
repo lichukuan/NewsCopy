@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
-    public static final int DELAY_TIME = 5;
+    public static final int DELAY_TIME = 1;
 
     Subscription subscription;
 
@@ -35,10 +35,10 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        newsDepository = new NewsDepository();
-        videoDepository = new VideoDepository();
-        newsDepository.initLoad();
-        videoDepository.initLoad();
+//        newsDepository = new NewsDepository();
+//        videoDepository = new VideoDepository();
+//        newsDepository.initLoad();
+//        videoDepository.initLoad();
         subscription = Observable.timer(DELAY_TIME, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {

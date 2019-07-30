@@ -31,7 +31,7 @@ public class NewsDepository implements NewsInNetProvide.onNewsLoadCallback{
 
     private Deque<String> pickNewsDeque = new LinkedList<>();
 
-    private Map<String,MutableLiveData<NewsBean>> newsMap=new HashMap<>();
+    private Map<NewsType,MutableLiveData<NewsBean>> newsMap=new HashMap<>();
 
     private Map<String,MutableLiveData<CommentBean>> commentMap=new HashMap<>();
 
@@ -75,7 +75,7 @@ public class NewsDepository implements NewsInNetProvide.onNewsLoadCallback{
         return NewsType.All;
     }
 
-    public LiveData<NewsBean> getNewsBean(String name) {
+    public LiveData<NewsBean> getNewsBean(NewsType name) {
         return newsMap.get(name);
     }
 
@@ -93,8 +93,9 @@ public class NewsDepository implements NewsInNetProvide.onNewsLoadCallback{
 
     public void requirePickData(String name, NewsRequirement require){
         pickNewsDeque.add(name);
-        if (!newsMap.containsKey(name))
-            newsMap.put(name,new MutableLiveData<NewsBean>());
+        NewsType type = require.getType();
+        if (!newsMap.containsKey(type))
+            newsMap.put(type,new MutableLiveData<NewsBean>());
         if (!commentMap.containsKey(name)){
             commentMap.clear();
             commentMap.put(name,new MutableLiveData<CommentBean>());
@@ -151,11 +152,19 @@ public class NewsDepository implements NewsInNetProvide.onNewsLoadCallback{
 
     @Override
     public void success(NewsType code, NewsBean bean) {
-        String name = pickNewsDeque.removeFirst();
-        NewsBean newsBean=newsMap.get(name).getValue();
-        if (newsBean!=null)
-            bean.getData().addAll(newsBean.getData());
-        newsMap.get(name).setValue(bean);
+//        NewsBean newsBean=newsMap.get(code).getValue();
+//        if (newsBean!=null) {
+//            if (code==NewsType.All) {
+//                bean.getData().remove(0);
+//                bean.getData().remove(0);
+//            }
+//            bean.getData().addAll(newsBean.getData());
+//        }
+        if (code==NewsType.All) {
+                bean.getData().remove(0);
+                bean.getData().remove(0);
+            }
+        newsMap.get(code).setValue(bean);
     }
 
 }
