@@ -33,6 +33,7 @@ import com.person.newscopy.news.network.bean.VideoChannelBean;
 import com.person.newscopy.news.network.bean.VideoHotBean;
 import com.person.newscopy.news.network.bean.VideoLiveBean;
 import com.person.newscopy.news.network.bean.VideoSearchBean;
+import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class NewsActivity extends AppCompatActivity {
     BottomNavigationBar bottomNavigationBar;
     NewsViewModel newsViewModel;
     VideoViewModel videoViewModel;
+    ShortViewModel shortViewModel;
     boolean isRefresh=false;
     private List<BottomNavigationItem> bottomNavigationItems=new ArrayList<>(4);
     private List<Fragment> fragments=new ArrayList<>(4);
@@ -55,6 +57,7 @@ public class NewsActivity extends AppCompatActivity {
         dealFragment();
         newsViewModel= ViewModelProviders.of(this).get(NewsViewModel.class);
         videoViewModel=ViewModelProviders.of(this).get(VideoViewModel.class);
+        shortViewModel=ViewModelProviders.of(this).get(ShortViewModel.class);
     }
 
     public LiveData<NewsBean> getNewsBean(String name, NewsRequirement require){
@@ -169,5 +172,11 @@ public class NewsActivity extends AppCompatActivity {
     public LiveData<VideoSearchBean> getSearchInfo(String type, String maxTime, int count){
         return videoViewModel.getSearchInfo(type,maxTime,count);
     }
+
+    public LiveData<List<ShortInfoBean>> getShortData(int type){
+        return shortViewModel.getShortData(type);
+    }
+
+
 
 }
