@@ -1,6 +1,7 @@
 package com.person.newscopy.news.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
+import com.person.newscopy.show.ShortVideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,15 @@ public class ShortAdapter extends RecyclerView.Adapter {
           h.title_2.setText(b2.getTitle());
           h.time_2.setText(b2.getDuration());
           h.like_2.setText(b2.getLike());
+          h.card_1.setOnClickListener(v->show(b1));
+          h.card_2.setOnClickListener(v->show(b2));
+    }
+
+    private void show(ShortInfoBean bean){
+        Intent intent = new Intent(context,ShortVideoActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra(ShortVideoActivity.SHORT_VIDEO_INFO_KEY,gson.toJson(bean));
+        context.startActivity(intent);
     }
 
 
@@ -92,6 +104,4 @@ public class ShortAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return data.size()/2;
     }
-
-
 }

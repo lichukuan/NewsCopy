@@ -16,15 +16,15 @@ public class ShortFragmentAdapter extends FragmentPagerAdapter {
 
     public ShortFragmentAdapter(FragmentManager fm) {
         super(fm);
+        for (int i = 0; i <4 ; i++) {
+            ItemNormalShortFragment fragment = new ItemNormalShortFragment();
+            fragment.setType(i);
+            fragments[i]  = fragment;
+        }
     }
 
     @Override
     public Fragment getItem(int position) {
-        if (fragments[position] == null) {
-            ItemNormalShortFragment fragment = new ItemNormalShortFragment();
-            fragment.setType(position);
-            fragments[position]  = fragment;
-        }
         return fragments[position];
     }
 

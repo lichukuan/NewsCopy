@@ -25,7 +25,8 @@
         <activity
             android:name=".news.NewsActivity"
             android:theme="@style/noAnimationTheme" />
-        <activity android:name=".show.ShowActivity"></activity>
+        <activity android:name=".show.ShowActivity" />
+        <activity android:name=".show.ShortVideoActivity"></activity>
     </application>
 
 </manifest>
