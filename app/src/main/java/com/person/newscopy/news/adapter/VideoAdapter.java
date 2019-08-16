@@ -15,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.news.depository.VideoDepository;
+import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.news.network.bean.CardsBean;
 import com.person.newscopy.news.network.bean.ChannelBaseInfoBean;
-import com.person.newscopy.show.ShowActivity;
+import com.person.newscopy.show.ShowNewsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +124,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
             liveViewHolder.userName.setText(bean.getAuthorName());
             Glide.with(fragment)
                     .load(bean.getAvatar_url())
+                    .asBitmap()
                     .into(((LiveViewHolder) holder).userIcon);
             Glide.with(fragment)
                     .load(bean.getVideoImage())
@@ -134,8 +135,8 @@ public class VideoAdapter extends RecyclerView.Adapter {
     }
 
     private void showWebInfo(String url){
-        Intent intent = new Intent(context,ShowActivity.class);
-        intent.putExtra(ShowActivity.SHOW_WEB_INFO,url);
+        Intent intent = new Intent(context,ShowNewsActivity.class);
+        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
         context.startActivity(intent);
     }
 
@@ -182,7 +183,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     class LiveViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView userIcon;
+        ShapeImageView userIcon;
         TextView userName,lookNum,title;
         ImageView videoImage;
         CardView liveVideo;

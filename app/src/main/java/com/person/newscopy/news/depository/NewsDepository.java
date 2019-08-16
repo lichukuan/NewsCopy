@@ -166,5 +166,4 @@ public class NewsDepository implements NewsInNetProvide.onNewsLoadCallback{
             }
         newsMap.get(code).setValue(bean);
     }
-
 }

@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
-import com.person.newscopy.show.ShortVideoActivity;
+import com.person.newscopy.show.ShowShortVideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +49,11 @@ public class ShortAdapter extends RecyclerView.Adapter {
           NormalViewHolder h = (NormalViewHolder) holder;
           Glide.with(context)
                 .load(b1.getImage())
+                .asBitmap()
                 .into(h.image_1);
           Glide.with(context)
                   .load(b2.getImage())
+                  .asBitmap()
                   .into(h.image_2);
           h.author_1.setText(b1.getAuthor());
           h.title_1.setText(b1.getTitle());
@@ -66,9 +68,9 @@ public class ShortAdapter extends RecyclerView.Adapter {
     }
 
     private void show(ShortInfoBean bean){
-        Intent intent = new Intent(context,ShortVideoActivity.class);
+        Intent intent = new Intent(context,ShowShortVideoActivity.class);
         Gson gson = new Gson();
-        intent.putExtra(ShortVideoActivity.SHORT_VIDEO_INFO_KEY,gson.toJson(bean));
+        intent.putExtra(ShowShortVideoActivity.SHORT_VIDEO_INFO_KEY,gson.toJson(bean));
         context.startActivity(intent);
     }
 

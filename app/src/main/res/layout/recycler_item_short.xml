@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:easy="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_marginTop="15dp"
     android:layout_height="200dp">
@@ -8,8 +9,10 @@
         android:id="@+id/card_1"
         android:layout_weight="1"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="8dp"
-        android:background="#fff"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -19,11 +22,13 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
-                <ImageView
+                <com.person.newscopy.common.ShapeImageView
                     android:id="@+id/image_1"
-                    android:background="@drawable/short_card_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    easy:shape="rectangle"
+                    easy:topLeftRadius="10dp"
+                    easy:topRightRadius="10dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp" />
                 <TextView
                     android:id="@+id/like_1"
                     android:textColor="#fff"

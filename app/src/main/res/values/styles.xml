@@ -8,7 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<style name="noAnimationTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    
+<style name="TranslucentTheme" parent="AppTheme">
+
+</style>
+<style name="noAnimationTheme" parent="TranslucentTheme">
     <item name="android:activityOpenEnterAnimation">@null</item>
     <item name="android:activityOpenExitAnimation">@null</item>
     <item name="android:activityCloseEnterAnimation">@null</item>

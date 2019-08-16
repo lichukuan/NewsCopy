@@ -1,9 +1,13 @@
 package com.person.newscopy;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.easy.generaltool.ViewUtil;
+import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.depository.NewsDepository;
 import com.person.newscopy.news.depository.VideoDepository;
@@ -27,18 +31,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
     Subscription subscription;
 
-    NewsDepository newsDepository;
-
-    VideoDepository videoDepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ViewUtil.HideSystemUi.hide(this);
+        ViewUtil.FitScreen.setCustomDensity(this,getApplication());
         setContentView(R.layout.activity_welcome);
-//        newsDepository = new NewsDepository();
-//        videoDepository = new VideoDepository();
-//        newsDepository.initLoad();
-//        videoDepository.initLoad();
         subscription = Observable.timer(DELAY_TIME, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
@@ -53,4 +52,10 @@ public class WelcomeActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
 }

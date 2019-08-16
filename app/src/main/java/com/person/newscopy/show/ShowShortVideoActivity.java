@@ -1,6 +1,8 @@
 package com.person.newscopy.show;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.ViewUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.common.ShortVideoView;
@@ -17,7 +20,7 @@ import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ShortVideoActivity extends AppCompatActivity {
+public class ShowShortVideoActivity extends AppCompatActivity {
 
     public static final String SHORT_VIDEO_INFO_KEY = "short_video_info_key";
 
@@ -32,6 +35,9 @@ public class ShortVideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
+            ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
+        ViewUtil.FitScreen.setCustomActivityDensity(this);
         setContentView(R.layout.activity_short_video);
         videoView = findViewById(R.id.video);
         close=findViewById(R.id.short_cancel);
@@ -65,7 +71,6 @@ public class ShortVideoActivity extends AppCompatActivity {
                 videoView.start();
         });
     }
-
 
     @Override
     protected void onDestroy() {

@@ -21,6 +21,8 @@ import com.person.newscopy.news.depository.NewsRequirement;
 import com.person.newscopy.news.network.NewsType;
 import com.person.newscopy.news.network.bean.NewsBean;
 
+import rx.Observable;
+
 public class ItemNormalNewsFragment extends Fragment {
 
     RecyclerView recyclerView;

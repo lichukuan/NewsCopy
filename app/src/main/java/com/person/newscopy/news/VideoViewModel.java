@@ -29,8 +29,8 @@ public class VideoViewModel extends AndroidViewModel {
         return depository.getChannelLiveData(type);
     }
 
-    public LiveData<VideoSearchBean> getSearchInfo(String type,String maxTime,int count){
-        depository.pickVideoData(type,maxTime,count);
+    public LiveData<VideoSearchBean> getSearchInfo(){
+        depository.pickVideoData(VideoDepository.VIDEO_SEARCH,null,-1);
         return depository.getSearchData();
     }
 

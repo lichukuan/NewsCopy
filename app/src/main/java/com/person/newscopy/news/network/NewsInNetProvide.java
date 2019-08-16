@@ -36,7 +36,7 @@ public class NewsInNetProvide {
            Retrofit retrofit=new Retrofit.Builder()
                    .baseUrl(NewsApi.BASE_URL)
                    .client(new OkHttpClient()
-                           .newBuilder()
+                   .newBuilder()
                    .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),NEWS_CACHE_STORAGE),MAX_CACHE_SPACE))
                    .addInterceptor(new BaseInterceptor())
                    .addNetworkInterceptor(new BaseInterceptor())
@@ -260,7 +260,6 @@ public class NewsInNetProvide {
                 });
     }
 
-
    public interface onNewsLoadCallback{
 
        void error(NewsType code,Throwable e);
@@ -275,6 +274,4 @@ public class NewsInNetProvide {
 
        void success(CommentBean bean);
    }
-
-
 }

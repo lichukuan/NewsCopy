@@ -1,6 +1,6 @@
 package com.person.newscopy.news.network.bean;
 
-class DataBeanXXXXXX {
+public class DataBeanXXXXXX {
     /**
      * word : 大胃王
      * id : 6527573314687210759

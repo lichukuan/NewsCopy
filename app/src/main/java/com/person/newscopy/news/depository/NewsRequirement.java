@@ -19,8 +19,7 @@ public class NewsRequirement {
     private boolean reply;
     private String commentId;
     private String dongtaiId;
-    //private int offset;
-    //private int count;
+
 
     private boolean hotNews;
 

@@ -1,5 +1,9 @@
 package com.person.newscopy.news.fragment;
 
+import android.arch.lifecycle.Observer;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,15 +16,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.easy.generaltool.ViewUtil;
+import com.google.gson.Gson;
 import com.person.newscopy.R;
+import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.adapter.VideoFragmentAdapter;
 import com.person.newscopy.news.depository.VideoDepository;
+import com.person.newscopy.news.network.bean.DataBeanX;
+import com.person.newscopy.news.network.bean.DataBeanXXXXXX;
+import com.person.newscopy.news.network.bean.DataBeanXXXXXXXXXXXX;
+import com.person.newscopy.news.network.bean.VideoSearchBean;
+import com.person.newscopy.search.SearchActivity;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class VideoFragment extends Fragment {
 
@@ -30,17 +49,44 @@ public class VideoFragment extends Fragment {
     TextView search;
     ImageView release;
     Set<String> types=new HashSet<>(23);
+    VideoSearchBean videoSearch;
+    public static final String HOT_VIDEO_KEY = "hot_video_key";
+    Subscription subscription;
+    int videoSearchIndex = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        NewsActivity activity = (NewsActivity) getActivity();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
+            ViewUtil.Translucent.applyGradualTranslucent(activity,R.color.tool_bar_red);
         View view = inflater.inflate(R.layout.fragment_main_video,container,false);
         tabLayout=view.findViewById(R.id.tab);
         pager=view.findViewById(R.id.pager);
         more=view.findViewById(R.id.more);
         search=view.findViewById(R.id.search);
         release=view.findViewById(R.id.release);
-//        types.add("推荐");
-//        types.add("直播");
+        activity.getSearchInfo().observe(this, videoSearchBean -> {
+            videoSearch = videoSearchBean;
+            SharedPreferences sharedPreferences = activity.getSharedPreferences(HOT_VIDEO_KEY,0);
+            Gson gson = new Gson();
+            sharedPreferences.edit().putString(SearchActivity.SEARCH_ID,gson.toJson(videoSearchBean)).apply();
+        });
+        search.setText("搜你想搜...");
+        subscription = Observable.timer(30, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    if (videoSearch!=null){
+                        final List<DataBeanXXXXXX> data = videoSearch.getData().getData();
+                        if(videoSearchIndex>data.size())videoSearchIndex=0;
+                        search.setText(data.get(videoSearchIndex).getWord());
+                        videoSearchIndex++;
+                    }
+                });
+        search.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, SearchActivity.class);
+            intent.putExtra(SearchActivity.SEARCH_KEY,HOT_VIDEO_KEY);
+            activity.startActivity(intent);
+        });
         Set<String> other=getActivity().getSharedPreferences(VideoDepository.VIDEO_TYPE,0)
                 .getStringSet(VideoDepository.VIDEO_ALL_TYPE,new HashSet<>());
         types.addAll(other);

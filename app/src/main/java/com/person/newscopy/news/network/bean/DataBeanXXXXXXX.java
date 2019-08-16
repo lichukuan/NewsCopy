@@ -2,7 +2,7 @@ package com.person.newscopy.news.network.bean;
 
 import java.util.List;
 
-class DataBeanXXXXXXX {
+public class DataBeanXXXXXXX {
     /**
      * message : success
      * skip_request_count : 3

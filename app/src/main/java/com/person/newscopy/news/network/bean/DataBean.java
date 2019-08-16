@@ -1,10 +1,13 @@
 package com.person.newscopy.news.network.bean;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Objects;
 
-public class DataBean {
+public class DataBean{
     /**
      * single_mode : false
      * abstract : 新华社记者鞠鹏/摄党的十九大决定，以县处级以上领导干部为重点，在全党开展“不忘初心、牢记使命”主题教育。
@@ -248,5 +251,15 @@ public class DataBean {
 
     public void setImage_list(List<ImageListBean> image_list) {
         this.image_list = image_list;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return title.equals(((DataBean)obj).title);
     }
 }

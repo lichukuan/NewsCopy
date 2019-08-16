@@ -54,8 +54,52 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
            return NewsType.SOFTWARE;
        else if (name.equals(title[11]))
            return NewsType.ENTERTAINMENT;
+       else if(name.equals(title[12]))
+           return NewsType.MOVIE;
+       else if (name.equals(title[13]))
+           return NewsType.TELEPLAY;
+       else if (name.equals(title[14]))
+           return NewsType.SHOWS;
+       else if (name.equals(title[15]))
+           return NewsType.GOSSIP;
+       else if (name.equals(title[16]))
+           return NewsType.GAME;
+       else if (name.equals(title[17]))
+           return NewsType.NBA;
+       else if (name.equals(title[18]))
+           return NewsType.CAR;
+       else if (name.equals(title[19]))
+           return NewsType.FINANCE;
+       else if (name.equals(title[20]))
+           return NewsType.STOCK;
+       else if (name.equals(title[21]))
+           return NewsType.FUNNY;
+       else if (name.equals(title[22]))
+           return NewsType.MILITARY;
+       else if (name.equals(title[23]))
+           return NewsType.BABY;
+       else if(name.equals(title[24]))
+           return NewsType.FOOD;
+       else if (name.equals(title[25]))
+           return NewsType.FASHION;
+       else if (name.equals(title[26]))
+           return NewsType.DISCOVERY;
+       else if (name.equals(title[27]))
+           return NewsType.REGIMEN;
+       else if (name.equals(title[28]))
+           return NewsType.HISTORY;
+       else if (name.equals(title[29]))
+           return NewsType.ESSAY;
+       else if (name.equals(title[30]))
+           return NewsType.TRAVEL;
+       else if (name.equals(title[31]))
+           return NewsType.HOT_GALLERY;
+       else if (name.equals(title[32]))
+           return NewsType.OLD_PICTURE;
+       else if (name.equals(title[33]))
+           return NewsType.GALLERY_PHOTOGRATHY;
        else
-           return NewsType.All;
+           return NewsType.OTHERS;
     }
 
     @Override

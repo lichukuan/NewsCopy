@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.easy.generaltool.ViewUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.depository.NewsRequirement;
@@ -51,7 +53,12 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
+            ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
+//        ViewUtil.FitScreen.setCustomDensity(this,getApplication());
+//        ViewUtil.FitScreen.setCustomActivityDensity(this);
         setContentView(R.layout.activity_main);
+
         fragmentLayout=findViewById(R.id.fragment);
         dealBottomNavigation();
         dealFragment();
@@ -169,8 +176,8 @@ public class NewsActivity extends AppCompatActivity {
         return videoViewModel.getLiveInfo(maxTime,count);
     }
 
-    public LiveData<VideoSearchBean> getSearchInfo(String type, String maxTime, int count){
-        return videoViewModel.getSearchInfo(type,maxTime,count);
+    public LiveData<VideoSearchBean> getSearchInfo(){
+        return videoViewModel.getSearchInfo();
     }
 
     public LiveData<List<ShortInfoBean>> getShortData(int type){

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.person.newscopy">
+
+    <uses-sdk tools:overrideLibrary="com.easy.generaltool" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/TranslucentTheme">
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/noAnimationTheme">
@@ -25,8 +28,9 @@
         <activity
             android:name=".news.NewsActivity"
             android:theme="@style/noAnimationTheme" />
-        <activity android:name=".show.ShowActivity" />
-        <activity android:name=".show.ShortVideoActivity"></activity>
+        <activity android:name=".show.ShowNewsActivity" />
+        <activity android:name=".show.ShowShortVideoActivity" />
+        <activity android:name=".search.SearchActivity"></activity>
     </application>
 
 </manifest>

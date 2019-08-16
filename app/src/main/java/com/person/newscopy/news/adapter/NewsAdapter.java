@@ -16,14 +16,17 @@ import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.news.network.bean.DataBean;
 import com.person.newscopy.news.network.bean.NewsBean;
-import com.person.newscopy.show.ShowActivity;
+import com.person.newscopy.show.ShowNewsActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<DataBean> dataBeanList=new ArrayList<>();
+    private Set<DataBean> data = new HashSet<>();
     private Context context;
     private Fragment fragment;
     private boolean isNeedRefresh=false;
@@ -54,14 +57,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setDataBeanList(List<DataBean> beans) {
         int startSize = dataBeanList.size();
-        int count = beans.size();
         //这里还要判断是否有重复项
-        dataBeanList.addAll(beans);
-        isRefreshOver = true;
-        if (startSize!=0)
-            notifyItemRangeInserted(startSize,count);
-        else
+        data.addAll(dataBeanList);
+        data.addAll(beans);
+        dataBeanList.clear();
+        dataBeanList.addAll(data);
+        data.clear();
+        if(dataBeanList.size()>startSize){
+            isRefreshOver = true;
             notifyDataSetChanged();
+        }
     }
 
     @NonNull
@@ -170,8 +175,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void showWebInfo(String url){
-        Intent intent = new Intent(context,ShowActivity.class);
-        intent.putExtra(ShowActivity.SHOW_WEB_INFO,url);
+        Intent intent = new Intent(context,ShowNewsActivity.class);
+        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
         context.startActivity(intent);
     }
 
