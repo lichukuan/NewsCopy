@@ -70,7 +70,6 @@ public class ShapeImageView extends android.support.v7.widget.AppCompatImageView
         paint = new Paint();
         path = new Path();
         matrix = new Matrix();
-        density = ViewUtil.FitScreen.getDensity();
     }
 
     public ShapeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -106,22 +105,22 @@ public class ShapeImageView extends android.support.v7.widget.AppCompatImageView
         }else if(shape==0){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 path.moveTo(0,0);
-                path.arcTo(0,0,topLeftRadius*density*2,topLeftRadius*density*2,180,90,true);
-                //path.moveTo(topLeftRadius*density,0);
-                path.lineTo(width-topRightRadius*density,0);
-                path.arcTo(width-topRightRadius*density*2,0,width,topRightRadius*density*2, 0,-90,true);
-                path.lineTo(0,topLeftRadius*density);
+                path.arcTo(0,0,topLeftRadius *2,topLeftRadius *2,180,90,true);
+                //path.moveTo(topLeftRadius ,0);
+                path.lineTo(width-topRightRadius ,0);
+                path.arcTo(width-topRightRadius *2,0,width,topRightRadius *2, 0,-90,true);
+                path.lineTo(0,topLeftRadius );
                 //canvas.drawPath(path,paint);
                 //path.reset();
-                path.moveTo(width,height-bottomRightRadius*density);
-                //path.lineTo(width,height-bottomRightRadius*density);
-                path.arcTo(width-bottomRightRadius*density*2,height-bottomRightRadius*density*2,width,height,0,90,true);
-//            path.moveTo(width-bottomRightRadius*density,height);
-                path.lineTo(bottomLeftRadius*density,height);
-                path.arcTo(0,height-bottomLeftRadius*density*2,bottomLeftRadius*density*2,height,90,90,true);
-//            path.moveTo(0,height-bottomLeftRadius*density);
-                path.lineTo(width,height-bottomRightRadius*density);
-                path.addRect(0,topLeftRadius*density,width,height-bottomRightRadius*density, Path.Direction.CCW);
+                path.moveTo(width,height-bottomRightRadius );
+                //path.lineTo(width,height-bottomRightRadius );
+                path.arcTo(width-bottomRightRadius *2,height-bottomRightRadius *2,width,height,0,90,true);
+//            path.moveTo(width-bottomRightRadius ,height);
+                path.lineTo(bottomLeftRadius ,height);
+                path.arcTo(0,height-bottomLeftRadius *2,bottomLeftRadius *2,height,90,90,true);
+//            path.moveTo(0,height-bottomLeftRadius );
+                path.lineTo(width,height-bottomRightRadius );
+                path.addRect(0,topLeftRadius ,width,height-bottomRightRadius , Path.Direction.CCW);
                 if (drawable instanceof BitmapDrawable) {
                     paint.setShader(initBitmapShader((BitmapDrawable) drawable));//将着色器设置给画笔
                     canvas.drawPath(path,paint);//使用画笔在画布上画圆

@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     xmlns:easy="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="15dp"
     android:layout_height="200dp">
     <android.support.v7.widget.CardView
         android:id="@+id/card_1"
         android:layout_weight="1"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="8dp"
-
+        app:cardCornerRadius="4dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -25,9 +25,9 @@
                 <com.person.newscopy.common.ShapeImageView
                     android:id="@+id/image_1"
                     easy:shape="rectangle"
-                    easy:topLeftRadius="10dp"
-                    easy:topRightRadius="10dp"
-                    android:layout_width="150dp"
+                    easy:topLeftRadius="4dp"
+                    easy:topRightRadius="4dp"
+                    android:layout_width="match_parent"
                     android:layout_height="100dp" />
                 <TextView
                     android:id="@+id/like_1"
@@ -75,10 +75,11 @@
 
     <android.support.v7.widget.CardView
         android:layout_weight="1"
-        android:background="#fff"
+        app:cardCornerRadius="4dp"
         android:id="@+id/card_2"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -88,11 +89,13 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
-                <ImageView
+                <com.person.newscopy.common.ShapeImageView
                     android:id="@+id/image_2"
-                    android:background="@drawable/short_card_bg"
+                    easy:shape="rectangle"
+                    easy:topLeftRadius="4dp"
+                    easy:topRightRadius="4dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="100dp" />
                 <TextView
                     android:id="@+id/like_2"
                     android:textColor="#fff"

@@ -33,7 +33,7 @@
     <FrameLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp">
         <android.support.design.widget.TabLayout
             android:id="@+id/tab"
             app:tabGravity="center"
@@ -42,18 +42,21 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabLayoutStyle"
+            android:layout_marginEnd="45dp"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabSelectedTextColor="@android:color/holo_red_light"
             app:tabTextColor="#000"/>
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
+            android:elevation="20dp"
             android:layout_gravity="end|center_vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/more"
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:src="@drawable/news_more"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
         </android.support.v7.widget.CardView>
     </FrameLayout>
 

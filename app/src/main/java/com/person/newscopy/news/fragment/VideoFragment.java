@@ -3,6 +3,7 @@ package com.person.newscopy.news.fragment;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.easy.generaltool.ViewUtil;
@@ -65,6 +67,7 @@ public class VideoFragment extends Fragment {
         more=view.findViewById(R.id.more);
         search=view.findViewById(R.id.search);
         release=view.findViewById(R.id.release);
+        release.setOnClickListener(v->createPop());
         activity.getSearchInfo().observe(this, videoSearchBean -> {
             videoSearch = videoSearchBean;
             SharedPreferences sharedPreferences = activity.getSharedPreferences(HOT_VIDEO_KEY,0);
@@ -116,6 +119,18 @@ public class VideoFragment extends Fragment {
         pager.setCurrentItem(1);
         Log.d("==NewsFragment==","onCreateView");
         return view;
+    }
+
+
+    private void createPop(){
+        float d = ViewUtil.FitScreen.getDensity();
+        Log.d("==============","d = "+d);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_view,null);
+        PopupWindow popupWindow = new PopupWindow(view, (int)(d*160),(int)(d*260));
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAsDropDown(release,-(int)(d*105),0);
     }
 
     private String[] changeSetToArray(Set<String> sets){

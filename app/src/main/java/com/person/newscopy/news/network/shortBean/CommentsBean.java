@@ -5,7 +5,7 @@ public class CommentsBean {
      * name : 橘子汽水菠萝西瓜芒果
      * content : 厉害呀
      * icon : https://image.pearvideo.com/const/user_default_120_120.png
-     * like : 0
+     * my_like : 0
      * reply : 0
      * time : 08-01 01:28
      */

@@ -11,4 +11,9 @@
         <attr name="bottomRightRadius" format="dimension"/>
         <attr name="radius" format="dimension"/>
     </declare-styleable>
+    <attr name="entrySummaries" format="reference" />
+
+    <declare-styleable name="IjkListPreference">
+        <attr name="entrySummaries" />
+    </declare-styleable>
 </resources>

@@ -55,10 +55,9 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
             ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
-//        ViewUtil.FitScreen.setCustomDensity(this,getApplication());
-//        ViewUtil.FitScreen.setCustomActivityDensity(this);
+        ViewUtil.FitScreen.setCustomDensity(this,getApplication());
+        ViewUtil.FitScreen.setCustomActivityDensity(this);
         setContentView(R.layout.activity_main);
-
         fragmentLayout=findViewById(R.id.fragment);
         dealBottomNavigation();
         dealFragment();
@@ -84,7 +83,6 @@ public class NewsActivity extends AppCompatActivity {
         transaction.add(R.id.fragment,fragments.get(0));
         transaction.commit();
     }
-
 
     private void replaceFragment(Fragment fragment){
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
@@ -119,6 +117,7 @@ public class NewsActivity extends AppCompatActivity {
                     addAll(bottomNavigationBar,bottomNavigationItems,1);
                     bottomNavigationBar.initialise();
                     isRefresh=false;
+                    bottomNavigationBar.selectTab(position);
                 }
             }
 
@@ -183,7 +182,5 @@ public class NewsActivity extends AppCompatActivity {
     public LiveData<List<ShortInfoBean>> getShortData(int type){
         return shortViewModel.getShortData(type);
     }
-
-
 
 }

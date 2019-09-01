@@ -36,14 +36,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_BIG=1;
     public static final int TYPE_THREE=2;
     public static final int TYPE_REFRESH=3;
+    boolean isStartTop = false;
 
     public NewsAdapter() {
-    }
-
-    public NewsAdapter(NewsBean newsBean, Fragment fragment) {
-        dataBeanList = newsBean.getData();
-        this.context = fragment.getContext();
-        this.fragment=fragment;
     }
 
     public void refresh(){
@@ -169,8 +164,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             topViewHolder.source.setText(bean.getSource());
             topViewHolder.title.setText(bean.getTitle());
             topViewHolder.topNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
-            if (position>2)
-                topViewHolder.top.setVisibility(View.GONE);
+            if (position==1&&isStartTop)
+                return;
+            if(position==0){
+                isStartTop=true;
+                return;
+            }
+            else isStartTop=false;
+            topViewHolder.top.setVisibility(View.GONE);
         }
     }
 

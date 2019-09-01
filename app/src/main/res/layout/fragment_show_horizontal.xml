@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <SurfaceView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:background="#444444"
+        android:id="@+id/video_info"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/video_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+        <ImageView
+        android:id="@+id/back"
+        android:src="@drawable/back_white"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+        <TextView
+        android:id="@+id/title"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/video_control"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="#444444"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+        <ImageView
+        android:src="@drawable/show_video_pause"
+        android:id="@+id/pause"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        />
+
+        <SeekBar
+        android:id="@+id/seek_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center"
+        android:layout_weight="1" />
+        <TextView android:id="@+id/time_current"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff" />
+        <TextView
+        android:text="/"
+        android:textSize="14sp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+        <TextView android:id="@+id/time"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff" />
+        <ImageView
+        android:id="@+id/to_ver"
+        android:src="@drawable/show_video_to_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
