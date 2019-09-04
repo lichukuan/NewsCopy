@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/item_change"
+        android:layout_gravity="right|top"
+        android:background="#fff"
+        android:src="@drawable/item_news_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="关注"
+        android:layout_gravity="center"
+        android:background="@drawable/item_button_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

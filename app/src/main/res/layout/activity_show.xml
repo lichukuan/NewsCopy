@@ -9,8 +9,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="@dimen/bottom_navigation_height">
-
+        android:layout_height="40dp">
+        <ImageView
+            android:id="@+id/back"
+            android:scaleType="center"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/back_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:scaleType="center"
+            android:scaleY="1.5"
+            android:scaleX="1.5"
+            android:src="@drawable/news_show_tou_tiao"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:src="@drawable/news_search"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:src="@drawable/video_more"
+            android:layout_marginEnd="20dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
     </LinearLayout>
    <WebView
         android:layout_weight="1"
@@ -25,7 +54,44 @@
         <EditText
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:hint="写评论..."
+            android:drawableStart="@drawable/news_show_write"
+            android:background="@drawable/news_show_edit_bg"
+            android:layout_width="150dp"
+            android:paddingStart="15dp"
+            android:drawablePadding="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_height="40dp" />
+        <LinearLayout
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_weight="1"
+                android:src="@drawable/video_comment"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="30dp" />
+            <ImageView
+                android:layout_weight="1"
+                android:src="@drawable/my_shoucang"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="30dp"/>
+            <ImageView
+                android:layout_weight="1"
+                android:src="@drawable/my_like"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="30dp"/>
+            <ImageView
+                android:layout_weight="1"
+                android:src="@drawable/news_show_send"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="30dp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

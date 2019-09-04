@@ -9,13 +9,16 @@ import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.network.ShortInNetProvide;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Handler;
 
 public class ShortDepository implements ShortInNetProvide.OnShortLoadListener {
 
-    private MutableLiveData<List<ShortInfoBean>> data = new MutableLiveData<>();
-
     private ShortInNetProvide provide;
+
+    private Map<Integer,MutableLiveData<List<ShortInfoBean>>> map = new HashMap<>(4);
 
     public ShortDepository() {
         provide = ShortInNetProvide.getInstance();
@@ -23,16 +26,18 @@ public class ShortDepository implements ShortInNetProvide.OnShortLoadListener {
     }
 
     public void pickShortData(int type){
+        MutableLiveData<List<ShortInfoBean>> data = new MutableLiveData<>();
+        map.put(type,data);
         provide.getShortInfo(type);
     }
 
-    public LiveData<List<ShortInfoBean>> getData() {
-        return data;
+    public LiveData<List<ShortInfoBean>> getData(int type) {
+        return map.get(type);
     }
 
     @Override
-    public void success(List<ShortInfoBean> beans) {
-        data.setValue(beans);
+    public void success(int type,List<ShortInfoBean> beans) {
+        map.get(type).setValue(beans);
     }
 
     @Override

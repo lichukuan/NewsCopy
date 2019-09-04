@@ -73,13 +73,13 @@ public class ShortInNetProvide {
                     @Override
                     public void onNext(List<ShortInfoBean> shortInfoBeans) {
                         if (loadListener!=null)
-                            loadListener.success(shortInfoBeans);
+                            loadListener.success(type,shortInfoBeans);
                     }
                 });
     }
 
     public interface OnShortLoadListener{
-        void success(List<ShortInfoBean> beans);
+        void success(int type,List<ShortInfoBean> beans);
 
         void error(Throwable e);
     }

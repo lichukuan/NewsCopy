@@ -50,8 +50,12 @@
         android:layout_height="30dp">
         <TextView
             android:text="历史纪录"
-            android:drawableRight="@drawable/down_show"
+            android:layout_marginStart="20dp"
             android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:src="@drawable/down_show"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
         <View

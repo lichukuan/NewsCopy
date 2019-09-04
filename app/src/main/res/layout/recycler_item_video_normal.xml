@@ -36,6 +36,8 @@
                 android:id="@+id/play_num"
                 android:gravity="center"
                 android:textColor="#fff"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="start|bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -70,14 +72,17 @@
                 android:gravity="start|center_vertical"
                 android:layout_weight="1"
                 android:textColor="@android:color/holo_red_light" />
-
+            <ImageView
+                android:src="@drawable/video_comment"
+                android:layout_width="wrap_content"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/commentCount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:drawableStart="@drawable/video_comment"
                 android:text="评论" />
 
             <ImageView

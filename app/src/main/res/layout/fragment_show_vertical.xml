@@ -60,6 +60,8 @@
                 android:textColor="#fff" />
             <ImageView
                 android:id="@+id/to_hor"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/show_video_to_hor"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
@@ -67,25 +69,36 @@
    </FrameLayout>
    <LinearLayout
        android:orientation="horizontal"
+       android:layout_marginTop="20dp"
        android:layout_width="match_parent"
        android:layout_height="50dp">
       <com.person.newscopy.common.ShapeImageView
           android:id="@+id/icon"
           easy:shape="circle"
+          android:layout_marginStart="10dp"
           android:layout_width="50dp"
           android:layout_height="50dp" />
       <TextView
           android:id="@+id/author"
-          android:layout_width="wrap_content"
+          android:textSize="20sp"
+          android:layout_marginStart="10dp"
+          android:gravity="start|center_vertical"
+          android:layout_weight="1"
+          android:layout_width="0dp"
           android:layout_height="match_parent" />
       <Button
           android:id="@+id/care"
           android:text="关注"
+          android:layout_marginEnd="20dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
    </LinearLayout>
    <TextView
+       android:layout_marginStart="10dp"
+       android:layout_marginTop="10dp"
        android:id="@+id/title"
+       android:textSize="20sp"
+       android:textColor="#000"
        android:layout_width="match_parent"
        android:layout_height="wrap_content" />
    <android.support.v7.widget.RecyclerView

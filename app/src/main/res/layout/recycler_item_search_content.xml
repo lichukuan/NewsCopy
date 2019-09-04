@@ -16,9 +16,12 @@
         android:textColor="#000"
         android:textSize="18sp"
         android:layout_height="match_parent" />
-    <include layout="@layout/view_line_vertical" android:layout_marginTop="5dp"
-        android:layout_height="20dp"
-        android:layout_width="1dp"/>
+    <View
+        android:background="#000"
+        android:alpha="0.2"
+        android:layout_marginTop="5dp"
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
     <TextView
         android:id="@+id/content_right"
         android:layout_weight="1"

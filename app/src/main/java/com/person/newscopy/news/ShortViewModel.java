@@ -32,6 +32,6 @@ public class ShortViewModel extends AndroidViewModel {
 
     public LiveData<List<ShortInfoBean>> getShortData(int type){
         depository.pickShortData(type);
-        return depository.getData();
+        return depository.getData(type);
     }
 }

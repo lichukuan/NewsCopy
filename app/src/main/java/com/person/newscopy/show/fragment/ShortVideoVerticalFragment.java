@@ -1,6 +1,7 @@
 package com.person.newscopy.show.fragment;
 
-import android.animation.TimeAnimator;
+
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 import com.person.newscopy.show.ShowShortVideoActivity;
@@ -38,6 +41,9 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
     private boolean isShow = false;
     private int duration;
     ShowShortVideoActivity activity;
+    private TextView title;
+    private ImageView icon;
+    private TextView author;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,7 +51,6 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
         videoView = view.findViewById(R.id.video_view);
         activity = (ShowShortVideoActivity) getActivity();
         activity.setListener(this);
-        Log.d("===============","ShortVideoVerticalFragment被调用");
         layout = view.findViewById(R.id.video_control);
         play =view.findViewById(R.id.pause);
         throughTime =view.findViewById(R.id.time_current);
@@ -74,7 +79,7 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
 
             }
         });
-
+        toHor.setOnClickListener(v->activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
         ShortInfoBean bean = activity.getBean();
         ijkMediaPlayer = activity.getIjkMediaPlayer();
         url = bean.getVideoUrl();
@@ -87,7 +92,6 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
             else layout.setVisibility(View.VISIBLE);
             isShow=!isShow;
         });
-
         play.setOnClickListener(v ->{
             if (isPlaying){
                 pause();
@@ -99,10 +103,18 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
             }
             isPlaying = !isPlaying;
         });
+        title = view.findViewById(R.id.title);
+        icon=view.findViewById(R.id.icon);
+        author=view.findViewById(R.id.author);
+        title.setText(bean.getTitle());
+        Glide.with(this)
+                .load(bean.getIconUrl())
+                .asBitmap()
+                .into(icon);
+        author.setText(bean.getAuthor());
         new newInit().start();
         return view;
     }
-
 
   private int toSecondTime(String t){
         String[] p = t.split(":");
@@ -111,7 +123,6 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
         Log.d("===========","t = "+t+"  minute = "+minute+"  second = "+second);
         return minute*60+second;
   }
-
 
     private String formatTime(int time){
         int minute = time/60;
@@ -122,7 +133,6 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
         if(second<9)res.append("0"+second);else res.append(second);
         return res.toString();
     }
-
 
     private void InitIjk(){
         if (ijkMediaPlayer.getDataSource()!=null)return;
@@ -164,7 +174,6 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
     public void now(int now) {
         throughTime.setText(formatTime(now));
         int progress = now*100/duration;
-        //Log.d("=========","now_duration = "+now_duration+"  nowProgress = "+progress+"  duration = "+duration);
         seekBar.setProgress(progress);
     }
 

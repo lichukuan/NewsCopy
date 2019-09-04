@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:id="@+id/three_news"
     android:layout_height="200dp">
-    <include layout="@layout/view_line"/>
+
      <TextView
          android:id="@+id/title"
          android:layout_marginStart="20dp"
@@ -74,4 +74,5 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <include layout="@layout/view_line"/>
 </LinearLayout>

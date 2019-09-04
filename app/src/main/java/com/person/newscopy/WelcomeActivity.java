@@ -1,11 +1,8 @@
 package com.person.newscopy;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import com.easy.generaltool.ViewUtil;
 import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.NewsActivity;

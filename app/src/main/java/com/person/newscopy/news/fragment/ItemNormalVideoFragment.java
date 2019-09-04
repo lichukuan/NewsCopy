@@ -17,7 +17,6 @@ import com.person.newscopy.news.adapter.VideoAdapter;
 
 public class ItemNormalVideoFragment extends Fragment {
 
-    SwipeRefreshLayout refreshLayout;
     RecyclerView recyclerView;
     NewsActivity newsActivity;
     String type;
@@ -42,7 +41,6 @@ public class ItemNormalVideoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_video_normal,container,false);
-        refreshLayout=view.findViewById(R.id.video_refresh);
         recyclerView=view.findViewById(R.id.recycler_video_show);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);

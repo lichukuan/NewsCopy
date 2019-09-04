@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,6 @@ import rx.Observable;
 public class ItemNormalNewsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    SwipeRefreshLayout refreshLayout;
     NewsActivity newsActivity;
     String name=null;
     NewsType type=null;
@@ -35,7 +35,7 @@ public class ItemNormalNewsFragment extends Fragment {
     private int refreshNum = 1;
     //用来标记是否正在向上滑动
     private boolean isSlidingUpward = false;
-
+    NestedScrollView nestedScrollView;
 
     public String getName() {
         return name;
@@ -60,7 +60,6 @@ public class ItemNormalNewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
         recyclerView=view.findViewById(R.id.recycler_news_show);
         recyclerView.setLayoutManager(linearLayoutManager);
-        refreshLayout=view.findViewById(R.id.news_refresh);
         adapter=new NewsAdapter();
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class NewsFragment extends Fragment {
     NewsActivity activity;
     HotNewsBean hotNews=null;
     int hotIndex = 0;
+    boolean isContinue = true;
 
     public static final String HOT_NEWS_KEY = "hot_news_key";
 
@@ -77,16 +79,7 @@ public class NewsFragment extends Fragment {
             tabLayout.addTab(tabLayout.newTab().setText(values[i]));
         }
         search.setText("搜你想搜...");
-        subscription = Observable.timer(30, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    if (hotNews!=null){
-                        final List<DataBeanX> data = hotNews.getData();
-                        if(hotIndex>data.size())hotIndex=0;
-                        search.setText(data.get(hotIndex).getTitle());
-                        hotIndex++;
-                    }
-                });
+        delayCircle(5);
         search.setOnClickListener(v->{
             Intent intent = new Intent(activity, SearchActivity.class);
             intent.putExtra(SearchActivity.SEARCH_KEY,HOT_NEWS_KEY);
@@ -106,10 +99,24 @@ public class NewsFragment extends Fragment {
 
             }
         });
-
         pager.setCurrentItem(1);
         Log.d("==NewsFragment==","onCreateView");
         return view;
+    }
+
+    private void delayCircle(int time){
+        subscription = Observable.timer(time, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    if (hotNews!=null){
+                        final List<DataBeanX> data = hotNews.getData();
+                        if(hotIndex>data.size())hotIndex=0;
+                        search.setText(data.get(hotIndex).getTitle());
+                        hotIndex++;
+                    }
+                    if (isContinue)
+                    delayCircle(time);
+                });
     }
 
     private void createPop(){
@@ -133,6 +140,7 @@ public class NewsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         subscription.unsubscribe();
+        isContinue = false;
         Log.d("==NewsFragment==","onDestroy");
     }
 }

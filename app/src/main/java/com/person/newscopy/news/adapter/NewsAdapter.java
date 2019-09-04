@@ -2,16 +2,22 @@ package com.person.newscopy.news.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.ViewUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.news.network.bean.DataBean;
@@ -22,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -37,6 +45,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_THREE=2;
     public static final int TYPE_REFRESH=3;
     boolean isStartTop = false;
+    private float height;
+    private float width;
 
     public NewsAdapter() {
     }
@@ -48,7 +58,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getContext();
+        height = ViewUtil.ScreenInfo.getScreenHeight(context);
+        width = ViewUtil.ScreenInfo.getScreenWidth(context);
     }
+
 
     public void setDataBeanList(List<DataBean> beans) {
         int startSize = dataBeanList.size();
@@ -62,6 +75,12 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             isRefreshOver = true;
             notifyDataSetChanged();
         }
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = fragment.getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        fragment.getActivity().getWindow().setAttributes(lp);
     }
 
     @NonNull
@@ -86,6 +105,36 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return new OneViewHolder(view2);
         }
 
+    }
+
+
+    private void createPop(View location){
+        float d = ViewUtil.FitScreen.getDensity();
+        int l[] = new int[2];
+        location.getLocationOnScreen(l);
+        float x = l[0];
+        float y = l[1];
+        View view = LayoutInflater.from(context).inflate(R.layout.pop_cancel_view,null);
+        View top = view.findViewById(R.id.top);
+        View bottom = view.findViewById(R.id.bottom);
+        top.setVisibility(View.VISIBLE);
+        bottom.setVisibility(View.VISIBLE);
+        PopupWindow popupWindow = new PopupWindow(view, (int)(width-10*d),(int)(260*d));
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        if(y>height/2){
+           top.setVisibility(View.INVISIBLE);
+           bottom.setX(x-5*d);
+           popupWindow.showAtLocation(location, Gravity.TOP,0,(int)(y-260*d));
+        }
+        else {
+            bottom.setVisibility(View.INVISIBLE);
+            top.setX(x-5*d);
+            popupWindow.showAtLocation(location, Gravity.BOTTOM,0,(int)(height-y-190*d));
+        }
+       backgroundAlpha(0.5f);
+       popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
     }
 
     @Override
@@ -132,6 +181,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Glide.with(fragment)
                     .load(bean.getImage_url())
                     .into(bigViewHolder.bigPic);
+            bigViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof OneViewHolder){
                OneViewHolder oneViewHolder = (OneViewHolder) holder;
                oneViewHolder.title.setText(bean.getTitle());
@@ -142,6 +192,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                Glide.with(fragment)
                        .load(bean.getImage_url())
                        .into(oneViewHolder.pic);
+               oneViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof ThreeViewHolder){
              ThreeViewHolder threeViewHolder= (ThreeViewHolder) holder;
              threeViewHolder.title.setText(bean.getTitle());
@@ -158,14 +209,18 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Glide.with(fragment)
                     .load(bean.getImage_list().get(2).getUrl())
                     .into(threeViewHolder.pic3);
+            threeViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof TopViewHolder){
             TopViewHolder topViewHolder= (TopViewHolder) holder;
             topViewHolder.comment.setText(bean.getComments_count()+"评论");
             topViewHolder.source.setText(bean.getSource());
             topViewHolder.title.setText(bean.getTitle());
             topViewHolder.topNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
-            if (position==1&&isStartTop)
+            topViewHolder.close.setOnClickListener(this::createPop);
+            if (position==1&&isStartTop){
+                topViewHolder.close.setVisibility(View.INVISIBLE);
                 return;
+            }
             if(position==0){
                 isStartTop=true;
                 return;
@@ -258,6 +313,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class TopViewHolder extends RecyclerView.ViewHolder{
         TextView title,source,comment,top;
         LinearLayout topNews;
+        ImageView close;
         public TopViewHolder(View itemView) {
             super(itemView);
             topNews=itemView.findViewById(R.id.top_news);
@@ -265,6 +321,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             source=itemView.findViewById(R.id.from);
             comment=itemView.findViewById(R.id.commentCount);
             top=itemView.findViewById(R.id.top);
+            close=itemView.findViewById(R.id.close);
         }
     }
 

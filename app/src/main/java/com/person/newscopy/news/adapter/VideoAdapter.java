@@ -2,18 +2,23 @@ package com.person.newscopy.news.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.ViewUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.news.network.bean.CardsBean;
@@ -43,6 +48,9 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     private boolean isNeedRefresh=false;
     private boolean isRefreshOver = false;
+    private float height;
+    private float width;
+
 
     public VideoAdapter(int type, Fragment fragment) {
         this.type = type;
@@ -56,6 +64,8 @@ public class VideoAdapter extends RecyclerView.Adapter {
                     channelBeans=new ArrayList<>();
                     break;
         }
+        height = ViewUtil.ScreenInfo.getScreenHeight(context);
+        width = ViewUtil.ScreenInfo.getScreenWidth(context);
     }
 
     public void setChannelBeans(List<ChannelBaseInfoBean> channelBeans) {
@@ -91,6 +101,41 @@ public class VideoAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private void createPop(View location){
+        float d = ViewUtil.FitScreen.getDensity();
+        int l[] = new int[2];
+        location.getLocationOnScreen(l);
+        float x = l[0];
+        float y = l[1];
+        View view = LayoutInflater.from(context).inflate(R.layout.pop_cancel_view,null);
+        View top = view.findViewById(R.id.top);
+        View bottom = view.findViewById(R.id.bottom);
+        top.setVisibility(View.VISIBLE);
+        bottom.setVisibility(View.VISIBLE);
+        PopupWindow popupWindow = new PopupWindow(view, (int)(width-10*d),(int)(60*d));
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        if(y>height/2){
+            top.setVisibility(View.INVISIBLE);
+            bottom.setX(x-5*d);
+            popupWindow.showAtLocation(location, Gravity.TOP,0,(int)(y-60*d));
+        }
+        else {
+            bottom.setVisibility(View.INVISIBLE);
+            top.setX(x-5*d);
+            popupWindow.showAtLocation(location, Gravity.BOTTOM,0,(int)(height-y-40*d));
+        }
+        backgroundAlpha(0.5f);
+        popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = fragment.getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        fragment.getActivity().getWindow().setAttributes(lp);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position == getItemCount()-1){
@@ -122,6 +167,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
             LiveViewHolder liveViewHolder= (LiveViewHolder) holder;
             liveViewHolder.lookNum.setText(bean.getHotNum());
             liveViewHolder.userName.setText(bean.getAuthorName());
+            liveViewHolder.close.setOnClickListener(this::createPop);
             Glide.with(fragment)
                     .load(bean.getAvatar_url())
                     .asBitmap()
@@ -187,6 +233,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
         TextView userName,lookNum,title;
         ImageView videoImage;
         CardView liveVideo;
+        ImageView close;
          LiveViewHolder(View itemView) {
             super(itemView);
             userIcon=itemView.findViewById(R.id.live_user_icon);
@@ -195,6 +242,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
             lookNum=itemView.findViewById(R.id.lookNum);
             title=itemView.findViewById(R.id.live_title);
             liveVideo=itemView.findViewById(R.id.live_video);
+            close = itemView.findViewById(R.id.video_close);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.person.newscopy.show.fragment;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -37,10 +38,8 @@ public class ShortVideoHorizontalFragment extends Fragment implements ShowShortV
     private TextView title;
     private boolean isPlaying = true;
     private boolean isShow = false;
-    private int now_duration = 0;
     private int duration;
     private LinearLayout info;
-    Handler handler = new Handler();
     ShowShortVideoActivity activity;
     @Nullable
     @Override
@@ -56,7 +55,7 @@ public class ShortVideoHorizontalFragment extends Fragment implements ShowShortV
         allTime=view.findViewById(R.id.time);
         back =view.findViewById(R.id.back);
         title = view.findViewById(R.id.title);
-        toVer=view.findViewById(R.id.to_hor);
+        toVer=view.findViewById(R.id.to_ver);
         seekBar=view.findViewById(R.id.seek_bar);
         seekBar.setMax(100);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -80,7 +79,8 @@ public class ShortVideoHorizontalFragment extends Fragment implements ShowShortV
 
             }
         });
-
+        toVer.setOnClickListener(v -> activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        back.setOnClickListener(v -> activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
         ShortInfoBean bean = activity.getBean();
         ijkMediaPlayer=activity.getIjkMediaPlayer();
         url = bean.getVideoUrl();

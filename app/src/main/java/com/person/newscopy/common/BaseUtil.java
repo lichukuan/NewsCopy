@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 import java.time.Instant;
 
 public final class BaseUtil {

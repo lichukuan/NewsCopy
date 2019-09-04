@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:id="@+id/big_news"
     android:layout_height="250dp">
-    <include layout="@layout/view_line" />
     <TextView
         android:id="@+id/title"
         android:textSize="20sp"
@@ -58,4 +57,5 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <include layout="@layout/view_line" />
 </LinearLayout>

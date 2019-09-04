@@ -30,9 +30,10 @@ public class ShortAdapter extends RecyclerView.Adapter {
         this.context = context;
     }
 
-    public void setData(List<ShortInfoBean> data) {
-        this.data = data;
-        notifyDataSetChanged();
+    public void addData(List<ShortInfoBean> d) {
+        int start = data.size();
+        data.addAll(d);
+        notifyItemInserted(start);
     }
 
     @NonNull
