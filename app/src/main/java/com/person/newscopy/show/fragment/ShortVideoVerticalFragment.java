@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -23,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 import com.person.newscopy.show.ShowShortVideoActivity;
+import com.person.newscopy.show.adapter.CommentAdapter;
+
 import java.io.IOException;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -40,6 +44,7 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
     private boolean isPlaying = true;
     private boolean isShow = false;
     private int duration;
+    private RecyclerView comment;
     ShowShortVideoActivity activity;
     private TextView title;
     private ImageView icon;
@@ -81,6 +86,9 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
         });
         toHor.setOnClickListener(v->activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
         ShortInfoBean bean = activity.getBean();
+        comment=view.findViewById(R.id.comments);
+        comment.setLayoutManager(new LinearLayoutManager(getContext()));
+        comment.setAdapter(new CommentAdapter(bean.getComments(),this));
         ijkMediaPlayer = activity.getIjkMediaPlayer();
         url = bean.getVideoUrl();
         duration = toSecondTime(bean.getDuration());

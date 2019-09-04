@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="100dp"
+    xmlns:easy="http://schemas.android.com/apk/res-auto">
+
+    <com.person.newscopy.common.ShapeImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="20dp"
+        easy:layout_constraintBottom_toBottomOf="parent"
+        easy:layout_constraintStart_toStartOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="0.0"
+        easy:radius="20dp"
+        easy:shape="circle" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        easy:layout_constraintStart_toEndOf="@+id/icon"
+        easy:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="308dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        easy:layout_constraintBottom_toTopOf="@+id/time"
+        easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintHorizontal_bias="0.0"
+        easy:layout_constraintStart_toEndOf="@+id/icon"
+        easy:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="308dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        easy:layout_constraintBottom_toBottomOf="parent"
+        easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintStart_toStartOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="8dp"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/show_comment"
+        easy:layout_constraintBottom_toBottomOf="parent"
+        easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintHorizontal_bias="0.896"
+        easy:layout_constraintStart_toStartOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/show_like"
+        easy:layout_constraintBottom_toBottomOf="parent"
+        easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintHorizontal_bias="1.0"
+        easy:layout_constraintStart_toStartOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="1.0" />
+</android.support.constraint.ConstraintLayout>

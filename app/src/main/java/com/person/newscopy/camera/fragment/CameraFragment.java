@@ -77,8 +77,8 @@ public class CameraFragment extends Fragment {
         changeCamera = view.findViewById(R.id.camera);
         cameraView = view.findViewById(R.id.camera_view);
         start = view.findViewById(R.id.start);
-        changeCamera.setOnClickListener(v ->change());
-        start.setOnClickListener(v->takeVideo());
+        //changeCamera.setOnClickListener(v ->change());
+        //start.setOnClickListener(v->takeVideo());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             init();
             try {
@@ -93,8 +93,6 @@ public class CameraFragment extends Fragment {
         }
         return view;
     }
-
-
 
 
     @SuppressLint("MissingPermission")
@@ -169,7 +167,6 @@ public class CameraFragment extends Fragment {
                 captureSession = null;
             }
         }
-
 //停止mediaRecorder
         if (mediaRecorder != null) {
             try {
@@ -177,7 +174,6 @@ public class CameraFragment extends Fragment {
             } catch (Exception ignore) {
             }
         }
-
 //释放mediaRecorder
         try {
             if (mediaRecorder != null) {
