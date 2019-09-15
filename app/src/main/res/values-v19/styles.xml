@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="TranslucentTheme" parent="AppTheme">
-        <!--是否设置状态栏透明-->
-        <item name="android:windowTranslucentStatus">true</item>
-        <!--是否半透明下部的导航栏-->
-        <item name="android:windowTranslucentNavigation">false</item>
-    </style>
-</resources>

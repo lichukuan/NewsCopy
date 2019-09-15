@@ -1,6 +1,7 @@
 package com.person.newscopy.news.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.MyListViewLayout;
+import com.person.newscopy.news.NewsActivity;
 
 public class UserFragment extends Fragment {
 
@@ -25,8 +29,8 @@ public class UserFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
-        ViewUtil.Translucent.applyGradualTranslucent(getActivity(), R.color.welcome_while);
+        NewsActivity activity = (NewsActivity) getActivity();
+        TranslucentUtil.setTranslucent(activity,Color.WHITE, (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_person,container,false);
         MyListViewLayout listViewLayout = view.findViewById(R.id.my_list);
         listViewLayout.setContent(content,res);

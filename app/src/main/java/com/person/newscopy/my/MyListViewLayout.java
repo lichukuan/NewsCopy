@@ -13,13 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
 
 public class MyListViewLayout extends FrameLayout {
 
     public void setContent(String[] content,int[] res){
-        float d = ViewUtil.FitScreen.getDensity();
-        float width = ViewUtil.ScreenInfo.getScreenWidth(this)/4;
+        float d = ScreenFitUtil.getDensity();
+        float width = ViewInfoUtil.ScreenInfo.getScreenWidth(this)/4;
         int j = 1;
         for (int i = 0; i <content.length ; i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.my_list_item_view,this,false);
@@ -56,6 +58,5 @@ public class MyListViewLayout extends FrameLayout {
 
     private void init(){
 
-        //requestLayout();
     }
 }

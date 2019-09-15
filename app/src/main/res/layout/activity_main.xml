@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".news.NewsActivity">
-
     <LinearLayout
         android:id="@+id/fragment"
         android:orientation="vertical"

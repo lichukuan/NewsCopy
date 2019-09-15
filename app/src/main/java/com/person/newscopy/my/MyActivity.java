@@ -1,7 +1,11 @@
 package com.person.newscopy.my;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 
 public class MyActivity extends AppCompatActivity {
@@ -16,6 +20,8 @@ public class MyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
+        TranslucentUtil.setTranslucent(this, Color.WHITE, (int) (20*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_my);
         findViewById(R.id.back).setOnClickListener(v->finish());
         MyListViewLayout base = findViewById(R.id.list_base);

@@ -1,5 +1,6 @@
 package com.person.newscopy.camera.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 
 public class VideoListFragment extends Fragment {
@@ -16,6 +19,7 @@ public class VideoListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_item_camera_video,container,false);
+        TranslucentUtil.setTranslucent(getActivity(),Color.BLACK, (int) (20* ScreenFitUtil.getDensity()));
         return view;
     }
 }

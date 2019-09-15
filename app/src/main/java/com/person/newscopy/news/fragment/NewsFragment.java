@@ -3,6 +3,7 @@ package com.person.newscopy.news.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.news.NewsActivity;
@@ -58,8 +61,8 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (NewsActivity) getActivity();
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
-        ViewUtil.Translucent.applyGradualTranslucent(activity,R.color.tool_bar_red);
+        //activity.setTranslucent();
+        TranslucentUtil.setTranslucent(activity,Color.parseColor("#ffff4444"), (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_news,container,false);
         tabLayout=view.findViewById(R.id.tab);
         pager=view.findViewById(R.id.pager);
@@ -120,7 +123,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void createPop(){
-        float d = ViewUtil.FitScreen.getDensity();
+        float d = ScreenFitUtil.getDensity();
         Log.d("==============","d = "+d);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_view,null);
         PopupWindow popupWindow = new PopupWindow(view, (int)(d*160),(int)(d*260));

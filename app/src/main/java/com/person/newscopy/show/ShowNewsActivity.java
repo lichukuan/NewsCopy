@@ -10,6 +10,8 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 
 public class ShowNewsActivity extends AppCompatActivity {
@@ -23,8 +25,8 @@ public class ShowNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
-            ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
+        TranslucentUtil.setTranslucent(this,Color.WHITE, (int) (20*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_show);
         Intent intent = getIntent();
         String showUrl = intent.getStringExtra(SHOW_WEB_INFO);

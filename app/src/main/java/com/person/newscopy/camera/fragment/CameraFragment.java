@@ -1,5 +1,6 @@
 package com.person.newscopy.camera.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -16,10 +17,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
+import com.easy.generaltool.media.camera.CameraHelper;
 import com.person.newscopy.R;
-import com.person.newscopy.camera.helper.CameraHelper;
 
 public class CameraFragment extends Fragment {
 
@@ -32,6 +34,7 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_item_camera, container, false);
+
         changeCamera = view.findViewById(R.id.camera);
         cameraView = view.findViewById(R.id.camera_view);
         start = view.findViewById(R.id.start);

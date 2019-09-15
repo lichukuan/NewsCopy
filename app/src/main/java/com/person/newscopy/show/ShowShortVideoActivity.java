@@ -18,6 +18,8 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
@@ -48,9 +50,7 @@ public class ShowShortVideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
-            ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
-        ViewUtil.FitScreen.setCustomActivityDensity(this);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
         setContentView(R.layout.activity_short_video);
         initIjk();
         Intent intent = getIntent();

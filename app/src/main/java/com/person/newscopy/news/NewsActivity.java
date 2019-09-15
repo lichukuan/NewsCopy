@@ -1,5 +1,6 @@
 package com.person.newscopy.news;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -10,9 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +26,8 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.depository.NewsRequirement;
@@ -49,14 +57,11 @@ public class NewsActivity extends AppCompatActivity {
     boolean isRefresh=false;
     private List<BottomNavigationItem> bottomNavigationItems=new ArrayList<>(4);
     private List<Fragment> fragments=new ArrayList<>(4);
-
+    private static int heightResult = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)//如果为Android 5之后的版本
-            ViewUtil.Translucent.applyGradualTranslucent(this,R.color.tool_bar_red);
-        ViewUtil.FitScreen.setCustomDensity(this,getApplication());
-        ViewUtil.FitScreen.setCustomActivityDensity(this);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
         setContentView(R.layout.activity_main);
         fragmentLayout=findViewById(R.id.fragment);
         dealBottomNavigation();

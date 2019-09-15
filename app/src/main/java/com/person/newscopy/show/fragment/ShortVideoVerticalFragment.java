@@ -2,6 +2,7 @@ package com.person.newscopy.show.fragment;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.shortBean.ShortInfoBean;
 import com.person.newscopy.show.ShowShortVideoActivity;
@@ -52,6 +54,7 @@ public class ShortVideoVerticalFragment extends Fragment implements ShowShortVid
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_show_vertical,container,false);
+        TranslucentUtil.setTranslucent(getActivity(), Color.TRANSPARENT, 0);
         videoView = view.findViewById(R.id.video_view);
         activity = (ShowShortVideoActivity) getActivity();
         activity.setListener(this);

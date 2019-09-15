@@ -2,6 +2,7 @@ package com.person.newscopy.camera;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,8 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 
 public class CameraActivity extends AppCompatActivity {
@@ -29,6 +32,8 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
+        TranslucentUtil.setTranslucent(this, Color.TRANSPARENT, 0);
         setContentView(R.layout.activity_camera);
         viewPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tab);

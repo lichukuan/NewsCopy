@@ -2,6 +2,7 @@ package com.person.newscopy.search;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.news.network.bean.DataBeanX;
@@ -58,9 +61,10 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
+        TranslucentUtil.setTranslucent(this, Color.parseColor("#ffff4444"), (int) (20*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_search);
         findViewById(R.id.back).setOnClickListener(v->finish());
-
         content=findViewById(R.id.search_content);
         search=findViewById(R.id.search);
         hotNews=findViewById(R.id.hot_new_list);
