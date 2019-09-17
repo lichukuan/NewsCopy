@@ -24,6 +24,7 @@ import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
+import com.person.newscopy.common.ColorClipTabLayout;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.adapter.VideoFragmentAdapter;
@@ -47,7 +48,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class VideoFragment extends Fragment {
 
-    TabLayout tabLayout;
+    ColorClipTabLayout tabLayout;
     ViewPager pager;
     ImageView more;
     TextView search;
@@ -91,7 +92,7 @@ public class VideoFragment extends Fragment {
             intent.putExtra(SearchActivity.SEARCH_KEY,HOT_VIDEO_KEY);
             activity.startActivity(intent);
         });
-        Set<String> other=getActivity().getSharedPreferences(VideoDepository.VIDEO_TYPE,0)
+        Set<String> other = getActivity().getSharedPreferences(VideoDepository.VIDEO_TYPE,0)
                 .getStringSet(VideoDepository.VIDEO_ALL_TYPE,new HashSet<>());
         types.addAll(other);
         String[] s = changeSetToArray(types);
@@ -118,13 +119,12 @@ public class VideoFragment extends Fragment {
             }
         });
         pager.setCurrentItem(1);
-        Log.d("==NewsFragment==","onCreateView");
         return view;
     }
 
 
     private void createPop(){
-        float d = ViewUtil.FitScreen.getDensity();
+        float d = ScreenFitUtil.getDensity();
         Log.d("==============","d = "+d);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_view,null);
         PopupWindow popupWindow = new PopupWindow(view, (int)(d*160),(int)(d*260));

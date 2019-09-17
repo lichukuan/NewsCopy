@@ -17,6 +17,7 @@ public class VideoViewModel extends AndroidViewModel {
     public VideoViewModel(@NonNull Application application) {
         super(application);
         depository=new VideoDepository();
+        depository.initLoad();
     }
 
     public LiveData<VideoHotBean> getHot(String type,String maxTime,int count){

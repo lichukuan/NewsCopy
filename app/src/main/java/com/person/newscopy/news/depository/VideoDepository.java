@@ -54,17 +54,11 @@ public class VideoDepository implements VideoInNetProvide.VideoInfoLoadCallback 
     private MutableLiveData<VideoType> typeData=new MutableLiveData<>();
 
     public VideoDepository() {
-        videoProvide=VideoInNetProvide.getInstance();
+        videoProvide = VideoInNetProvide.getInstance();
         videoProvide.setCallback(this);
     }
 
     public void initLoad(){
-        isInit=true;
-        pickVideoData(VIDEO_HOT);
-        pickVideoData(VIDEO_LIVE);
-        pickVideoData(VIDEO_SEARCH);
-        pickVideoData("推荐", BaseUtil.getTime()+"",20);
-        pickVideoData("影视",BaseUtil.getTime()+"",20);
         videoProvide.feedVideoType();
     }
 
@@ -109,6 +103,7 @@ public class VideoDepository implements VideoInNetProvide.VideoInfoLoadCallback 
             editor.putString(bean.getName(),bean.getChannel_id());
         }
         editor.apply();
+        editor.commit();
     }
 
     public LiveData<VideoChannelBean> getChannelLiveData(String name) {

@@ -29,6 +29,8 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
             return fragment;
     }
 
+
+
     private NewsType getType(String name){
        if (name.equals(title[0]))
            return NewsType.All;

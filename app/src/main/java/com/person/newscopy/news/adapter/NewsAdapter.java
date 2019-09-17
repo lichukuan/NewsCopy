@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.ViewUtil;
+import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.news.network.bean.DataBean;
@@ -109,7 +110,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private void createPop(View location){
-        float d = ViewUtil.FitScreen.getDensity();
+        float d = ScreenFitUtil.getDensity();
         int l[] = new int[2];
         location.getLocationOnScreen(l);
         float x = l[0];

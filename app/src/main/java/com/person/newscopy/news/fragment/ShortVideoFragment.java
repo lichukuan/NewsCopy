@@ -20,12 +20,13 @@ import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.camera.CameraActivity;
+import com.person.newscopy.common.ColorClipTabLayout;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.ShortFragmentAdapter;
 
 public class ShortVideoFragment extends Fragment {
 
-    private TabLayout tabLayout;
+    private ColorClipTabLayout tabLayout;
     private ViewPager pager;
     private CardView release;
     @Nullable

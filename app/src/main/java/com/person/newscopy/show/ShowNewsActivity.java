@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -33,6 +34,9 @@ public class ShowNewsActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         back.setOnClickListener(v -> finish());
         webView = findViewById(R.id.show_news);
+        WebSettings settings = webView.getSettings();
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(showUrl);
     }

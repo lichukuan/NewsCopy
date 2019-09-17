@@ -65,7 +65,6 @@ public class ItemNormalShortFragment extends Fragment {
                        start+=ADD_COUNT;
                     }
                 }
-
             }
         });
         LinearLayoutManager manager = new LinearLayoutManager(getContext());

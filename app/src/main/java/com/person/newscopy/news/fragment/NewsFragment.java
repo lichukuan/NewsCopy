@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,15 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
+import com.person.newscopy.common.ColorClipTabLayout;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.depository.NewsRequirement;
@@ -40,7 +38,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class NewsFragment extends Fragment {
-    TabLayout tabLayout;
+    ColorClipTabLayout tabLayout;
     ViewPager pager;
     ImageView more;
     TextView search;
@@ -61,7 +59,6 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (NewsActivity) getActivity();
-        //activity.setTranslucent();
         TranslucentUtil.setTranslucent(activity,Color.parseColor("#ffff4444"), (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_news,container,false);
         tabLayout=view.findViewById(R.id.tab);
@@ -89,19 +86,6 @@ public class NewsFragment extends Fragment {
             activity.startActivity(intent);});
         tabLayout.setupWithViewPager(pager);
         pager.setAdapter(new NewsFragmentAdapter(getChildFragmentManager(),values,null));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                pager.setCurrentItem(tab.getPosition(),true);
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
         pager.setCurrentItem(1);
         Log.d("==NewsFragment==","onCreateView");
         return view;
