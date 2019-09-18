@@ -6,9 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -18,61 +22,60 @@ import com.person.newscopy.R;
 
 public class LoadView extends android.support.v7.widget.AppCompatImageView {
 
-    private Paint colorPaint;
-
-    private Path path;
-
-    float d;
-
-    RectF rectF;
-
-    float height;
-
+    private Paint paint;
+    private String text = "今日头条";
+    private float percent;
+    private Handler handler = new Handler();
+    private boolean isStop = false;
+    LinearGradient gradient;
+    Matrix matrix = new Matrix();
+    Rect bounds;
     public LoadView(Context context) {
-        super(context);
+        this(context,null);
     }
-
     public LoadView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs,0);
     }
-
-
     public LoadView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        initPaint();
+    }
+    private void initPaint() {
+        paint = new Paint();
+        paint.setTextSize(80);
+
+    }
+    @Override
+    protected void onDraw(Canvas canvas) {
+        gradient.setLocalMatrix(matrix);
+        paint.setShader(gradient);
+        canvas.drawText(text, getWidth()/2 - bounds.width()/2,getHeight()/2+bounds.height()/2, paint);
+        if (!isStop)
+            handler.postDelayed(runnable,100);
     }
 
-    public void setP(int p){
-        path.reset();
-        path.moveTo(d*p,0);
-        path.lineTo(d*(p+30),0);
-        path.lineTo(d*(p+50),height);
-        path.lineTo(d*(p+20),height);
-        path.lineTo(d*p,0);
-        invalidate();
-    }
+    Runnable runnable = () -> {
+        if(percent>=1.0){
+            percent = 0;
+        }else{
+            percent+=0.1f;
+        }
+        matrix.setTranslate(getWidth()*percent - 60,0);
+        postInvalidate();
+    };
 
-    private void init(){
-        d = ViewUtil.FitScreen.getDensity();
-        height = ViewUtil.ScreenInfo.getScreenHeight(this);
-       colorPaint = new Paint();
-       path = new Path();
-       colorPaint.setColor(Color.WHITE);
-       colorPaint.setAlpha(150);
-       colorPaint.setStyle(Paint.Style.FILL);
-       path.moveTo(d*20,0);
-       path.lineTo(d*30,0);
-       path.lineTo(d*40,100*d);
-       path.lineTo(d*30,100*d);
-       path.lineTo(d*20,0);
-       //LinearGradient linearGradient = new LinearGradient()
-       rectF = new RectF(0,0,100*d,100*d);
+    public void cancel(){
+        isStop = true;
+        handler.removeCallbacks(runnable);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawPath(path,colorPaint);
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        gradient = new LinearGradient(0,0,bounds.width(),0,new int[]{Color.GRAY,Color.WHITE,Color.GRAY},null, Shader.TileMode.CLAMP);
     }
+
+
 }

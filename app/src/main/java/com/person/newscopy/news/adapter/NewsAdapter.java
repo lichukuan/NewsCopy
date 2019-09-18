@@ -132,7 +132,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         else {
             bottom.setVisibility(View.INVISIBLE);
             top.setX(x-5*d);
-            popupWindow.showAtLocation(location, Gravity.BOTTOM,0,(int)(height-y-190*d));
+            popupWindow.showAtLocation(location, Gravity.BOTTOM,0,(int)(height-y-220*d));
         }
        backgroundAlpha(0.5f);
        popupWindow.setOnDismissListener(() -> backgroundAlpha(1));

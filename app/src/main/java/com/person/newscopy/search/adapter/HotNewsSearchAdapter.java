@@ -1,5 +1,6 @@
 package com.person.newscopy.search.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -24,7 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdapter.ViewHolder> {
 
-    private Context context;
+    private Activity context;
 
     private List<DataBeanX> content;
 
@@ -32,7 +33,7 @@ public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdap
 
     private boolean isVideoSearch=false;
 
-    public HotNewsSearchAdapter(Context context, List<DataBeanX> content,List<DataBeanXXXXXX> videoSearchBeanList) {
+    public HotNewsSearchAdapter(Activity context, List<DataBeanX> content,List<DataBeanXXXXXX> videoSearchBeanList) {
         this.context=context;
         if (content==null)isVideoSearch=true;
         this.content=content;
@@ -75,6 +76,7 @@ public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdap
         Intent intent = new Intent(context,ShowNewsActivity.class);
         intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
         context.startActivity(intent);
+        context.finish();
     }
 
     @Override

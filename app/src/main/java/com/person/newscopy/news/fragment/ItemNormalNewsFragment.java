@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsAdapter;
 import com.person.newscopy.news.depository.NewsRequirement;
@@ -36,6 +37,7 @@ public class ItemNormalNewsFragment extends Fragment {
     //用来标记是否正在向上滑动
     private boolean isSlidingUpward = false;
     NestedScrollView nestedScrollView;
+    LoadView loadView;
 
     public String getName() {
         return name;
@@ -60,6 +62,7 @@ public class ItemNormalNewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
         recyclerView=view.findViewById(R.id.recycler_news_show);
         recyclerView.setLayoutManager(linearLayoutManager);
+        loadView = view.findViewById(R.id.load);
         adapter=new NewsAdapter();
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
@@ -120,6 +123,8 @@ public class ItemNormalNewsFragment extends Fragment {
         newsBeanLiveData=newsActivity.getNewsBean(name,requirement);
         newsBeanLiveData.observe(this, beans -> {
             adapter.setDataBeanList(beans.getData());
+            loadView.cancel();
+            loadView.setVisibility(View.GONE);
         }
         );
     }

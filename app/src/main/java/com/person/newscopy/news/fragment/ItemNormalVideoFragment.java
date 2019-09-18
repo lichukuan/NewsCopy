@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.VideoAdapter;
 
@@ -24,6 +25,7 @@ public class ItemNormalVideoFragment extends Fragment {
     private int refreshNum = 1;
     //用来标记是否正在向上滑动
     private boolean isSlidingUpward = false;
+    LoadView loadView;
 
     public void setType(String type) {
         this.type = type;
@@ -42,6 +44,7 @@ public class ItemNormalVideoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_video_normal,container,false);
         recyclerView=view.findViewById(R.id.recycler_video_show);
+        loadView = view.findViewById(R.id.load);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
         newsActivity= (NewsActivity) getActivity();
@@ -92,6 +95,8 @@ public class ItemNormalVideoFragment extends Fragment {
             newsActivity.getChannel(type,maxTime,count).observe(this,videoChannelBean -> {
                 adapter.setChannelBeans(videoChannelBean.getData().getChannelFeed().getData());
             });
+        loadView.cancel();
+        loadView.setVisibility(View.GONE);
     }
 
 }

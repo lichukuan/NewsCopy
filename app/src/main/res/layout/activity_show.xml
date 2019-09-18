@@ -15,10 +15,12 @@
             android:scaleType="center"
             android:scaleX="0.8"
             android:scaleY="0.8"
+            android:layout_marginStart="10dp"
             android:src="@drawable/back_gray"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="match_parent" />
         <ImageView
+            android:layout_marginStart="50dp"
             android:scaleType="center"
             android:scaleY="1.5"
             android:scaleX="1.5"
@@ -28,7 +30,7 @@
             android:layout_height="match_parent" />
         <ImageView
             android:src="@drawable/news_search"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_marginEnd="20dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
@@ -38,7 +40,7 @@
             android:layout_marginEnd="20dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="match_parent" />
     </LinearLayout>
    <WebView
