@@ -1,5 +1,6 @@
 package com.person.newscopy.show.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,62 +14,74 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.news.network.shortBean.CommentsBean;
+import com.person.newscopy.my.MyActivity;
+import com.person.newscopy.show.net.CommentBean;
 
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter {
 
-   private List<CommentsBean> comments;
+   private List<CommentBean> comments;
 
    private Context context;
 
    private Fragment fragment;
 
+   private Activity activity;
+
    public static final int TYPE_DOWNLOAD = -1;
 
-    public CommentAdapter(List<CommentsBean> comments, Fragment fragment) {
+    public CommentAdapter(List<CommentBean> comments, Fragment fragment) {
         this.comments = comments;
         this.fragment = fragment;
         this.context = fragment.getContext();
     }
 
+    public CommentAdapter(List<CommentBean> comments, Activity activity) {
+        this.comments = comments;
+        this.activity = activity;
+        this.context = activity;
+    }
+
+    public void addComment(CommentBean bean){
+        comments.add(bean);
+        notifyItemInserted(comments.size());
+    }
+
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
-        if (viewType == TYPE_DOWNLOAD){
-            view = LayoutInflater.from(context).inflate(R.layout.download_li_item,parent,false);
-            return new DownloadViewHolder(view);
-        }
         view = LayoutInflater.from(context).inflate(R.layout.show_comment_item,parent,false);
         return new CommentViewHolder(view);
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if (position == getItemCount()-1)return TYPE_DOWNLOAD;
-        return super.getItemViewType(position);
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (position == getItemCount()-1){
-            DownloadViewHolder h = (DownloadViewHolder) holder;
-            h.download.setOnClickListener(v -> openApplicationMarket("com.mobile.videonews.li.video"));
-            return;
-        }
-        CommentViewHolder holder1 = (CommentViewHolder)(holder);
-         CommentsBean bean = comments.get(position);
-         holder1.reply.setText(bean.getReply());
-         holder1.like.setText(bean.getLike());
+         CommentViewHolder holder1 = (CommentViewHolder)(holder);
+         CommentBean bean = comments.get(position);
+         holder1.reply.setText(bean.getReplyNum()+"");
+         holder1.like.setText(bean.getLikeNum()+"");
          holder1.content.setText(bean.getContent());
          holder1.time.setText(bean.getTime());
          holder1.name.setText(bean.getName());
+         if (fragment!=null)
          Glide.with(fragment)
                 .load(bean.getIcon())
                 .asBitmap()
                 .into(holder1.icon);
+         else
+             Glide.with(activity)
+                     .load(bean.getIcon())
+                     .asBitmap()
+                     .into(holder1.icon);
+         holder1.icon.setOnClickListener(v->{
+             Intent intent = new Intent(context, MyActivity.class);
+             intent.putExtra(MyActivity.MY_TYPE,MyActivity.USER_WORK_TYPE);
+             intent.putExtra(MyActivity.SEARCH_KEY,bean.getUserId());
+             context.startActivity(intent);
+         });
     }
 
     private void openApplicationMarket(String packageName) {
@@ -110,7 +123,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
         public CommentViewHolder(View itemView) {
             super(itemView);
             icon=itemView.findViewById(R.id.icon);
-            name=itemView.findViewById(R.id.name);
+            name=itemView.findViewById(R.id.content);
             content=itemView.findViewById(R.id.content);
             time=itemView.findViewById(R.id.time);
             like=itemView.findViewById(R.id.like);
@@ -118,11 +131,4 @@ public class CommentAdapter extends RecyclerView.Adapter {
         }
     }
 
-    class DownloadViewHolder extends RecyclerView.ViewHolder{
-        TextView download;
-        public DownloadViewHolder(View itemView) {
-            super(itemView);
-            download=itemView.findViewById(R.id.download);
-        }
-    }
 }

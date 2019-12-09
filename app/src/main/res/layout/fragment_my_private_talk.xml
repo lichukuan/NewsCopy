@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/back"
+            android:src="@drawable/back_gray"
+            android:layout_width="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="私信"
+            android:layout_marginStart="55dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:text="全部已读"
+            android:layout_width="100dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/message_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</LinearLayout>

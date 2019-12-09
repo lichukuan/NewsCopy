@@ -1,7 +1,46 @@
 <resources>
-    <string name="app_name">仿今日头条</string>
-    <string name="main_home_label">首页</string>
-    <string name="main_video_label">西瓜视频</string>
-    <string name="main_short_video_label">小视频</string>
+    <string name="app_name">微进步</string>
+    <string name="main_home_label">关注</string>
+    <string name="main_video_label">文章</string>
+    <string name="main_short_video_label">视频</string>
     <string name="main_person_label">我的</string>
+    <string-array name="tag">
+        <item>游戏</item>
+        <item>学习</item>
+        <item>编程</item>
+        <item>健身</item>
+        <item>大学</item>
+        <item>影视</item>
+        <item>工作</item>
+        <item>饮食</item>
+        <item>股票</item>
+        <item>软件</item>
+        <item>生活</item>
+        <item>旅行</item>
+        <item>运动</item>
+        <item>娱乐</item>
+        <item>电子产品</item>
+        <item>家居</item>
+        <item>亲子</item>
+        <item>英语</item>
+        <item>面试</item>
+        <item>备考</item>
+    </string-array>
+    <!--各种类型-->
+    <!--消息类型-->
+    <string name="message_type_system">system</string>
+    <string name="message_type_like">like</string>
+    <string name="message_type_care">care</string>
+    <string name="message_type_send">send</string>
+    <string name="message_type_comment">comment</string>
+    <string name="message_type_save">save</string>
+    <!--内容类型-->
+    <string name="content_type_news">news</string>
+    <string name="content_type_video">video</string>
+    <string name="content_type_short">short</string>
+    <string name="content_type_comment">news</string>
+    <string name="content_type_user_article">user_article</string>
+    <string name="content_type_user_short">user_short</string>
+    <string name="content_type_other">other</string>
+
 </resources>

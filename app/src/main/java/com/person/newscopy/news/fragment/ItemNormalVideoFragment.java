@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.VideoAdapter;
+import com.person.newscopy.type.Types;
 
 public class ItemNormalVideoFragment extends Fragment {
 
@@ -26,17 +28,11 @@ public class ItemNormalVideoFragment extends Fragment {
     //用来标记是否正在向上滑动
     private boolean isSlidingUpward = false;
     LoadView loadView;
+    private boolean isInit = false;
+    SwipeRefreshLayout refreshLayout;
 
     public void setType(String type) {
         this.type = type;
-        if (newsActivity==null)
-            return;
-        if ("直播".equals(type))
-            adapter=new VideoAdapter(VideoAdapter.TYPE_LIVE,this);
-        else
-            adapter = new VideoAdapter(VideoAdapter.TYPE_NORMAL,this);
-        recyclerView.setAdapter(adapter);
-        pullVideoData(type,BaseUtil.getTime()+"",20);
     }
 
     @Nullable
@@ -45,18 +41,34 @@ public class ItemNormalVideoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_video_normal,container,false);
         recyclerView=view.findViewById(R.id.recycler_video_show);
         loadView = view.findViewById(R.id.load);
+        refreshLayout = view.findViewById(R.id.refresh);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         newsActivity= (NewsActivity) getActivity();
-        if ("直播".equals(type)) {
-            adapter = new VideoAdapter(VideoAdapter.TYPE_LIVE, this);
-            pullVideoData(type,BaseUtil.getTime()+"",20);
-        }else if (type!=null) {
-            adapter = new VideoAdapter(VideoAdapter.TYPE_NORMAL, this);
-            pullVideoData(type, BaseUtil.getTime()+"",20);
+        adapter = new VideoAdapter(VideoAdapter.TYPE_NORMAL, this);
+        recyclerView.setAdapter(adapter);
+        if (!isInit){
+            newsActivity.queryVideoData(type,0,"up").observe(this, videoResult -> {
+                adapter.setChannelBeans(videoResult.getResult(),true);
+                loadView.cancel();
+                loadView.setVisibility(View.GONE);
+            });
+            isInit = true;
         }
-        if (adapter!=null)
-            recyclerView.setAdapter(adapter);
+        refreshLayout.setColorSchemeResources(R.color.main_color);//设置刷新进度条的颜色
+        //设置监听
+        refreshLayout.setOnRefreshListener(() -> {//当下拉时，会调用这个方法
+            newsActivity.queryNewsData(type,adapter.getTopTime(),"up").observe(this, contentResult -> {
+                adapter.addTopData(contentResult.getResult());
+                refreshLayout.setRefreshing(false);//设置刷新进度条是否隐藏，false表示隐藏
+            });
+        });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -71,7 +83,9 @@ public class ItemNormalVideoFragment extends Fragment {
                     if (lastItemPosition == (itemCount - 1) && isSlidingUpward) {
                         //加载更多
                         adapter.refresh();
-                        pullVideoData(type,BaseUtil.getTime()+"",(++refreshNum)*20);
+                        newsActivity.queryVideoData(type,adapter.getDownTime(),"down").observe(ItemNormalVideoFragment.this, videoResult -> {
+                            adapter.setChannelBeans(videoResult.getResult(),false);
+                        });
                     }
                 }
 
@@ -83,20 +97,5 @@ public class ItemNormalVideoFragment extends Fragment {
                 isSlidingUpward = dy > 0;
             }
         });
-        return view;
     }
-
-    private void pullVideoData(String type,String maxTime,int count){
-        if ("直播".equals(type))
-            newsActivity.getLive(maxTime,count).observe(this, videoLiveBean -> {
-                  adapter.setLiveBeans(videoLiveBean.getData().getLivingFeed().getCards());
-            });
-        else
-            newsActivity.getChannel(type,maxTime,count).observe(this,videoChannelBean -> {
-                adapter.setChannelBeans(videoChannelBean.getData().getChannelFeed().getData());
-            });
-        loadView.cancel();
-        loadView.setVisibility(View.GONE);
-    }
-
 }

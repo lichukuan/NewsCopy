@@ -2,7 +2,6 @@ package com.person.newscopy.news.network;
 
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.NetState;
-import com.person.newscopy.news.depository.NewsDepository;
 
 import java.io.IOException;
 import okhttp3.CacheControl;
@@ -21,7 +20,7 @@ public class BaseInterceptor implements Interceptor {
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
                     .header("Cache-Control", "no-cache")
-                    .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0")
+                    .header("Users-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0")
                     .build();
         } else {
             //无网络时强制使用缓存数据

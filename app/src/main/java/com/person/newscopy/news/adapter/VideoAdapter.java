@@ -18,14 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.ShapeImageView;
-import com.person.newscopy.news.network.bean.CardsBean;
-import com.person.newscopy.news.network.bean.ChannelBaseInfoBean;
+import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +42,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     private Context context;
 
-    private List<ChannelBaseInfoBean> channelBeans;
-
-    private List<CardsBean> liveBeans;
+    private List<ResultBean> channelBeans = new ArrayList<>();
 
     public static final int TYPE_REFRESH = -1;
 
@@ -58,27 +56,17 @@ public class VideoAdapter extends RecyclerView.Adapter {
         this.type = type;
         this.fragment = fragment;
         context=fragment.getContext();
-        switch (type){
-            case TYPE_LIVE:
-                liveBeans=new ArrayList<>();
-                break;
-                default:
-                    channelBeans=new ArrayList<>();
-                    break;
-        }
         height = ViewInfoUtil.ScreenInfo.getScreenHeight(context);
         width = ViewInfoUtil.ScreenInfo.getScreenWidth(context);
     }
 
-    public void setChannelBeans(List<ChannelBaseInfoBean> channelBeans) {
-        this.channelBeans = channelBeans;
-        notifyDataSetChanged();
+    public void setChannelBeans(List<ResultBean> beans,boolean isInit) {
+        int size = channelBeans.size();
+        if (isInit&&size>0)return;
+        channelBeans.addAll(beans);
+        notifyItemRangeInserted(size,beans.size());
     }
 
-    public void setLiveBeans(List<CardsBean> liveBeans) {
-        this.liveBeans = liveBeans;
-        notifyDataSetChanged();
-    }
 
     public void refresh(){
         isNeedRefresh=true;
@@ -92,10 +80,6 @@ public class VideoAdapter extends RecyclerView.Adapter {
             case TYPE_REFRESH:
                 View view2=LayoutInflater.from(context).inflate(R.layout.recycler_item_load,parent,false);
                 return  new LoadHolder(view2);
-            case TYPE_LIVE:
-                layoutId=R.layout.recycler_item_video_live;
-                View view = LayoutInflater.from(context).inflate(layoutId,parent,false);
-                return new LiveViewHolder(view);
                 default:
                 layoutId= R.layout.recycler_item_video_normal;
                 View view1 = LayoutInflater.from(context).inflate(layoutId,parent,false);
@@ -132,6 +116,21 @@ public class VideoAdapter extends RecyclerView.Adapter {
         popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
     }
 
+    public int getDownTime(){
+       return channelBeans.get(channelBeans.size() - 2 >= 0 ? channelBeans.size() - 2 : 0).getReleaseTime();
+    }
+
+    public void addTopData(List<ResultBean> beans){
+        channelBeans.addAll(0,beans);
+        notifyItemRangeInserted(0,beans.size());
+    }
+
+    public int getTopTime(){
+        if (channelBeans.size()>0)
+        return channelBeans.get(0).getReleaseTime();
+        else return 0;
+    }
+
     public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = fragment.getActivity().getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
@@ -150,50 +149,31 @@ public class VideoAdapter extends RecyclerView.Adapter {
             isRefreshOver=false;
             return;
         }
-        Log.d("===VideoAdapter===",type+"");
          if (type==TYPE_NORMAL){
-             ChannelBaseInfoBean bean = channelBeans.get(position);
+             ResultBean bean = channelBeans.get(position);
              NormalViewHolder normalViewHolder= (NormalViewHolder) holder;
-             normalViewHolder.videoSource.setText(bean.getAuthorName());
-             normalViewHolder.playTime.setText(bean.getBlackText());
-             normalViewHolder.videoTitle.setText(bean.getVideoTitle());
-             normalViewHolder.commentCount.setText(bean.getCommentNum());
-             normalViewHolder.playNum.setText(bean.getPlayNum());
+             normalViewHolder.videoSource.setText(bean.getUserName());
+             normalViewHolder.playTime.setText(bean.getTime());
+             normalViewHolder.videoTitle.setText(bean.getTitle());
+             normalViewHolder.commentCount.setText(bean.getCommentCount()+"评论");
+             normalViewHolder.playNum.setText(bean.getPlayCount()+"播放");
              Glide.with(fragment)
-                     .load(bean.getVideoImage())
+                     .load(bean.getImage())
                      .into(normalViewHolder.image);
-             normalViewHolder.normalVideo.setOnClickListener(v -> showWebInfo(subNeedPath(TYPE_NORMAL,bean.getVideoId())));
-         }else {
-            CardsBean bean=liveBeans.get(position);
-             Log.d("==VideoAdapter==","直播的布局");
-            LiveViewHolder liveViewHolder= (LiveViewHolder) holder;
-            liveViewHolder.lookNum.setText(bean.getHotNum());
-            liveViewHolder.userName.setText(bean.getAuthorName());
-            liveViewHolder.close.setOnClickListener(this::createPop);
-            Glide.with(fragment)
-                    .load(bean.getAvatar_url())
-                    .asBitmap()
-                    .into(((LiveViewHolder) holder).userIcon);
-            Glide.with(fragment)
-                    .load(bean.getVideoImage())
-                    .into(liveViewHolder.videoImage);
-            liveViewHolder.title.setText(bean.getVideoTitle());
-            liveViewHolder.liveVideo.setOnClickListener(v -> showWebInfo(subNeedPath(TYPE_LIVE,bean.getShort_id()+"")));
+             Glide.with(fragment)
+                     .load(bean.getUserIcon())
+                     .asBitmap()
+                     .into(normalViewHolder.icon);
+             normalViewHolder.normalVideo.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
          }
     }
 
-    private void showWebInfo(String url){
-        Intent intent = new Intent(context,ShowNewsActivity.class);
-        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
+    private void showWebInfo(String data){
+        Intent intent = new Intent(context,ShowVideoActivity.class);
+        intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,data);
         context.startActivity(intent);
     }
 
-    private String subNeedPath(int type,String videoId){
-        if (type == TYPE_NORMAL)
-            return "https://www.ixigua.com/i"+videoId;
-        else
-            return " https://live.ixigua.com/"+videoId;
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -204,18 +184,15 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        switch (type){
-            case TYPE_LIVE:
-                return liveBeans.size()+1;
-            default:
-                return channelBeans.size()+1;
-        }
+        if (channelBeans == null)return 0;
+        return channelBeans.size()+1;
     }
 
     class NormalViewHolder extends RecyclerView.ViewHolder{
         ImageView image,videoMore;
         TextView videoTitle,playNum,playTime,videoSource,commentCount;
         CardView normalVideo;
+        ShapeImageView icon;
          NormalViewHolder(View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.video_image);
@@ -226,27 +203,10 @@ public class VideoAdapter extends RecyclerView.Adapter {
             videoSource=itemView.findViewById(R.id.video_source);
             commentCount=itemView.findViewById(R.id.commentCount);
             normalVideo=itemView.findViewById(R.id.normal_video);
+            icon=itemView.findViewById(R.id.user_icon);
         }
     }
 
-    class LiveViewHolder extends RecyclerView.ViewHolder{
-
-        ShapeImageView userIcon;
-        TextView userName,lookNum,title;
-        ImageView videoImage;
-        CardView liveVideo;
-        ImageView close;
-         LiveViewHolder(View itemView) {
-            super(itemView);
-            userIcon=itemView.findViewById(R.id.live_user_icon);
-            userName=itemView.findViewById(R.id.live_user_name);
-            videoImage=itemView.findViewById(R.id.video_image);
-            lookNum=itemView.findViewById(R.id.lookNum);
-            title=itemView.findViewById(R.id.live_title);
-            liveVideo=itemView.findViewById(R.id.live_video);
-            close = itemView.findViewById(R.id.video_close);
-        }
-    }
 
     class LoadHolder extends RecyclerView.ViewHolder{
         LinearLayout refreshItem;

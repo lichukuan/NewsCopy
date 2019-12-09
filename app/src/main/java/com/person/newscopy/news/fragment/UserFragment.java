@@ -2,39 +2,110 @@ package com.person.newscopy.news.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.easy.generaltool.ViewUtil;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.MyListViewLayout;
 import com.person.newscopy.news.NewsActivity;
+import com.person.newscopy.user.Users;
 
 public class UserFragment extends Fragment {
 
-    public static final String[] content = {"消息通知","私信","我的收藏","阅读纪录","我的钱包","用户反馈","免流量服务","系统设置","作品代理"};
+    public static final String[] content = {"发布文章","消息通知","私信","我的收藏","阅读纪录","用户反馈","设置"};
 
-    public static final int[] res = {R.drawable.my_message,R.drawable.my_private_message,R.drawable.my_shoucang,R.drawable.my_history
-            ,R.drawable.my_qianbao,R.drawable.my_fankui,R.drawable.my_liuliang,R.drawable.my_set,R.drawable.my_shu};
+    public static final int[] res = {R.drawable.release_article,R.drawable.notice,R.drawable.private_talk,R.drawable.save,R.drawable.history
+            ,R.drawable.feedback,R.drawable.settings};
 
+    View loginView;
+    View unloginView;
+    LinearLayout head;
+    boolean beforeFlag = false;
+    ShapeImageView shape ;
+    TextView userName ;
+    TextView userRelease ;
+    TextView userCare ;
+    TextView userFans ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         NewsActivity activity = (NewsActivity) getActivity();
         TranslucentUtil.setTranslucent(activity,Color.WHITE, (int) (20* ScreenFitUtil.getDensity()));
-        View view = inflater.inflate(R.layout.fragment_main_person,container,false);
+        View view = inflater.inflate(R.layout.fragment_main_person_base_login,container,false);
+        head = view.findViewById(R.id.head);
+        loginView = inflater.inflate(R.layout.login_head_view,container,false);
+        unloginView = inflater.inflate(R.layout.un_login_view,container,false);
+        unloginView.findViewById(R.id.to_login).setOnClickListener(v ->showUser(MyActivity.LOGIN_TYPE,null));
         MyListViewLayout listViewLayout = view.findViewById(R.id.my_list);
         listViewLayout.setContent(content,res);
-        view.findViewById(R.id.all).setOnClickListener(v -> startActivity(new Intent(getContext(), MyActivity.class)));
+        shape = loginView.findViewById(R.id.icon);
+        userName = loginView.findViewById(R.id.release_user_name);
+        userRelease = loginView.findViewById(R.id.user_work);
+        userCare = loginView.findViewById(R.id.user_care);
+        userFans = loginView.findViewById(R.id.user_fans);
+        if (Users.LOGIN_FLAG) {//已经登陆
+           head.addView(loginView);
+           beforeFlag = true;
+           initLoginData();
+        }else {
+            head.addView(unloginView);
+            beforeFlag = false;
+        }
         return view;
+    }
+
+    private void initLoginData(){
+        shape.setOnClickListener(v->showUser(MyActivity.MY_INFO_TYPE,null));
+        userName.setOnClickListener(v -> showUser(MyActivity.MY_INFO_TYPE,null));
+        userRelease.setOnClickListener(v -> showUser(MyActivity.USER_WORK_TYPE,Users.userId));
+        userCare.setOnClickListener(v -> showUser(MyActivity.CARE_TYPE,null));
+        userFans.setOnClickListener(v -> showUser(MyActivity.FANS_TYPE,null));
+        loginView.setOnClickListener(v->showUser(MyActivity.USER_WORK_TYPE,Users.userId));
+        Glide.with(this)
+                .load(Users.userIcon)
+                .asBitmap()
+                .into(shape);
+        userName.setText(Users.userName);
+        userCare.setText(Users.userCare+"关注");
+        //userCare.setOnClickListener(v -> showUser(MyActivity));
+        userFans.setText(Users.userFans+"粉丝");
+        userRelease.setText(Users.userWork+"投稿");
+    }
+
+    private void showUser(int type,String value){
+        Intent i = new Intent(getContext(), MyActivity.class);
+        i.putExtra(MyActivity.MY_TYPE,type);
+        if (value !=null)
+            i.putExtra(MyActivity.SEARCH_KEY,value);
+        startActivity(i);
+    }
+
+    private static final String TAG = "UserFragment";
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume()调用");
+        if (beforeFlag != Users.LOGIN_FLAG){
+            head.removeAllViews();
+            beforeFlag=!beforeFlag;
+            if (Users.LOGIN_FLAG)
+                head.addView(loginView);
+            else head.addView(unloginView);
+        }
+        if (Users.LOGIN_FLAG){
+            initLoginData();
+        }
     }
 }

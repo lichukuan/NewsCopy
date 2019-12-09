@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/back"
+                android:src="@drawable/back_gray"
+                android:layout_width="30dp"
+                android:layout_marginStart="15dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="编辑资料"
+                android:layout_marginEnd="60dp"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                />
+            <!--<TextView-->
+            <!--android:id="@+id/save"-->
+            <!--android:text="保存"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:textSize="18sp"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_height="match_parent" />-->
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/my_icon"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="头像"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+            <com.person.newscopy.common.ShapeImageView
+                android:id="@+id/icon"
+                android:layout_width="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="30dp" />
+            <ImageView
+                android:src="@drawable/gray_to"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/my_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="用户名"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+            <TextView
+                android:id="@+id/release_user_name"
+                android:drawableEnd="@drawable/gray_to"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/my_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="介绍"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+            <TextView
+                android:id="@+id/user_recommend"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/gray_to"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/my_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="邮箱"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+            <TextView
+                android:id="@+id/user_email"
+                android:drawableEnd="@drawable/gray_to"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="20dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp">-->
+        <!--<TextView-->
+        <!--android:text="生日"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_marginStart="15dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="50dp" />-->
+        <!--<TextView-->
+        <!--android:text="待完善"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:textColor="@color/ijk_color_blue_700"-->
+        <!--android:drawableEnd="@drawable/gray_to"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_marginEnd="15dp"-->
+        <!--android:layout_height="match_parent" />-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp">-->
+        <!--<TextView-->
+        <!--android:text="地区"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_marginStart="15dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="50dp" />-->
+        <!--<TextView-->
+        <!--android:text="待完善"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:textColor="@color/ijk_color_blue_700"-->
+        <!--android:drawableEnd="@drawable/gray_to"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_marginEnd="15dp"-->
+        <!--android:layout_height="match_parent" />-->
+        <!--</LinearLayout>-->
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.141" />
+</android.support.constraint.ConstraintLayout>

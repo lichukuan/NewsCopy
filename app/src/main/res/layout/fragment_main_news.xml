@@ -11,7 +11,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/main_color"
             android:layout_height="@dimen/bottom_navigation_height">
             <TextView
                 android:id="@+id/search"
@@ -27,40 +27,22 @@
                 android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
-            <ImageView
-                android:id="@+id/release"
-                android:src="@drawable/news_release"
-                android:scaleType="center"
-                android:layout_width="@dimen/bottom_navigation_height"
-                android:layout_height="@dimen/bottom_navigation_height" />
+            <!--<ImageView-->
+                <!--android:id="@+id/release"-->
+                <!--android:src="@drawable/news_release"-->
+                <!--android:scaleType="center"-->
+                <!--android:layout_width="@dimen/bottom_navigation_height"-->
+                <!--android:layout_height="@dimen/bottom_navigation_height" />-->
         </LinearLayout>
-        <FrameLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-            <com.person.newscopy.common.ColorClipTabLayout
-                android:id="@+id/tab"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="scrollable"
-                app:text_selected_color="#ff0000"
-                app:text_size="20sp"
-                app:text_unselected_color="#000000" />
-            <android.support.v7.widget.CardView
-                android:layout_width="60dp"
-                android:elevation="20dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/more"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:src="@drawable/news_more"
-                    android:layout_height="wrap_content" />
-            </android.support.v7.widget.CardView>
-        </FrameLayout>
-        <include layout="@layout/view_line_all"/>
+    <com.person.newscopy.common.ColorClipTabLayout
+        android:id="@+id/tab"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:text_selected_color="@color/main_word_color"
+        app:text_size="20sp"
+        app:text_unselected_color="@color/second_word_color" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"

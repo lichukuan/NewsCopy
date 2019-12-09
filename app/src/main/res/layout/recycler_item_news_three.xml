@@ -12,7 +12,7 @@
          android:layout_marginTop="20dp"
          android:minHeight="40dp"
          android:textSize="20sp"
-         android:textColor="#000"
+         android:textColor="@color/main_word_color"
          android:maxLines="2"
          android:ellipsize="end"
          android:layout_width="match_parent"

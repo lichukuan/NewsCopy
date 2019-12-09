@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginStart="20dp"
+    android:orientation="horizontal"
+    android:minWidth="150dp"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <com.person.newscopy.common.RedCircleImageView
+        android:layout_weight="1"
+        android:id="@+id/comment_icon"
+        android:layout_width="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_height="30dp" />
+    <com.person.newscopy.common.RedCircleImageView
+        android:layout_weight="1"
+        android:id="@+id/save_icon"
+        android:layout_width="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_height="30dp"/>
+    <com.person.newscopy.common.RedCircleImageView
+        android:layout_weight="1"
+        android:id="@+id/like_icon"
+        android:layout_width="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_height="30dp"/>
+</LinearLayout>

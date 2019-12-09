@@ -23,7 +23,7 @@ import com.person.newscopy.R;
 public class LoadView extends android.support.v7.widget.AppCompatImageView {
 
     private Paint paint;
-    private String text = "今日头条";
+    private String text = "正在加载";
     private float percent;
     private Handler handler = new Handler();
     private boolean isStop = false;

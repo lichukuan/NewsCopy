@@ -43,57 +43,72 @@
             android:layout_width="20dp"
             android:layout_height="match_parent" />
     </LinearLayout>
-   <WebView
-        android:layout_weight="1"
-        android:id="@+id/show_news"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <com.person.newscopy.common.ShapeImageView
+                    android:id="@+id/icon"
+                    android:layout_width="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:id="@+id/content"
+                    android:gravity="start|center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <Button
+                    android:text="关注"
+                    android:id="@+id/care"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/article_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recommend"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="20dp"
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
     <LinearLayout
         android:orientation="horizontal"
         android:background="#fff"
+        android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <EditText
+            android:id="@+id/comment_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_weight="1"
             android:hint="写评论..."
             android:drawableStart="@drawable/news_show_write"
             android:background="@drawable/news_show_edit_bg"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:paddingStart="15dp"
             android:drawablePadding="5dp"
             android:layout_marginStart="15dp"
             android:layout_height="40dp" />
-        <LinearLayout
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_weight="1"
-                android:src="@drawable/video_comment"
-                android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="30dp" />
-            <ImageView
-                android:layout_weight="1"
-                android:src="@drawable/my_shoucang"
-                android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="30dp"/>
-            <ImageView
-                android:layout_weight="1"
-                android:src="@drawable/my_like"
-                android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="30dp"/>
-            <ImageView
-                android:layout_weight="1"
-                android:src="@drawable/news_show_send"
-                android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="30dp" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

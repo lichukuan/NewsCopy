@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--颜色-->
+    <color name="main_color">#fecc11</color>
+    <color name="main_word_color">#0f1423</color>
+    <color name="second_word_color">#aaa</color>
+    <color name="main_word_while">#ffffff</color>
+    <color name="selected_color">#f1f0ed</color>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#66000000</color>
     <color name="colorAccent">#FF4081</color>

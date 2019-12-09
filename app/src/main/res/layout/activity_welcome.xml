@@ -7,4 +7,5 @@
     android:background="@drawable/welcome_bg_image"
     android:fitsSystemWindows="true"
     tools:context=".WelcomeActivity">
+
 </android.support.constraint.ConstraintLayout>

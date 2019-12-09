@@ -17,7 +17,7 @@
             <TextView
                 android:id="@+id/title"
                 android:layout_weight="1"
-                android:textColor="#000"
+                android:textColor="@color/main_word_color"
                 android:textSize="20sp"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -64,5 +64,4 @@
             android:layout_width="100dp"
             android:layout_height="90dp" />
     </LinearLayout>
-    <include layout="@layout/view_line"/>
 </LinearLayout>

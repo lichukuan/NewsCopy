@@ -1,6 +1,5 @@
 package com.person.newscopy.news.fragment;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,44 +14,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsAdapter;
-import com.person.newscopy.news.depository.NewsRequirement;
-import com.person.newscopy.news.network.NewsType;
-import com.person.newscopy.news.network.bean.NewsBean;
-
-import rx.Observable;
+import com.person.newscopy.news.network.bean.ContentResult;
 
 public class ItemNormalNewsFragment extends Fragment {
 
     RecyclerView recyclerView;
     NewsActivity newsActivity;
     String name=null;
-    NewsType type=null;
-    LiveData<NewsBean> newsBeanLiveData;
     NewsAdapter adapter;
     private int refreshNum = 1;
     //用来标记是否正在向上滑动
     private boolean isSlidingUpward = false;
     NestedScrollView nestedScrollView;
+    SwipeRefreshLayout refreshLayout;
     LoadView loadView;
+    private boolean isInit = false;
 
     public String getName() {
         return name;
     }
 
-    public void setNameAndType(String name,NewsType type) {
+    public void setNameAndType(String name) {
         this.name = name;
-        this.type = type;
-        if (newsActivity!=null){
-           pullData(0,1,type);
-        }
-    }
-
-    public NewsType getType() {
-        return type;
     }
 
     @Nullable
@@ -62,8 +48,16 @@ public class ItemNormalNewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
         recyclerView=view.findViewById(R.id.recycler_news_show);
         recyclerView.setLayoutManager(linearLayoutManager);
+        refreshLayout = view.findViewById(R.id.refresh);
         loadView = view.findViewById(R.id.load);
-        adapter=new NewsAdapter();
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter == null)
+           adapter = new NewsAdapter();
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -80,20 +74,12 @@ public class ItemNormalNewsFragment extends Fragment {
                     if (lastItemPosition == (itemCount - 1) && isSlidingUpward) {
                         //加载更多
                         adapter.refresh();
-                        ++refreshNum;
-                        int time = (int) (BaseUtil.getTime()-refreshNum*60*30);
-                        Log.d("===========","time = "+time);
-                        NewsRequirement requirement=new NewsRequirement();
-                        requirement.setNews(true);
-                        requirement.setType(type);
-                        requirement.setTime(time);
-                        requirement.setWiden(1);
-                        newsActivity.pullData(name,requirement);
+                        newsActivity.queryNewsData(name,adapter.getDownTime(),"down").observe(ItemNormalNewsFragment.this,newsResult -> {
+                            adapter.setDataBeanList(newsResult.getResult(),false);
+                        });
                     }
                 }
-
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -101,31 +87,22 @@ public class ItemNormalNewsFragment extends Fragment {
                 isSlidingUpward = dy > 0;
             }
         });
-        newsActivity= (NewsActivity) getActivity();
-        if (name!=null&type!=null)
-           pullData(0,1,type);
-        Log.d("===ItemNormalNews==",type+"  "+name+" onCreateView");
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("===ItemNormalNews==",name+" onDestroyView");
-    }
-
-    private void pullData(int time, int widen,NewsType type){
-        NewsRequirement requirement=new NewsRequirement();
-        requirement.setNews(true);
-        requirement.setType(type);
-        requirement.setTime(time);
-        requirement.setWiden(widen);
-        newsBeanLiveData=newsActivity.getNewsBean(name,requirement);
-        newsBeanLiveData.observe(this, beans -> {
-            adapter.setDataBeanList(beans.getData());
-            loadView.cancel();
-            loadView.setVisibility(View.GONE);
+        newsActivity = (NewsActivity) getActivity();
+        refreshLayout.setColorSchemeResources(R.color.main_color);//设置刷新进度条的颜色
+        //设置监听
+        refreshLayout.setOnRefreshListener(() -> {//当下拉时，会调用这个方法
+            newsActivity.queryNewsData(name,adapter.getTopTime(),"up").observe(this, contentResult -> {
+                adapter.addTopData(contentResult.getResult());
+                refreshLayout.setRefreshing(false);//设置刷新进度条是否隐藏，false表示隐藏
+            });
+        });
+        if (!adapter.isInit()){
+            newsActivity.queryNewsData(name,0,"up").observe(this, contentResult -> {
+                adapter.setDataBeanList(contentResult.getResult(),true);
+                loadView.cancel();
+                loadView.setVisibility(View.GONE);
+            });
+            isInit = true;
         }
-        );
     }
 }

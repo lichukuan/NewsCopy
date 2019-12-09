@@ -14,10 +14,8 @@ import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
-import com.person.newscopy.news.network.bean.DataBeanX;
-import com.person.newscopy.news.network.bean.DataBeanXXXXXX;
-import com.person.newscopy.news.network.bean.HotNewsBean;
-import com.person.newscopy.news.network.bean.VideoSearchBean;
+import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.search.adapter.HotNewsSearchAdapter;
 import com.person.newscopy.show.ShowNewsActivity;
 
@@ -49,9 +47,9 @@ public class SearchActivity extends AppCompatActivity {
 
     Subscription subscription;
 
-    List<DataBeanXXXXXX> videoData;
+    List<ResultBean> videoData;
 
-    List<DataBeanX> newsData;
+    List<ResultBean> newsData;
 
     int index = 0;
 
@@ -76,16 +74,16 @@ public class SearchActivity extends AppCompatActivity {
         Gson gson = new Gson();
         if(key.equals(HOT_VIDEO_KEY)){
             isNews = false;
-            VideoSearchBean value = gson.fromJson(preferences.getString(SEARCH_ID,""), VideoSearchBean.class);
-            videoData = value.getData().getData();
+            ContentResult value = gson.fromJson(preferences.getString(SEARCH_ID,""), ContentResult.class);
+            videoData = value.getResult();
             HotNewsSearchAdapter adapter = new HotNewsSearchAdapter(this,null,videoData);
             LinearLayoutManager manager = new LinearLayoutManager(this);
             hotNews.setAdapter(adapter);
             hotNews.setLayoutManager(manager);
         }else {
-            HotNewsBean value = gson.fromJson(preferences.getString(SEARCH_ID,""), HotNewsBean.class);
-            newsData = value.getData();
-            newsAdapter = new HotNewsSearchAdapter(this,newsData.subList(index,index+4),null);
+            ContentResult value = gson.fromJson(preferences.getString(SEARCH_ID,""), ContentResult.class);
+            newsData = value.getResult();
+            newsAdapter = new HotNewsSearchAdapter(this,newsData,null);
             LinearLayoutManager manager = new LinearLayoutManager(this);
             hotNews.setAdapter(newsAdapter);
             hotNews.setLayoutManager(manager);

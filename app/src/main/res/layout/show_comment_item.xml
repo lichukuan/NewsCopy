@@ -20,7 +20,7 @@
         easy:shape="circle" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/content"
         android:layout_width="336dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
@@ -42,7 +42,7 @@
         easy:layout_constraintEnd_toEndOf="parent"
         easy:layout_constraintHorizontal_bias="0.0"
         easy:layout_constraintStart_toEndOf="@+id/icon"
-        easy:layout_constraintTop_toBottomOf="@+id/name" />
+        easy:layout_constraintTop_toBottomOf="@+id/content" />
 
     <TextView
         android:id="@+id/time"

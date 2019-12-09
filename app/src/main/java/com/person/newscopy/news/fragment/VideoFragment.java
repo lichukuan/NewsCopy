@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,25 +17,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.google.gson.Gson;
 import com.person.newscopy.R;
+import com.person.newscopy.api.Api;
 import com.person.newscopy.common.ColorClipTabLayout;
+import com.person.newscopy.common.Config;
 import com.person.newscopy.news.NewsActivity;
-import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.adapter.VideoFragmentAdapter;
-import com.person.newscopy.news.depository.VideoDepository;
-import com.person.newscopy.news.network.bean.DataBeanX;
-import com.person.newscopy.news.network.bean.DataBeanXXXXXX;
-import com.person.newscopy.news.network.bean.DataBeanXXXXXXXXXXXX;
-import com.person.newscopy.news.network.bean.VideoSearchBean;
+import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.search.SearchActivity;
+import com.person.newscopy.type.Types;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -50,58 +47,43 @@ public class VideoFragment extends Fragment {
 
     ColorClipTabLayout tabLayout;
     ViewPager pager;
-    ImageView more;
+    //ImageView more;
     TextView search;
     ImageView release;
-    Set<String> types=new HashSet<>(23);
-    VideoSearchBean videoSearch;
     public static final String HOT_VIDEO_KEY = "hot_video_key";
-    Subscription subscription;
     int videoSearchIndex = 0;
+    ContentResult videoRecommend = null;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         NewsActivity activity = (NewsActivity) getActivity();
-        TranslucentUtil.setTranslucent(activity,Color.parseColor("#ffff4444"), (int) (20* ScreenFitUtil.getDensity()));
+        TranslucentUtil.setTranslucent(activity,Color.parseColor("#fecc11"), (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_video,container,false);
         tabLayout=view.findViewById(R.id.tab);
         pager=view.findViewById(R.id.pager);
-        more=view.findViewById(R.id.more);
+        //more=view.findViewById(R.id.more);
         search=view.findViewById(R.id.search);
-        release=view.findViewById(R.id.release);
-        release.setOnClickListener(v->createPop());
-        activity.getSearchInfo().observe(this, videoSearchBean -> {
-            videoSearch = videoSearchBean;
-            SharedPreferences sharedPreferences = activity.getSharedPreferences(HOT_VIDEO_KEY,0);
-            Gson gson = new Gson();
-            sharedPreferences.edit().putString(SearchActivity.SEARCH_ID,gson.toJson(videoSearchBean)).apply();
-        });
+//        release=view.findViewById(R.id.release);
+//        release.setOnClickListener(v->createPop());
+//        activity.getVideoRecommend().observe(this,videoResult -> {
+//            this.videoRecommend = videoResult;
+//            SharedPreferences sharedPreferences = activity.getSharedPreferences(HOT_VIDEO_KEY,0);
+//            Gson gson = new Gson();
+//            sharedPreferences.edit().putString(SearchActivity.SEARCH_ID,gson.toJson(videoResult)).apply();
+//        });
         search.setText("搜你想搜...");
-        subscription = Observable.timer(30, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    if (videoSearch!=null){
-                        final List<DataBeanXXXXXX> data = videoSearch.getData().getData();
-                        if(videoSearchIndex>data.size())videoSearchIndex=0;
-                        search.setText(data.get(videoSearchIndex).getWord());
-                        videoSearchIndex++;
-                    }
-                });
         search.setOnClickListener(v -> {
-            Intent intent = new Intent(activity, SearchActivity.class);
-            intent.putExtra(SearchActivity.SEARCH_KEY,HOT_VIDEO_KEY);
-            activity.startActivity(intent);
+            Toast.makeText(activity, "此功能暂不可用", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(activity, SearchActivity.class);
+//            intent.putExtra(SearchActivity.SEARCH_KEY,HOT_VIDEO_KEY);
+//            activity.startActivity(intent);
         });
-        Set<String> other = getActivity().getSharedPreferences(VideoDepository.VIDEO_TYPE,0)
-                .getStringSet(VideoDepository.VIDEO_ALL_TYPE,new HashSet<>());
-        types.addAll(other);
-        String[] s = changeSetToArray(types);
-        Log.d("====types====", Arrays.toString(s));
-        for (int i = 0; i < s.length; i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(s[i]));
+
+        for (int i = 0; i < Config.TYPE.length; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(Config.TYPE[i]));
         }
         tabLayout.setupWithViewPager(pager);
-        pager.setAdapter(new VideoFragmentAdapter(getChildFragmentManager(),s));
+        pager.setAdapter(new VideoFragmentAdapter(getChildFragmentManager(),Config.TYPE));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -118,10 +100,9 @@ public class VideoFragment extends Fragment {
 
             }
         });
-        pager.setCurrentItem(1);
+        pager.setCurrentItem(0);
         return view;
     }
-
 
     private void createPop(){
         float d = ScreenFitUtil.getDensity();
@@ -134,17 +115,5 @@ public class VideoFragment extends Fragment {
         popupWindow.showAsDropDown(release,-(int)(d*105),0);
     }
 
-    private String[] changeSetToArray(Set<String> sets){
-        String[] strs = new String[sets.size()+2];
-        strs[0]="推荐";
-        strs[1]="直播";
-        Iterator<String> iterator = sets.iterator();
-        int i = 2;
-        while (iterator.hasNext()) {
-            strs[i] = iterator.next();
-            i++;
-        }
-        return strs;
-    }
 
 }

@@ -17,9 +17,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.easy.generaltool.ViewUtil;
-import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
 import com.easy.generaltool.media.camera.CameraHelper;
 import com.person.newscopy.R;
 

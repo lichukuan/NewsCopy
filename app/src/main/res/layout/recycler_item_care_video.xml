@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/normal_video"
+    android:layout_marginBottom="20dp"
+    xmlns:easy="http://schemas.android.com/apk/res-auto"
+    android:layout_height="250dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <com.person.newscopy.common.ShapeImageView
+                android:id="@+id/user_icon"
+                android:layout_width="40dp"
+                android:layout_gravity="center_vertical"
+                easy:shape="circle"
+                easy:radius="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_height="40dp" />
+            <TextView
+                android:id="@+id/video_source"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <TextView
+                android:id="@+id/video_title"
+                android:gravity="start"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="top"
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/video_image"
+                android:scaleType="fitXY"
+                android:background="@drawable/video_image_bg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/video_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

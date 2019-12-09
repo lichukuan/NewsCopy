@@ -1,5 +1,6 @@
 package com.person.newscopy.news.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,25 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.ViewInfoUtil;
+import com.google.gson.reflect.TypeToken;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
-import com.person.newscopy.news.network.bean.DataBean;
-import com.person.newscopy.news.network.bean.NewsBean;
+import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import java.util.Random;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<DataBean> dataBeanList=new ArrayList<>();
-    private Set<DataBean> data = new HashSet<>();
+    private List<ResultBean> dataBeanList=new ArrayList<>();
     private Context context;
     private Fragment fragment;
     private boolean isNeedRefresh=false;
@@ -48,34 +44,58 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     boolean isStartTop = false;
     private float height;
     private float width;
+    private Activity activity;
 
     public NewsAdapter() {
     }
 
     public void refresh(){
-        isNeedRefresh=true;
+        isNeedRefresh = true;
+        isRefreshOver = false;
     }
 
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getContext();
-        height = ViewUtil.ScreenInfo.getScreenHeight(context);
-        width = ViewUtil.ScreenInfo.getScreenWidth(context);
+        height = ViewInfoUtil.ScreenInfo.getScreenHeight(context);
+        width = ViewInfoUtil.ScreenInfo.getScreenWidth(context);
+    }
+
+    public void setActivity(Activity activity){
+        this.activity = activity;
+        this.context = activity;
+        height = ViewInfoUtil.ScreenInfo.getScreenHeight(context);
+        width = ViewInfoUtil.ScreenInfo.getScreenWidth(context);
+    }
+
+    public boolean isInit(){
+        Log.d("===========","getItemCount = "+(getItemCount() - 1));
+        return getItemCount() - 1 > 0;
     }
 
 
-    public void setDataBeanList(List<DataBean> beans) {
+    public int getDownTime(){
+        return dataBeanList.get(dataBeanList.size()-2>=0?dataBeanList.size()-2:0).getReleaseTime();
+    }
+
+    public int getTopTime(){
+        if (dataBeanList.size() >0)
+        return dataBeanList.get(0).getReleaseTime();
+        else return 0;
+    }
+
+    public void setDataBeanList(List<ResultBean> beans,boolean isInit) {
         int startSize = dataBeanList.size();
-        //这里还要判断是否有重复项
-        data.addAll(dataBeanList);
-        data.addAll(beans);
-        dataBeanList.clear();
-        dataBeanList.addAll(data);
-        data.clear();
-        if(dataBeanList.size()>startSize){
-            isRefreshOver = true;
-            notifyDataSetChanged();
-        }
+        if (isInit&&startSize>0)return;
+        dataBeanList.addAll(beans);
+        notifyItemRangeInserted(startSize,beans.size());
+        isRefreshOver = true;
+        isNeedRefresh = false;
+    }
+
+    public void addTopData(List<ResultBean> beans){
+        dataBeanList.addAll(0,beans);
+        notifyItemRangeInserted(0,beans.size());
     }
 
     public void backgroundAlpha(float bgAlpha) {
@@ -142,23 +162,22 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         if (position==getItemCount()-1)
             return TYPE_REFRESH;
-        final List list = dataBeanList.get(position).getImage_list();
-        if (list==null){
+        final ResultBean bean = dataBeanList.get(position);
+        Log.d("=====NewsAdapter","image = "+bean.getImage()+"  imageList = "+bean.getImageList());
+        if (bean.getImageList()==null&&bean.getImage()==null){
             return TYPE_TOP;
-        }else if (checkIsBig(dataBeanList.get(position).getImage_url())){
-            return TYPE_BIG;
-        }else if (list.size()==3)
-            return TYPE_THREE;
-        else
+        }
+        final List<String> list = BaseUtil.jsonToStringList(dataBeanList.get(position).getImageList());
+        bean.setImages(list);
+        if (bean.getImage() != null)
             return TYPE_ONE;
-
+        else if (bean.getImages().size() >= 3){
+            return TYPE_THREE;
+        }else
+            return TYPE_BIG;
     }
 
-    //通过 image_url 是否含有p9来判断
-    private boolean checkIsBig(String url){
-        return url.contains("p9");
-    }
-
+    private static final String TAG = "NewsAdapter";
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position == getItemCount()-1){
@@ -171,74 +190,81 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             isRefreshOver=false;
             return;
         }
-        DataBean bean=dataBeanList.get(position);
+        ResultBean bean=dataBeanList.get(position);
         if (holder instanceof BigViewHolder){
             BigViewHolder bigViewHolder = (BigViewHolder) holder;
-            bigViewHolder.source.setText(bean.getSource());
-            bigViewHolder.releaseTime.setText(createComeTime(bean.getBehot_time()));
+            bigViewHolder.source.setText(bean.getUserName());
+            bigViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
             bigViewHolder.title.setText(bean.getTitle());
-            bigViewHolder.comment.setText(bean.getComments_count()+"评论");
-            bigViewHolder.bigNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
+            bigViewHolder.comment.setText(bean.getCommentCount()+"评论");
+            bigViewHolder.bigNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
+            if (fragment!=null)
             Glide.with(fragment)
-                    .load(bean.getImage_url())
+                    .load(bean.getImages().get(0))
+                    .into(bigViewHolder.bigPic);
+            else Glide.with(context)
+                    .load(bean.getImages().get(0))
                     .into(bigViewHolder.bigPic);
             bigViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof OneViewHolder){
                OneViewHolder oneViewHolder = (OneViewHolder) holder;
                oneViewHolder.title.setText(bean.getTitle());
-               oneViewHolder.comment.setText(bean.getComments_count()+"评论");
-               oneViewHolder.source.setText(bean.getSource());
-               oneViewHolder.releaseTime.setText(createComeTime(bean.getBehot_time()));
-               oneViewHolder.oneNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
+               oneViewHolder.comment.setText(bean.getCommentCount()+"评论");
+               oneViewHolder.source.setText(bean.getUserName());
+               oneViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
+               oneViewHolder.oneNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
+               if (fragment!=null)
                Glide.with(fragment)
-                       .load(bean.getImage_url())
+                       .load(bean.getImage())
+                       .into(oneViewHolder.pic);
+               else  Glide.with(context)
+                       .load(bean.getImage())
                        .into(oneViewHolder.pic);
                oneViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof ThreeViewHolder){
              ThreeViewHolder threeViewHolder= (ThreeViewHolder) holder;
              threeViewHolder.title.setText(bean.getTitle());
-             threeViewHolder.comment.setText(bean.getComments_count()+"评论");
-             threeViewHolder.source.setText(bean.getSource());
-             threeViewHolder.releaseTime.setText(createComeTime(bean.getBehot_time()));
-             threeViewHolder.threeNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
-             Glide.with(fragment)
-                     .load(bean.getImage_list().get(0).getUrl())
-                     .into(threeViewHolder.pic1);
-            Glide.with(fragment)
-                    .load(bean.getImage_list().get(1).getUrl())
-                    .into(threeViewHolder.pic2);
-            Glide.with(fragment)
-                    .load(bean.getImage_list().get(2).getUrl())
-                    .into(threeViewHolder.pic3);
+             threeViewHolder.comment.setText(bean.getCommentCount()+"评论");
+             threeViewHolder.source.setText(bean.getUserName());
+             threeViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
+             threeViewHolder.threeNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
+            final List<String> list = bean.getImages();
+            if (fragment!=null){
+                Glide.with(fragment)
+                        .load(list.get(0))
+                        .into(threeViewHolder.pic1);
+                Glide.with(fragment)
+                        .load(list.get(1))
+                        .into(threeViewHolder.pic2);
+                Glide.with(fragment)
+                        .load(list.get(2))
+                        .into(threeViewHolder.pic3);
+            }else {
+                Glide.with(context)
+                        .load(list.get(0))
+                        .into(threeViewHolder.pic1);
+                Glide.with(context)
+                        .load(list.get(1))
+                        .into(threeViewHolder.pic2);
+                Glide.with(context)
+                        .load(list.get(2))
+                        .into(threeViewHolder.pic3);
+            }
             threeViewHolder.close.setOnClickListener(this::createPop);
         }else if (holder instanceof TopViewHolder){
             TopViewHolder topViewHolder= (TopViewHolder) holder;
-            topViewHolder.comment.setText(bean.getComments_count()+"评论");
-            topViewHolder.source.setText(bean.getSource());
+            topViewHolder.comment.setText(bean.getCommentCount()+"评论");
+            topViewHolder.source.setText(bean.getUserName());
             topViewHolder.title.setText(bean.getTitle());
-            topViewHolder.topNews.setOnClickListener(v -> showWebInfo(subNeedPath(bean.getGroup_id())));
+            topViewHolder.topNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
             topViewHolder.close.setOnClickListener(this::createPop);
-            if (position==1&&isStartTop){
-                topViewHolder.close.setVisibility(View.INVISIBLE);
-                return;
-            }
-            if(position==0){
-                isStartTop=true;
-                return;
-            }
-            else isStartTop=false;
-            topViewHolder.top.setVisibility(View.GONE);
         }
     }
 
-    private void showWebInfo(String url){
+    private void showWebInfo(String data){
         Intent intent = new Intent(context,ShowNewsActivity.class);
-        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
+        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,data);
         context.startActivity(intent);
-    }
-
-    private String subNeedPath(String groupId){
-        return "https://www.toutiao.com/a"+groupId;
     }
 
     private static final int minute = 60;
@@ -312,7 +338,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class TopViewHolder extends RecyclerView.ViewHolder{
-        TextView title,source,comment,top;
+        TextView title,source,comment;
         LinearLayout topNews;
         ImageView close;
         public TopViewHolder(View itemView) {
@@ -321,7 +347,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             title=itemView.findViewById(R.id.title);
             source=itemView.findViewById(R.id.from);
             comment=itemView.findViewById(R.id.commentCount);
-            top=itemView.findViewById(R.id.top);
             close=itemView.findViewById(R.id.close);
         }
     }
