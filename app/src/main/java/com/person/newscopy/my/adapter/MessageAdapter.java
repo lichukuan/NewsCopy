@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -62,8 +60,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
             careMessageViewHolder.time.setText(b.getTime());
         }else {
             CommentMessageViewHolder commentMessageViewHolder = (CommentMessageViewHolder) viewHolder;
-            commentMessageViewHolder.name.setText(b.getContent());
+            commentMessageViewHolder.name.setText(b.getName()+"评论了你");
             commentMessageViewHolder.time.setText(b.getTime());
+            commentMessageViewHolder.content.setText(b.getContent());
             Glide.with(fragment)
                     .load(b.getIcon())
                     .asBitmap()
@@ -93,7 +92,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         public CareMessageViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.icon);
-            name = itemView.findViewById(R.id.content);
+            name = itemView.findViewById(R.id.name);
             time = itemView.findViewById(R.id.time);
         }
     }
@@ -106,9 +105,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
         public CommentMessageViewHolder(@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.icon);
-            name = itemView.findViewById(R.id.content);
+            name = itemView.findViewById(R.id.name);
             time = itemView.findViewById(R.id.time);
-            content = itemView.findViewById(R.id.content);
+            content = itemView.findViewById(R.id.comment);
         }
     }
 

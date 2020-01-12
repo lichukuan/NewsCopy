@@ -7,16 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.MyRichEditText;
+import com.person.newscopy.common.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.CareUserDataAdapter;
@@ -33,16 +37,16 @@ public class CareFragment extends Fragment {
     RecyclerView recycler;
     CareUserDataAdapter adapter;
     private boolean isSlidingUpward = false;
-
+    private SwipeRefreshLayout refreshLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
            activity = (NewsActivity) getActivity();
-       // TranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (20* ScreenFitUtil.getDensity()));
-           TranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (20* ScreenFitUtil.getDensity()));
+           MyTranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (25* ScreenFitUtil.getDensity()));
            View view = inflater.inflate(R.layout.fragment_main_care,container,false);
            toLogin = view.findViewById(R.id.to_login);
            recycler = view.findViewById(R.id.recycler);
+           refreshLayout = view.findViewById(R.id.refresh);
            return view;
     }
 
@@ -72,7 +76,7 @@ public class CareFragment extends Fragment {
                             //加载更多
                             adapter.refresh();
                             activity.feedUserCareData(Users.userId,adapter.getDownTime(),"down").observe(CareFragment.this,newsResult -> {
-                                adapter.setDataBeanList(newsResult.getResult(),false);
+                                adapter.addDownDataList(newsResult.getResult());
                             });
 
                         }
@@ -96,6 +100,19 @@ public class CareFragment extends Fragment {
         else
             toLogin.setVisibility(View.VISIBLE);
 
+        refreshLayout.setColorSchemeResources(R.color.main_color);//设置刷新进度条的颜色
+        //设置监听
+        refreshLayout.setOnRefreshListener(() -> {//当下拉时，会调用这个方法
+            if (!Users.LOGIN_FLAG){
+                Toast.makeText(activity, "请先登录", Toast.LENGTH_SHORT).show();
+                refreshLayout.setRefreshing(false);
+                return;
+            }
+            activity.feedUserCareData(Users.userId,adapter.getTopTime(),"up").observe(this, contentResult -> {
+                adapter.addTopData(contentResult.getResult());
+                refreshLayout.setRefreshing(false);//设置刷新进度条是否隐藏，false表示隐藏
+            });
+        });
     }
 
     private void toLogin(){

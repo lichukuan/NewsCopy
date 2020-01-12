@@ -67,7 +67,7 @@ public class NewsActivity extends AppCompatActivity {
     private void dealBottomNavigation(){
         bottomNavigationBar=findViewById(R.id.navigation);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigationBar.setActiveColor(R.color.main_color);
+        bottomNavigationBar.setActiveColor(R.color.colorAccent);
         //BottomNavigationItem item=new BottomNavigationItem(R.drawable.news_refresh_final,R.string.main_home_label);
         BottomNavigationItem item1=new BottomNavigationItem(R.drawable.main_home,R.string.main_home_label);
         BottomNavigationItem item2=new BottomNavigationItem(R.drawable.main_video,R.string.main_video_label);
@@ -75,7 +75,6 @@ public class NewsActivity extends AppCompatActivity {
         BottomNavigationItem item4=new BottomNavigationItem(R.drawable.main_person,R.string.main_person_label);
         //item.setBadgeItem()
         bottomNavigationItems.add(item1);
-        //bottomNavigationItems.add(item);
         bottomNavigationItems.add(item2);
         bottomNavigationItems.add(item3);
         bottomNavigationItems.add(item4);
@@ -85,31 +84,15 @@ public class NewsActivity extends AppCompatActivity {
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
-                Log.d("==onTabSelected==","position : "+position);
                 replaceFragment(fragments.get(position));
-//                if (isRefresh&&position!=0){
-//                    bottomNavigationBar.clearAll();
-//                    addAll(bottomNavigationBar,bottomNavigationItems,1);
-//                    bottomNavigationBar.initialise();
-//                    isRefresh=false;
-//                    bottomNavigationBar.selectTab(position);
-//                }
             }
 
             @Override
             public void onTabUnselected(int position) {
-
             }
 
             @Override
             public void onTabReselected(int position) {
-                Log.d("==onTabReselected==","position : "+position);
-//                if (position==0) {
-//                    bottomNavigationBar.clearAll();
-//                    addAll(bottomNavigationBar,bottomNavigationItems,0);
-//                    bottomNavigationBar.initialise();
-//                    isRefresh=true;
-//                }
             }
         });
     }

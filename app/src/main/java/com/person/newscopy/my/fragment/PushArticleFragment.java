@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,8 +31,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -39,6 +43,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.api.Api;
@@ -100,6 +105,7 @@ public class PushArticleFragment extends Fragment {
     public static final int REQUEST_CODE_CHOOSE = 10;
     ProgressBar progressBar;
     private Map<String,String> imageMap = new HashMap<>();
+    View parent;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -113,6 +119,7 @@ public class PushArticleFragment extends Fragment {
         takePicture = view.findViewById(R.id.take_pic);
         tagSpinner = view.findViewById(R.id.tag_spinner);
         takeLink = view.findViewById(R.id.take_link);
+        parent = view.findViewById(R.id.parent);
         return view;
     }
 
@@ -120,7 +127,7 @@ public class PushArticleFragment extends Fragment {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
-       takeLink.setOnClickListener(v -> richEditor.insertUrl("测试内容","http://www.baidu.com"));
+        takeLink.setOnClickListener(v -> createTakeLinkPop());
         tagAdapter = ArrayAdapter.createFromResource(getContext(), R.array.tag, android.R.layout.simple_spinner_item);
         // android.R.layout.simple_spinner_item是系统默认布局，用于已选中时的布局
         tagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -183,6 +190,39 @@ public class PushArticleFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    public void createTakeLinkPop(){
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.take_link_pop_view,null);
+        EditText content = view.findViewById(R.id.tag);
+        EditText link = view.findViewById(R.id.link);
+        Button ok = view.findViewById(R.id.ok);
+        PopupWindow popupWindow = new PopupWindow(view,(int) (300* ScreenFitUtil.getDensity()),(int) (170* ScreenFitUtil.getDensity()));
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAtLocation(parent, Gravity.CENTER,0,0);
+        backgroundAlpha(0.5f);
+        popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
+        ok.setOnClickListener(v -> {
+            String tag = content.getText().toString();
+            if (tag.equals("")) {
+                Toast.makeText(getContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String l = link.getText().toString();
+            if (l.equals("")){
+                Toast.makeText(getContext(), "链接不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            richEditor.insertUrl(tag,l);
+        });
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
     }
 
     @Override

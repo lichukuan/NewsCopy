@@ -26,13 +26,19 @@
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="200dp">
+            <ImageView
+                android:id="@+id/video_image"
+                android:scaleType="fitXY"
+                android:background="@drawable/video_image_bg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
             <TextView
                 android:id="@+id/video_title"
                 android:gravity="start"
@@ -44,12 +50,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content" />
-            <ImageView
-                android:id="@+id/video_image"
-                android:scaleType="fitXY"
-                android:background="@drawable/video_image_bg"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
             <ImageView
                 android:layout_gravity="center"
                 android:src="@drawable/video_play"

@@ -6,6 +6,7 @@ import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.MessageBean;
+import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
 import com.person.newscopy.user.net.bean.SimpleTalkBean;
@@ -33,6 +34,9 @@ public interface UserInterface {
     @POST(Api.USER.REGISTER)
     @FormUrlEncoded
     Observable<BaseResult> register(@Field("name") String name,@Field("email")String email ,@Field("pas") String pas);
+
+    @GET(Api.USER.QUERY_CONTENT_INFO)
+    Observable<OneContentResult> getContent(@Query("contentType")int contentType, @Query("contentId")String contentId);
 
     @POST(Api.USER.LOGIN)
     @FormUrlEncoded

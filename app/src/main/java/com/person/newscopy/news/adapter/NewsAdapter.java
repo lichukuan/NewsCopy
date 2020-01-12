@@ -26,12 +26,15 @@ import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ResultBean> dataBeanList=new ArrayList<>();
+    private Set<String> key = new HashSet<>();
     private Context context;
     private Fragment fragment;
     private boolean isNeedRefresh=false;
@@ -45,6 +48,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private float height;
     private float width;
     private Activity activity;
+    private LoadHolder loadHolder;
 
     public NewsAdapter() {
     }
@@ -69,13 +73,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public boolean isInit(){
-        Log.d("===========","getItemCount = "+(getItemCount() - 1));
         return getItemCount() - 1 > 0;
     }
 
 
     public int getDownTime(){
-        return dataBeanList.get(dataBeanList.size()-2>=0?dataBeanList.size()-2:0).getReleaseTime();
+        if (dataBeanList.size() >=1)
+        return dataBeanList.get(dataBeanList.size()-1).getReleaseTime();
+        else return 0;
     }
 
     public int getTopTime(){
@@ -85,17 +90,41 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void setDataBeanList(List<ResultBean> beans,boolean isInit) {
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                key.add(bean.getId());
+                dataBeanList.add(bean);
+                sum++;
+            }
+        }
         int startSize = dataBeanList.size();
-        if (isInit&&startSize>0)return;
-        dataBeanList.addAll(beans);
-        notifyItemRangeInserted(startSize,beans.size());
-        isRefreshOver = true;
-        isNeedRefresh = false;
+        notifyItemRangeInserted(startSize,sum);
+    }
+
+    public void addDownDataBeanList(List<ResultBean> beans) {
+        int startSize = dataBeanList.size();
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                dataBeanList.add(bean);
+                key.add(bean.getId());
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(startSize,sum);
     }
 
     public void addTopData(List<ResultBean> beans){
-        dataBeanList.addAll(0,beans);
-        notifyItemRangeInserted(0,beans.size());
+        int sum = 0;
+        for (int i = beans.size() - 1; i >= 0; i--) {
+            if(!key.contains(beans.get(i).getId())){
+                key.add(beans.get(i).getId());
+                dataBeanList.add(0,beans.get(i));
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(0,sum);
     }
 
     public void backgroundAlpha(float bgAlpha) {
@@ -118,8 +147,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 View view3 = LayoutInflater.from(context).inflate(R.layout.recycler_item_news_three,parent,false);
                 return new ThreeViewHolder(view3);
             case TYPE_REFRESH:
+                if (loadHolder != null)return loadHolder;
                 View view4=LayoutInflater.from(context).inflate(R.layout.recycler_item_load,parent,false);
-                return  new LoadHolder(view4);
+                loadHolder =  new LoadHolder(view4);
+                return  loadHolder;
             case TYPE_ONE:
             default:
                 View view2 = LayoutInflater.from(context).inflate(R.layout.recycler_item_news_one,parent,false);
@@ -128,6 +159,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
+    public void hideLoad(){
+        loadHolder.refreshItem.setVisibility(View.GONE);
+    }
 
     private void createPop(View location){
         float d = ScreenFitUtil.getDensity();
@@ -163,7 +197,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (position==getItemCount()-1)
             return TYPE_REFRESH;
         final ResultBean bean = dataBeanList.get(position);
-        Log.d("=====NewsAdapter","image = "+bean.getImage()+"  imageList = "+bean.getImageList());
         if (bean.getImageList()==null&&bean.getImage()==null){
             return TYPE_TOP;
         }
@@ -180,14 +213,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "NewsAdapter";
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (position == getItemCount()-1){
+        if (holder instanceof LoadHolder){
             LoadHolder loadHolder = (LoadHolder) holder;
-            if (isRefreshOver)
-               loadHolder.refreshItem.setVisibility(View.INVISIBLE);
-            if (isNeedRefresh)
-                loadHolder.refreshItem.setVisibility(View.VISIBLE);
-            isNeedRefresh=false;
-            isRefreshOver=false;
+            loadHolder.refreshItem.setVisibility(View.VISIBLE);
             return;
         }
         ResultBean bean=dataBeanList.get(position);
@@ -267,16 +295,21 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         context.startActivity(intent);
     }
 
-    private static final int minute = 60;
-
-    private static final int hour = 60*60;
-
     private String createComeTime(int time){
         long l = BaseUtil.getTime() - time;
-        if (l/hour >0)
-            return l/hour+"小时前";
-        else
-            return l/minute+"分钟前";
+        long allMinute = l/60;
+        if (allMinute == 0)
+            return "刚刚";
+        else if (allMinute < 60)
+            return allMinute+"分钟前";
+        long allHour = allMinute/60;
+        if (allHour < 24)
+            return allHour+"小时前";
+        int allDay = (int)allHour/24;
+        if (allDay < 30)return allDay+"天前";
+        int allMouth = allDay/30;
+        if (allMouth < 12)return allMouth+"月前";
+        return allMouth/12+"年前";
     }
 
     @Override

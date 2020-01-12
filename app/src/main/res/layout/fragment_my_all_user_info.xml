@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/main_word_while"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -15,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <ImageView
+            android:id="@+id/back"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
@@ -141,7 +143,7 @@
             android:gravity="center"
             android:text="xx投稿" />
     </LinearLayout>
-
+    <include layout="@layout/view_line_all"/>
     <android.support.design.widget.TabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"

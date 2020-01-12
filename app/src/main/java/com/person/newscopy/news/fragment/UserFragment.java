@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.MyTranslucentUtil;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.MyListViewLayout;
@@ -24,10 +25,14 @@ import com.person.newscopy.user.Users;
 
 public class UserFragment extends Fragment {
 
-    public static final String[] content = {"发布文章","消息通知","私信","我的收藏","阅读纪录","用户反馈","设置"};
+    public static final String[] content = {"消息通知","我的收藏","发布文章","阅读纪录","私信"};
 
-    public static final int[] res = {R.drawable.release_article,R.drawable.notice,R.drawable.private_talk,R.drawable.save,R.drawable.history
-            ,R.drawable.feedback,R.drawable.settings};
+    public static final int[] res = {R.drawable.ic_notification,R.drawable.user_collectionset,R.drawable.bianxie,R.drawable.history
+    ,R.drawable.tab_feidian};
+
+    public static final String[] content2 = {"用户反馈","设置"};
+
+    public static final int[] res2 = {R.drawable.icon_feed_back,R.drawable.settings};
 
     View loginView;
     View unloginView;
@@ -41,15 +46,16 @@ public class UserFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        NewsActivity activity = (NewsActivity) getActivity();
-        TranslucentUtil.setTranslucent(activity,Color.WHITE, (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_person_base_login,container,false);
+        MyTranslucentUtil.setTranslucent(getActivity(),Color.WHITE, (int) (25* ScreenFitUtil.getDensity()));
         head = view.findViewById(R.id.head);
         loginView = inflater.inflate(R.layout.login_head_view,container,false);
         unloginView = inflater.inflate(R.layout.un_login_view,container,false);
         unloginView.findViewById(R.id.to_login).setOnClickListener(v ->showUser(MyActivity.LOGIN_TYPE,null));
         MyListViewLayout listViewLayout = view.findViewById(R.id.my_list);
         listViewLayout.setContent(content,res);
+        MyListViewLayout listViewLayout1 = view.findViewById(R.id.my_list_2);
+        listViewLayout1.setContent(content2,res2);
         shape = loginView.findViewById(R.id.icon);
         userName = loginView.findViewById(R.id.release_user_name);
         userRelease = loginView.findViewById(R.id.user_work);
@@ -79,7 +85,6 @@ public class UserFragment extends Fragment {
                 .into(shape);
         userName.setText(Users.userName);
         userCare.setText(Users.userCare+"关注");
-        //userCare.setOnClickListener(v -> showUser(MyActivity));
         userFans.setText(Users.userFans+"粉丝");
         userRelease.setText(Users.userWork+"投稿");
     }

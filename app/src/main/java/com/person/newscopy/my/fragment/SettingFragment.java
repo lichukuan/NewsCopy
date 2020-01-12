@@ -1,5 +1,6 @@
 package com.person.newscopy.my.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.user.Users;
+import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.VersionBean;
 
 public class SettingFragment extends Fragment {
@@ -42,8 +45,11 @@ public class SettingFragment extends Fragment {
         outLogin = view.findViewById(R.id.out_login);
         view.findViewById(R.id.update).setOnClickListener(v -> {
             myActivity.findNewVersion().observe(SettingFragment.this, versionBean -> {
-                  createPop(versionBean.getResult().getInfo());
+                  createDownloadPop(versionBean.getResult().getInfo());
             });
+        });
+        view.findViewById(R.id.get_back_pas).setOnClickListener(v -> {
+          myActivity.changeFragment(MyActivity.GET_USER_PAS,false);
         });
         return view;
     }
@@ -73,10 +79,10 @@ public class SettingFragment extends Fragment {
                 .apply();
     }
 
-    private void createPop(String recommend){
+    private void createDownloadPop(String recommend){
         float d = ScreenFitUtil.getDensity();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_new_version,null);
-        PopupWindow popupWindow = new PopupWindow(view, (int)(d*100),(int)(d*200));
+        PopupWindow popupWindow = new PopupWindow(view, (int)(d*300),(int)(d*200));
         TextView t = view.findViewById(R.id.recommend);
         t.setText(recommend);
         view.findViewById(R.id.download).setOnClickListener(v -> BaseUtil.downloadApk("正在下载","news.apk"));
@@ -84,5 +90,15 @@ public class SettingFragment extends Fragment {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.showAtLocation(parent, Gravity.CENTER,0,0);
+        backgroundAlpha(0.5f);
+        popupWindow.setOnDismissListener(() -> {
+            backgroundAlpha(1);
+        });
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
     }
 }

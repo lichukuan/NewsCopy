@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".show.ShowVideoActivity">
     <LinearLayout
-        android:id="@+id/content"
+        android:id="@+id/name"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

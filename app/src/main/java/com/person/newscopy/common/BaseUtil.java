@@ -115,6 +115,23 @@ public final class BaseUtil {
         return "";
     }
 
+    public static String createComeTime(int time){
+        long l = BaseUtil.getTime() - time;
+        long allMinute = l/60;
+        if (allMinute == 0)
+            return "刚刚";
+        else if (allMinute < 60)
+            return allMinute+"分钟前";
+        long allHour = allMinute/60;
+        if (allHour < 24)
+            return allHour+"小时前";
+        int allDay = (int)allHour/24;
+        if (allDay < 30)return allDay+"天前";
+        int allMouth = allDay/30;
+        if (allMouth < 12)return allMouth+"月前";
+        return allMouth/12+"年前";
+    }
+
     public static void writeToFile(String name,String content,int mode){
         FileOutputStream out=null;
         BufferedWriter writer=null;
@@ -202,13 +219,6 @@ public final class BaseUtil {
 
     private static final int hour = 60*60;
 
-    public static String createComeTime(int time){
-        long l = BaseUtil.getTime() - time;
-        if (l/hour >0)
-            return l/hour+"小时前";
-        else
-            return l/minute+"分钟前";
-    }
 
    static Configuration config = new Configuration.Builder()
             .chunkSize(512 * 1024)        // 分片上传时，每片的大小。 默认256K

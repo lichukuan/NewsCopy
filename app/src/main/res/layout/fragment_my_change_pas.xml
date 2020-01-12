@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/main_word_while"
     android:layout_height="match_parent">
 
     <ImageView
@@ -58,11 +59,14 @@
         app:layout_constraintVertical_bias="0.334" />
 
     <Button
+        android:textColor="@color/main_word_while"
+        android:text="确定"
         android:id="@+id/change_pas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/button_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

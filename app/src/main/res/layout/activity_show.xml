@@ -4,45 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/welcome_while"
     android:layout_height="match_parent"
     tools:context=".show.ShowNewsActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="40dp">
-        <ImageView
-            android:id="@+id/back"
-            android:scaleType="center"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/back_gray"
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-        <ImageView
-            android:layout_marginStart="50dp"
-            android:scaleType="center"
-            android:scaleY="1.5"
-            android:scaleX="1.5"
-            android:src="@drawable/news_show_tou_tiao"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <ImageView
-            android:src="@drawable/news_search"
-            android:layout_width="20dp"
-            android:layout_marginEnd="20dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:layout_height="match_parent" />
-        <ImageView
-            android:src="@drawable/video_more"
-            android:layout_marginEnd="20dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_weight="1"
@@ -51,6 +15,16 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/title"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/main_word_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -62,7 +36,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_height="40dp" />
                 <TextView
-                    android:id="@+id/content"
+                    android:id="@+id/name"
                     android:gravity="start|center_vertical"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
@@ -71,44 +45,78 @@
                 <Button
                     android:text="关注"
                     android:id="@+id/care"
-                    android:layout_width="wrap_content"
+                    android:textColor="@color/main_word_while"
+                    android:background="@drawable/button_bg"
+                    android:layout_width="60dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp" />
             </LinearLayout>
             <TextView
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:id="@+id/article_detail"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:text="推荐"
+                android:textSize="20sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/main_word_color"
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recommend"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:text="评论"
+                android:textSize="20sp"
+                android:textColor="@color/main_word_color"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="20dp"
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/no_comment_flag"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:text="暂无评论"
+                android:layout_width="match_parent"
+                android:layout_height="70dp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:background="#fff"
-        android:id="@+id/comment_view"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
+        app:cardElevation="20dp"
+        android:id="@+id/comment_parent"
         android:layout_height="50dp">
-        <EditText
-            android:id="@+id/comment_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:hint="写评论..."
-            android:drawableStart="@drawable/news_show_write"
-            android:background="@drawable/news_show_edit_bg"
-            android:layout_width="0dp"
-            android:paddingStart="15dp"
-            android:drawablePadding="5dp"
-            android:layout_marginStart="15dp"
-            android:layout_height="40dp" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/comment_view"
+            android:orientation="horizontal"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <EditText
+                android:id="@+id/comment_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:hint="写评论..."
+                android:drawableStart="@drawable/news_show_write"
+                android:background="@drawable/news_show_edit_bg"
+                android:layout_width="0dp"
+                android:paddingStart="15dp"
+                android:drawablePadding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

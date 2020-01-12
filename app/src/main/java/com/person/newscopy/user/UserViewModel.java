@@ -11,6 +11,7 @@ import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.MessageBean;
+import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserBean;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
@@ -29,6 +30,11 @@ public class UserViewModel extends AndroidViewModel {
     public UserViewModel(@NonNull Application application) {
         super(application);
         depository = new UserDepository();
+    }
+
+    public LiveData<OneContentResult> getContent(int contentType, String contentId){
+        depository.getContent(contentType,contentId);
+        return depository.getContentResultMutableLiveData();
     }
 
     public LiveData<BaseResult> uploadArticleImages(List<File> files){

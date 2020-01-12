@@ -30,12 +30,14 @@ import com.person.newscopy.my.fragment.PushArticleFragment;
 import com.person.newscopy.my.fragment.SaveFragment;
 import com.person.newscopy.my.fragment.SettingFragment;
 import com.person.newscopy.my.fragment.UserInfoFragment;
+import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.user.UserViewModel;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.MessageBean;
+import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
 import com.person.newscopy.user.net.bean.SimpleTalkBean;
@@ -106,7 +108,7 @@ public class MyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //android.R.color.dimen.notification_large_icon_width
         ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
-        //TranslucentUtil.setTranslucent(this, Color.WHITE, (int) (20*ScreenFitUtil.getDensity()));
+        TranslucentUtil.setTranslucent(this, Color.WHITE, (int) (25*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_my);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         Intent intent = getIntent();
@@ -264,6 +266,10 @@ public class MyActivity extends AppCompatActivity {
 
     public LiveData<BaseResult> updateUserRecommend(String userId,String recommend){
        return userViewModel.updateUserRecommend(userId,recommend);
+    }
+
+    public LiveData<OneContentResult> getContent(int contentType, String contentId){
+        return userViewModel.getContent(contentType,contentId);
     }
 
     public LiveData<BaseResult> changeUserName(String id,String newName){

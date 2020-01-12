@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+
     xmlns:easy="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +15,11 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center"/>
-
+      <com.person.newscopy.common.SmallLoadView
+          android:id="@+id/load"
+          android:layout_gravity="center"
+          android:layout_width="100dp"
+          android:layout_height="50dp" />
          <LinearLayout
              android:background="#444444"
              android:id="@+id/video_control"
@@ -89,9 +94,11 @@
       <Button
           android:id="@+id/care"
           android:text="关注"
+          android:textColor="@color/main_word_while"
+          android:background="@drawable/button_bg"
           android:layout_marginEnd="20dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
+          android:layout_width="60dp"
+          android:layout_height="30dp" />
    </LinearLayout>
    <TextView
        android:layout_marginStart="10dp"
@@ -103,6 +110,7 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content" />
    <TextView
+       android:layout_marginTop="10dp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginStart="10dp"
@@ -110,29 +118,43 @@
        android:textColor="#000"
        android:textSize="20sp" />
    <android.support.v7.widget.RecyclerView
+       android:layout_weight="1"
        android:id="@+id/comments"
        android:layout_marginTop="10dp"
-       android:layout_weight="1"
        android:layout_width="match_parent"
-       android:layout_height="0dp"/>
-   <LinearLayout
-       android:orientation="horizontal"
-       android:background="#fff"
-       android:id="@+id/comment_view"
+       android:layout_height="wrap_content"/>
+   <TextView
+       android:layout_weight="1"
+       android:id="@+id/no_comment_flag"
+       android:text="暂无评论"
+       android:gravity="center"
+       android:textSize="15sp"
+       android:layout_width="match_parent"
+       android:layout_height="70dp" />
+   <android.support.v7.widget.CardView
+       app:cardElevation="20dp"
+       android:layout_gravity="bottom"
        android:layout_width="match_parent"
        android:layout_height="50dp">
-      <EditText
-          android:id="@+id/comment_content"
-          android:layout_marginTop="5dp"
-          android:layout_marginBottom="5dp"
-          android:layout_weight="1"
-          android:hint="写评论..."
-          android:drawableStart="@drawable/news_show_write"
-          android:background="@drawable/news_show_edit_bg"
-          android:layout_width="0dp"
-          android:paddingStart="15dp"
-          android:drawablePadding="5dp"
-          android:layout_marginStart="15dp"
-          android:layout_height="40dp" />
-   </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:background="#fff"
+          android:id="@+id/comment_view"
+          android:layout_width="match_parent"
+          android:layout_height="50dp">
+         <EditText
+             android:id="@+id/comment_content"
+             android:layout_marginTop="5dp"
+             android:layout_marginBottom="5dp"
+             android:layout_weight="1"
+             android:hint="写评论..."
+             android:drawableStart="@drawable/news_show_write"
+             android:background="@drawable/news_show_edit_bg"
+             android:layout_width="0dp"
+             android:paddingStart="15dp"
+             android:drawablePadding="5dp"
+             android:layout_marginStart="15dp"
+             android:layout_height="40dp" />
+      </LinearLayout>
+   </android.support.v7.widget.CardView>
 </LinearLayout>

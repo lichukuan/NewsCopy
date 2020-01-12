@@ -20,42 +20,48 @@
         easy:shape="circle" />
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="336dp"
+        android:id="@+id/name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        easy:layout_constraintStart_toEndOf="@+id/icon"
-        easy:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="308dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:textSize="18sp"
-        easy:layout_constraintBottom_toTopOf="@+id/time"
+        easy:layout_constraintBottom_toTopOf="@+id/content"
         easy:layout_constraintEnd_toEndOf="parent"
         easy:layout_constraintHorizontal_bias="0.0"
         easy:layout_constraintStart_toEndOf="@+id/icon"
-        easy:layout_constraintTop_toBottomOf="@+id/content" />
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        easy:layout_constraintBottom_toBottomOf="parent"
+        easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintHorizontal_bias="0.588"
+        easy:layout_constraintStart_toStartOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        easy:layout_constraintVertical_bias="0.6"
+        tools:text="内容" />
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="308dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         easy:layout_constraintBottom_toBottomOf="parent"
         easy:layout_constraintEnd_toEndOf="parent"
+        easy:layout_constraintHorizontal_bias="0.321"
         easy:layout_constraintStart_toStartOf="parent"
-        easy:layout_constraintTop_toTopOf="parent"
-        easy:layout_constraintVertical_bias="0.95" />
+        easy:layout_constraintTop_toBottomOf="@+id/content" />
 
     <TextView
         android:id="@+id/reply"
@@ -64,6 +70,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="8dp"
         android:drawablePadding="2dp"
+        android:visibility="invisible"
         android:drawableStart="@drawable/show_comment"
         easy:layout_constraintBottom_toBottomOf="parent"
         easy:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +81,7 @@
 
     <TextView
         android:id="@+id/like"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

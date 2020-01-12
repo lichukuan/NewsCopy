@@ -23,9 +23,12 @@ import com.person.newscopy.common.Config;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -45,6 +48,7 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private float height;
     private float width;
     private Activity activity;
+    private Set<String> key = new HashSet<>();
 
     public CareUserDataAdapter() {
     }
@@ -75,20 +79,52 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public int getDownTime(){
-        return dataBeanList.get(dataBeanList.size()-2>=0?dataBeanList.size()-2:0).getReleaseTime();
+        if (dataBeanList.size() >=1)
+            return dataBeanList.get(dataBeanList.size()-1).getReleaseTime();
+        else return 0;
     }
 
     public int getTopTime(){
-        return dataBeanList.get(0).getReleaseTime();
+        if (dataBeanList.size() >0)
+            return dataBeanList.get(0).getReleaseTime();
+        else return 0;
     }
 
     public void setDataBeanList(List<ResultBean> beans,boolean isInit) {
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                key.add(bean.getId());
+                dataBeanList.add(bean);
+                sum++;
+            }
+        }
         int startSize = dataBeanList.size();
-        if (isInit&&startSize>0)return;
-        dataBeanList.addAll(beans);
-        notifyItemRangeInserted(startSize,beans.size());
-        isRefreshOver = true;
-        isNeedRefresh = false;
+        notifyItemRangeInserted(startSize,sum);
+    }
+    public void addDownDataList(List<ResultBean> beans){
+        int startSize = dataBeanList.size();
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                dataBeanList.add(bean);
+                key.add(bean.getId());
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(startSize,sum);
+    }
+
+    public void addTopData(List<ResultBean> beans){
+        int sum = 0;
+        for (int i = beans.size() - 1; i >= 0; i--) {
+            if(!key.contains(beans.get(i).getId())){
+                key.add(beans.get(i).getId());
+                dataBeanList.add(0,beans.get(i));
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(0,sum);
     }
 
     @NonNull
@@ -145,7 +181,7 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .load(bean.getUserIcon())
                     .asBitmap()
                     .into(normalViewHolder.icon);
-            normalViewHolder.normalVideo.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
+            normalViewHolder.normalVideo.setOnClickListener(v -> showVideo(BaseUtil.getGson().toJson(bean)));
         }else if (holder instanceof BigViewHolder){
             BigViewHolder bigViewHolder = (BigViewHolder) holder;
             bigViewHolder.name.setText(bean.getUserName());
@@ -176,6 +212,12 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         context.startActivity(intent);
     }
 
+    private void showVideo(String data){
+        Intent intent = new Intent(context, ShowVideoActivity.class);
+        intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,data);
+        context.startActivity(intent);
+    }
+
     @Override
     public int getItemCount() {
         return dataBeanList.size()+1;
@@ -190,7 +232,7 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             bigNews=itemView.findViewById(R.id.big_news);
             title=itemView.findViewById(R.id.title);
-            name=itemView.findViewById(R.id.content);
+            name=itemView.findViewById(R.id.name);
             bigPic=itemView.findViewById(R.id.bigPic);
             icon=itemView.findViewById(R.id.user_icon);
         }

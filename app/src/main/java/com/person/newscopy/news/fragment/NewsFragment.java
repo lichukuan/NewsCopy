@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.common.ColorClipTabLayout;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.MyTranslucentUtil;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
 import com.person.newscopy.news.network.bean.ContentResult;
@@ -49,7 +50,7 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (NewsActivity) getActivity();
-        TranslucentUtil.setTranslucent(activity,Color.parseColor("#fecc11"), (int) (20* ScreenFitUtil.getDensity()));
+        MyTranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (25* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_main_news,container,false);
         tabLayout=view.findViewById(R.id.tab);
         pager=view.findViewById(R.id.pager);

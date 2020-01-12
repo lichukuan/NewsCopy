@@ -5,10 +5,12 @@ import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.network.BaseInterceptor;
 import com.person.newscopy.news.network.ContentProvide;
+import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.MessageBean;
+import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
 import com.person.newscopy.user.net.bean.SimpleTalkBean;
@@ -73,6 +75,17 @@ public final class UserInfoProvide {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseResult -> {
                     callback.onChangeEmail(baseResult);
+                },throwable -> {
+                    callback.error(throwable);
+                });
+    }
+
+    public void getContent(int contentType,String contentId){
+        userInterface.getContent(contentType,contentId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseResult -> {
+                    callback.onGetContent(baseResult);
                 },throwable -> {
                     callback.error(throwable);
                 });
@@ -563,6 +576,8 @@ public final class UserInfoProvide {
         void newVersion(VersionBean version);
 
         void queryHistory(ReadBean result);
+
+        void onGetContent(OneContentResult contentResult);
 
         void onUploadArticleImage(BaseResult baseResult);
     }

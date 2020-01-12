@@ -22,7 +22,7 @@ public class RedCircleImageView extends android.support.v7.widget.AppCompatImage
 
     private int selectedIcon = -1;
 
-    private boolean isShowNumber = false;
+    private boolean isShowNumber = false;//是否显示文字
 
     private int nowIcon = -1;
 

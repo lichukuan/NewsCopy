@@ -7,13 +7,14 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageButton
+        <ImageView
             android:id="@+id/back"
             android:src="@drawable/back_gray"
             android:layout_width="30dp"
             android:layout_marginStart="15dp"
             android:layout_height="40dp" />
         <TextView
+            android:text="历史纪录"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -22,18 +23,12 @@
             android:textSize="20sp"
             />
         <TextView
-            android:id="@+id/edit"
-            android:text="编辑"
-            android:textColor="#000"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_width="40dp"
+            android:layout_width="45dp"
             android:layout_height="match_parent" />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"/>
 </LinearLayout>

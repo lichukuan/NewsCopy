@@ -12,12 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.my.MyActivity;
-import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.fragment.VideoHorizontalFragment;
 import com.person.newscopy.show.fragment.VideoVerticalFragment;
@@ -119,13 +117,13 @@ public class ShowVideoActivity extends AppCompatActivity {
 
     private void addFragment(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.content,fragment);
+        transaction.add(R.id.name,fragment);
         transaction.commit();
     }
 
     private void replace(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content,fragment);
+        transaction.replace(R.id.name,fragment);
         transaction.commit();
     }
 
@@ -178,5 +176,4 @@ public class ShowVideoActivity extends AppCompatActivity {
         change();
         super.onConfigurationChanged(newConfig);
     }
-
 }

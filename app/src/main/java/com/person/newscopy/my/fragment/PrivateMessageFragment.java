@@ -25,7 +25,7 @@ import java.util.List;
 //显示所有的私聊
 public class PrivateMessageFragment extends Fragment {
     RecyclerView recyclerView;
-    ImageButton back;
+    ImageView back;
     ImageView messageImage;//没有私信时，显示图片
     MyActivity myActivity;
     @Nullable

@@ -119,5 +119,4 @@ public interface Api {
         String CONTENT_TYPE = "phone/type/content";
 
     }
-
 }

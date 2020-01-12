@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +124,7 @@ public class CommentAdapter extends RecyclerView.Adapter {
         public CommentViewHolder(View itemView) {
             super(itemView);
             icon=itemView.findViewById(R.id.icon);
-            name=itemView.findViewById(R.id.content);
+            name=itemView.findViewById(R.id.name);
             content=itemView.findViewById(R.id.content);
             time=itemView.findViewById(R.id.time);
             like=itemView.findViewById(R.id.like);

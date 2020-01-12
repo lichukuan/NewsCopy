@@ -19,6 +19,7 @@ import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.type.Types;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.ContentBean;
@@ -40,14 +41,8 @@ public class ItemUserInfoAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        int contentType = data.get(i).getType();
-        if (contentType == Config.CONTENT.NEWS_TYPE){
             View view = LayoutInflater.from(context).inflate(R.layout.recycler_item_my_user_info_article,viewGroup,false);
             return new ArticleViewHolder(view);
-        }else {
-            View view = LayoutInflater.from(context).inflate(R.layout.recycler_item_my_user_info_video,viewGroup,false);
-            return new VideoViewHolder(view);
-        }
     }
 
     private void show(String data){
@@ -65,28 +60,44 @@ public class ItemUserInfoAdapter extends RecyclerView.Adapter {
             articleViewHolder.comment.setText(bean.getCommentCount()+"评论");
             articleViewHolder.source.setText(bean.getUserName());
             articleViewHolder.releaseTime.setText(BaseUtil.createComeTime(bean.getReleaseTime()));
-            articleViewHolder.oneNews.setOnClickListener(v -> show(BaseUtil.getGson().toJson(bean)));
+            if (bean.getType() == Config.CONTENT.NEWS_TYPE){
+                articleViewHolder.videoFlag.setVisibility(View.GONE);
+                articleViewHolder.oneNews.setOnClickListener(v -> show(BaseUtil.getGson().toJson(bean)));
+            }
+            else {
+                articleViewHolder.videoFlag.setVisibility(View.VISIBLE);
+                articleViewHolder.oneNews.setOnClickListener(v -> showVideo(BaseUtil.getGson().toJson(bean)));
+            }
+
             Glide.with(fragment)
                     .load(bean.getImage())
                     .into(articleViewHolder.pic);
-        }else if (viewHolder instanceof VideoViewHolder){
-            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
-            videoViewHolder.commentNum.setText(bean.getCommentCount()+"");
-            videoViewHolder.likeNum.setText(bean.getLikeCount()+"");
-            videoViewHolder.sendNum.setText(bean.getSendCount()+"");
-            videoViewHolder.time.setText(bean.getTime());
-            videoViewHolder.videoTime.setText(bean.getTime());
-            videoViewHolder.content.setText(bean.getTitle());
-            videoViewHolder.name.setText(bean.getUserName());
-            //videoViewHolder.playFlag
-            Glide.with(fragment)
-                    .load(bean.getUserIcon())
-                    .asBitmap()
-                    .into(videoViewHolder.icon);
-            Glide.with(fragment)
-                    .load(bean.getImage())
-                    .into(videoViewHolder.contentImage);
         }
+
+//        else if (viewHolder instanceof VideoViewHolder){
+//            VideoViewHolder videoViewHolder = (VideoViewHolder) viewHolder;
+//            videoViewHolder.commentNum.setText(bean.getCommentCount()+"");
+//            videoViewHolder.likeNum.setText(bean.getLikeCount()+"");
+//            videoViewHolder.sendNum.setText(bean.getSendCount()+"");
+//            videoViewHolder.time.setText(bean.getTime());
+//            videoViewHolder.videoTime.setText(bean.getTime());
+//            videoViewHolder.content.setText(bean.getTitle());
+//            videoViewHolder.name.setText(bean.getUserName());
+//            //videoViewHolder.playFlag
+//            Glide.with(fragment)
+//                    .load(bean.getUserIcon())
+//                    .asBitmap()
+//                    .into(videoViewHolder.icon);
+//            Glide.with(fragment)
+//                    .load(bean.getImage())
+//                    .into(videoViewHolder.contentImage);
+//        }
+    }
+
+    private void showVideo(String data){
+        Intent intent = new Intent(context,ShowVideoActivity.class);
+        intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,data);
+        context.startActivity(intent);
     }
 
     @Override
@@ -97,6 +108,7 @@ public class ItemUserInfoAdapter extends RecyclerView.Adapter {
     class ArticleViewHolder extends RecyclerView.ViewHolder{
         TextView title,source,comment,releaseTime;
         ImageView pic;
+        ImageView videoFlag;
         LinearLayout oneNews;
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +118,7 @@ public class ItemUserInfoAdapter extends RecyclerView.Adapter {
             comment=itemView.findViewById(R.id.commentCount);
             releaseTime=itemView.findViewById(R.id.releaseTime);
             pic=itemView.findViewById(R.id.pic1);
+            videoFlag = itemView.findViewById(R.id.video_flag);
         }
     }
 

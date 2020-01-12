@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,11 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.MySoftKeyBoardListener;
 import com.person.newscopy.common.RedCircleImageView;
+import com.person.newscopy.common.SmallLoadView;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
@@ -36,6 +40,8 @@ import com.person.newscopy.show.net.CommentBean;
 import com.person.newscopy.user.Users;
 
 import java.io.IOException;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class VideoVerticalFragment extends Fragment implements ShowVideoActivity.TimeListener{
@@ -69,8 +75,10 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
     private int isLike = -1;
     private int isSave = -1;
     private int isCare = -1;
+    private TextView noCommentFlag;
     private EditText commentContent;
     private CommentAdapter commentAdapter;
+    private SmallLoadView smallLoadView;
 
     @Nullable
     @Override
@@ -81,12 +89,18 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
         activity = (ShowVideoActivity) getActivity();
         activity.setListener(this);
         normalCommentView = inflater.inflate(R.layout.comment_normal_view,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) (120* ScreenFitUtil.getDensity()),(int) (40*ScreenFitUtil.getDensity()));
+        params.rightMargin = (int) (20*ScreenFitUtil.getDensity());
+        params.gravity = Gravity.CENTER_VERTICAL;
+        normalCommentView.setLayoutParams(params);
         sendCommentView = inflater.inflate(R.layout.comment_send_view,null);
         layout = view.findViewById(R.id.video_control);
         play =view.findViewById(R.id.pause);
+        smallLoadView = view.findViewById(R.id.load);
         throughTime =view.findViewById(R.id.time_current);
         allTime=view.findViewById(R.id.time);
         toHor=view.findViewById(R.id.to_hor);
+        noCommentFlag = view.findViewById(R.id.no_comment_flag);
         seekBar=view.findViewById(R.id.seek_bar);
         care = view.findViewById(R.id.care);
         title = view.findViewById(R.id.title);
@@ -100,6 +114,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
         saveIcon = normalCommentView.findViewById(R.id.save_icon);
         send = sendCommentView.findViewById(R.id.comment_send);
         commentContent = view.findViewById(R.id.comment_content);
+        if (bean.getUserId().equals(Users.userId))care.setVisibility(View.GONE);
         return view;
     }
 
@@ -107,10 +122,11 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
     public void onResume() {
         super.onResume();
         icon.setOnClickListener(v -> activity.showUserInfo());
-        commentIcon.setIcon(R.drawable.comment_select,R.drawable.comment_unselect);
+        commentIcon.setIcon(R.drawable.pinglun,R.drawable.pinglun_un);
         commentIcon.setShowNumber(true);
         commentIcon.setNumber(bean.getCommentCount());
-        likeIcon.setIcon(R.drawable.like_select,R.drawable.like_unselect);
+
+        likeIcon.setIcon(R.drawable.like,R.drawable.like_un);
         likeIcon.setShowNumber(true);
         likeIcon.setNumber(bean.getLikeCount());
         likeIcon.setOnStateChangeListener(plus -> {
@@ -126,7 +142,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                 });
             }else Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
         });
-        saveIcon.setIcon(R.drawable.save_selected,R.drawable.save_unselect);
+        saveIcon.setIcon(R.drawable.enjoy,R.drawable.enjoy_un);
         saveIcon.setOnStateChangeListener(plus -> {
             if (Users.LOGIN_FLAG){
                 String isSave = "true";
@@ -212,6 +228,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                             commentBean.setTime(BaseUtil.getFormatTime());
                             commentAdapter.addComment(commentBean);
                             commentContent.setText("");
+                            noCommentFlag.setVisibility(View.GONE);
                             activity.sendMessage(Config.MESSAGE.COMMENT_TYPE,val);
                         }else
                             Toast.makeText(getContext(), "发送失败", Toast.LENGTH_SHORT).show();
@@ -227,7 +244,6 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (ijkMediaPlayer!=null&&fromUser){
-                    Log.d("=========","progress"+progress);
                     long newTime = progress*ijkMediaPlayer.getDuration()/100+ijkMediaPlayer.getCurrentPosition();
                     ijkMediaPlayer.seekTo(newTime);
                     activity.setNowDuration(progress*duration/100);
@@ -249,10 +265,15 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
         activity.queryComment(activity.getBean().getId()).observe(this,commentResult -> {
             if (commentAdapter == null)
                 commentAdapter = new CommentAdapter(commentResult.getResult(),this);
+            if (commentResult.getResult().size() > 0)noCommentFlag.setVisibility(View.GONE);
             comment.setAdapter(commentAdapter);//评论
         });
 
         ijkMediaPlayer = activity.getIjkMediaPlayer();
+        ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
+             smallLoadView.setVisibility(View.GONE);
+             smallLoadView.cancel();
+        });
         url = bean.getVideoUrl();
         duration = bean.getSecondTime();
         videoView.getHolder().addCallback(callback);
@@ -275,6 +296,18 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             isPlaying = !isPlaying;
         });
         title.setText(bean.getTitle());
+        MySoftKeyBoardListener.setListener(getActivity(), new MySoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                layout.setTranslationY(-height);
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                layout.setTranslationY(0);
+                commentContent.setFocusable(false);
+            }
+        });
         Glide.with(this)
                 .load(bean.getUserIcon())
                 .asBitmap()

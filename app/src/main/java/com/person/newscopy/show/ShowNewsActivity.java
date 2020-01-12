@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,11 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
+import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.api.Api;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.MySoftKeyBoardListener;
 import com.person.newscopy.common.RedCircleImageView;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
@@ -33,7 +40,10 @@ import com.person.newscopy.user.Users;
 import com.zzhoujay.richtext.RichText;
 import java.util.List;
 
-public class ShowNewsActivity extends AppCompatActivity {
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
+public class ShowNewsActivity extends SwipeBackActivity {
 
     private RecyclerView recommend;
 
@@ -50,6 +60,9 @@ public class ShowNewsActivity extends AppCompatActivity {
     RedCircleImageView saveIcon;
     RedCircleImageView likeIcon;
     LinearLayout layout;
+    TextView title;
+    CardView commentParent;
+    TextView noCommentFlag;
     private int isLike = 0;
     private int isSave = 0;
     private int isCare = 0;
@@ -64,27 +77,37 @@ public class ShowNewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
-        TranslucentUtil.setTranslucent(this,Color.WHITE, (int) (20*ScreenFitUtil.getDensity()));
+        TranslucentUtil.setTranslucent(this,Color.WHITE, (int) (25*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_show);
+        commentParent = (CardView) findViewById(R.id.comment_parent);
+        SwipeBackLayout mSwipeBackLayout  = getSwipeBackLayout();
+        //设置可以滑动的区域，推荐用屏幕像素来指定
+        mSwipeBackLayout.setEdgeSize((int) (ViewInfoUtil.ScreenInfo.getScreenWidth(this)/2));
+        //设定滑动关闭的方向，SwipeBackLayout.EDGE_ALL表示向下、左、右滑动均可。EDGE_LEFT，EDGE_RIGHT，EDGE_BOTTOM
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         RichText.initCacheDir(this);
         normalCommentView = getLayoutInflater().inflate(R.layout.comment_normal_view,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) (120*ScreenFitUtil.getDensity()),(int) (40*ScreenFitUtil.getDensity()));
+        params.rightMargin = (int) (20*ScreenFitUtil.getDensity());
+        params.gravity = Gravity.CENTER_VERTICAL;
+        normalCommentView.setLayoutParams(params);
         sendCommentView = getLayoutInflater().inflate(R.layout.comment_send_view,null);
         showViewModel = ViewModelProviders.of(this).get(ShowViewModel.class);
         Intent intent = getIntent();
         b = BaseUtil.getGson().fromJson(intent.getStringExtra(SHOW_WEB_INFO),ResultBean.class);
-        back = findViewById(R.id.back);
-        back.setOnClickListener(v -> finish());
-        layout = findViewById(R.id.comment_view);
+        layout = (LinearLayout) findViewById(R.id.comment_view);
         send = sendCommentView.findViewById(R.id.comment_send);
-        TextView name = findViewById(R.id.content);
-        shapeImageView = findViewById(R.id.icon);
-        detail = findViewById(R.id.article_detail);
-        recommend = findViewById(R.id.recommend);
-        comment = findViewById(R.id.comment);
-        commentContent = findViewById(R.id.comment_content);
+        TextView name = (TextView) findViewById(R.id.name);
+        shapeImageView = (ShapeImageView) findViewById(R.id.icon);
+        noCommentFlag = (TextView) findViewById(R.id.no_comment_flag);
+        detail = (TextView) findViewById(R.id.article_detail);
+        recommend = (RecyclerView) findViewById(R.id.recommend);
+        comment = (RecyclerView) findViewById(R.id.comment);
+        commentContent = (EditText) findViewById(R.id.comment_content);
         commentIcon = normalCommentView.findViewById(R.id.comment_icon);
         likeIcon = normalCommentView.findViewById(R.id.like_icon);
         saveIcon = normalCommentView.findViewById(R.id.save_icon);
+        title = (TextView) findViewById(R.id.title);
         recommend.setLayoutManager(new LinearLayoutManager(this));
         comment.setLayoutManager(new LinearLayoutManager(this));
         name.setText(b.getUserName());
@@ -92,6 +115,7 @@ public class ShowNewsActivity extends AppCompatActivity {
                 .load(b.getUserIcon())
                 .asBitmap()
                 .into(shapeImageView);
+        title.setText(b.getTitle());
         shapeImageView.setOnClickListener(v->{
             Intent intent1 = new Intent(this, MyActivity.class);
             intent1.putExtra(MyActivity.MY_TYPE,MyActivity.USER_WORK_TYPE);
@@ -101,19 +125,20 @@ public class ShowNewsActivity extends AppCompatActivity {
             showViewModel.addHistory(b.getUserId(),b.getId(),b.getType(),Users.userId).observe(this,baseResult -> {
                 if (baseResult.getCode() != 1)Log.d("==ShowNewsActivity","上传历史纪录出错了");
             });
-        care = findViewById(R.id.care);
+        care = (Button) findViewById(R.id.care);
         layout.addView(normalCommentView,1);
+        if (b.getUserId().equals(Users.userId))care.setVisibility(View.GONE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         shapeImageView.setOnClickListener(v -> showUserInfo());
-        commentIcon.setIcon(R.drawable.comment_select,R.drawable.comment_unselect);
+        commentIcon.setIcon(R.drawable.pinglun,R.drawable.pinglun_un);
         commentIcon.setShowNumber(true);
         commentIcon.setNumber(b.getCommentCount());
 
-        likeIcon.setIcon(R.drawable.like_select,R.drawable.like_unselect);
+        likeIcon.setIcon(R.drawable.like,R.drawable.like_un);
         likeIcon.setShowNumber(true);
         likeIcon.setNumber(b.getLikeCount());
 
@@ -132,7 +157,7 @@ public class ShowNewsActivity extends AppCompatActivity {
             }else
                 Toast.makeText(this, "请先登陆", Toast.LENGTH_SHORT).show();
         });
-        saveIcon.setIcon(R.drawable.save_selected,R.drawable.save_unselect);
+        saveIcon.setIcon(R.drawable.enjoy,R.drawable.enjoy_un);
         saveIcon.setOnStateChangeListener(plus -> {
             if (Users.LOGIN_FLAG){
                 String isSave = "true";
@@ -199,6 +224,7 @@ public class ShowNewsActivity extends AppCompatActivity {
         });
         showViewModel.feedComment(b.getId()).observe(this,commentResult -> {
             final List<CommentBean> result = commentResult.getResult();
+            if (result.size() > 0)noCommentFlag.setVisibility(View.GONE);
             commentIcon.setNumber(result.size());
             commentAdapter = new CommentAdapter(result,this);
             comment.setAdapter(commentAdapter);
@@ -214,6 +240,7 @@ public class ShowNewsActivity extends AppCompatActivity {
             layout.removeViewAt(1);
             if (hasFocus){
                 layout.addView(sendCommentView,1);
+
             }else {
                 layout.addView(normalCommentView,1);
             }
@@ -241,6 +268,7 @@ public class ShowNewsActivity extends AppCompatActivity {
                             commentAdapter.addComment(commentBean);
                             commentContent.setText("");
                             sendMessage(Config.MESSAGE.COMMENT_TYPE,val);
+                            noCommentFlag.setVisibility(View.GONE);
                         }else
                             Toast.makeText(this, "发送失败", Toast.LENGTH_SHORT).show();
                         send.setClickable(true);
@@ -248,6 +276,19 @@ public class ShowNewsActivity extends AppCompatActivity {
             }else
                 Toast.makeText(this, "请先登陆", Toast.LENGTH_SHORT).show();
 
+        });
+        MySoftKeyBoardListener.setListener(this, new MySoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                commentParent.setTranslationY(-height);
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                commentParent.setTranslationY(0);
+                commentContent.setFocusable(false);
+                commentContent.setFocusableInTouchMode(true);
+            }
         });
     }
 

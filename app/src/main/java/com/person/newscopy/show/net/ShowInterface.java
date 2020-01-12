@@ -54,5 +54,4 @@ public interface ShowInterface {
     @GET(Api.SHOW.QUERY_CONTENT_ATTITUDE)
     Observable<AttitudeBean> queryContentAttitude(@Query("contentId")String contentId,@Query("userId")String userId,@Query("contentUserId")String contentUserId);
 
-
 }

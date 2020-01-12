@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import java.util.List;
 public class UserInfoFragment extends Fragment {
 
     MyActivity myActivity;
+    ImageView back;
     private List<String> tab = new ArrayList<>();
     ResultBean user;
     List<ContentBean> contents = new ArrayList<>();
@@ -46,6 +48,7 @@ public class UserInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_all_user_info,container,false);
         myActivity = (MyActivity) getActivity();
+        back = view.findViewById(R.id.back);
         String searchId = myActivity.getSearchId();
         if (searchId == null){
             Toast.makeText(myActivity, "出错了", Toast.LENGTH_SHORT).show();
@@ -56,6 +59,7 @@ public class UserInfoFragment extends Fragment {
         noFlag = view.findViewById(R.id.no_flag);
         tabLayout = view.findViewById(R.id.tab);
         viewPager = view.findViewById(R.id.pager);
+        back.setOnClickListener(v -> myActivity.finish());
         if (!Users.userId.equals(searchId))
         myActivity.queryIsCare(Users.userId,searchId).observe(this,baseResult -> {
             if (baseResult.getResult().equals("yes")){

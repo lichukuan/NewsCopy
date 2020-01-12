@@ -75,7 +75,8 @@ public class ItemNormalNewsFragment extends Fragment {
                         //加载更多
                         adapter.refresh();
                         newsActivity.queryNewsData(name,adapter.getDownTime(),"down").observe(ItemNormalNewsFragment.this,newsResult -> {
-                            adapter.setDataBeanList(newsResult.getResult(),false);
+                            adapter.addDownDataBeanList(newsResult.getResult());
+                            adapter.hideLoad();
                         });
                     }
                 }

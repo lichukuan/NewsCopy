@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import com.person.newscopy.R;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.MessageAdapter;
@@ -28,7 +30,7 @@ public class MessageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_message,container,false);
         myActivity = (MyActivity) getActivity();
-        ImageButton back = view.findViewById(R.id.back);
+        ImageView back = view.findViewById(R.id.back);
         back.setOnClickListener(v -> myActivity.finish());
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         myActivity.queryMessage(Users.userId).observe(this, messageBeans -> {

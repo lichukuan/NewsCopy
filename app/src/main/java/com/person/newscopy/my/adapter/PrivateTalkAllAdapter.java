@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
 import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
-import com.person.newscopy.user.net.bean.PrivateTalkOutBeansBean;
 import com.person.newscopy.user.net.bean.SimpleTalkBean;
 
 import java.util.List;

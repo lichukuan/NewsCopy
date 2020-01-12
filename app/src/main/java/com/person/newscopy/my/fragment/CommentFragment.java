@@ -16,7 +16,6 @@ public class CommentFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_comment,container,false);
-
         return view;
     }
 }

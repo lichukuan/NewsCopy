@@ -12,6 +12,7 @@ import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.ContentBean;
 import com.person.newscopy.user.net.bean.MessageBean;
+import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserBean;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
@@ -81,8 +82,14 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     private MutableLiveData<SimpleTalkData> simpleTalkData = new MutableLiveData<>();
 
+    private MutableLiveData<OneContentResult> contentResultMutableLiveData = new MutableLiveData<>();
+
     public void register(String name,String email,String pas){
        userInfoProvide.register(name,email,pas);
+    }
+
+    public void getContent(int contentType,String contentId){
+        userInfoProvide.getContent(contentType,contentId);
     }
 
     public void login(String name,String pas,String salt){
@@ -367,6 +374,15 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
     @Override
     public void queryHistory(ReadBean result) {
         history.setValue(result);
+    }
+
+    @Override
+    public void onGetContent(OneContentResult contentResult) {
+        contentResultMutableLiveData.setValue(contentResult);
+    }
+
+    public LiveData<OneContentResult> getContentResultMutableLiveData() {
+        return contentResultMutableLiveData;
     }
 
     public void UploadArticleImage(List<File> files){

@@ -7,9 +7,9 @@
     <color name="main_word_while">#ffffff</color>
     <color name="selected_color">#f1f0ed</color>
 
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#2087ff</color>
     <color name="colorPrimaryDark">#66000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2499ff</color>
     <color name="tool_bar_red">#ffff4444</color>
     <color name="welcome_while">#ffff</color>
     <color name="black_overlay">#66000000</color>

@@ -7,7 +7,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageButton
+        <ImageView
             android:id="@+id/back"
             android:src="@drawable/back_gray"
             android:layout_width="30dp"

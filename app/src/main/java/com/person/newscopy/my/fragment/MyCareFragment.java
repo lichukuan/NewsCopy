@@ -17,6 +17,7 @@ import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.AllFansAdapter;
 import com.person.newscopy.user.Users;
@@ -31,8 +32,8 @@ public class MyCareFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (MyActivity) getActivity();
-        TranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (20* ScreenFitUtil.getDensity()));
         View view = inflater.inflate(R.layout.fragment_my_care,container,false);
+        //MyTranslucentUtil.setTranslucent(activity, Color.parseColor("#fecc11"), (int) (25* ScreenFitUtil.getDensity()));
         fansRecycler = view.findViewById(R.id.recycler);
         back = view.findViewById(R.id.back);
         back.setOnClickListener(v -> activity.back());

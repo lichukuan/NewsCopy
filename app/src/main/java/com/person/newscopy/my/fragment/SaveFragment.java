@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class SaveFragment extends Fragment {
                 ReadContent readContent = r.get(i);
                 if (readContent.getIsSave() == 1)
                     saveContent.add(readContent);
+                Log.d("=SaveFragment",readContent.getTitle()+" : "+readContent.getIsSave());
             }
             recyclerView.setAdapter(new ItemOperateReadAdapter(saveContent,SaveFragment.this));
         });

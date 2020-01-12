@@ -77,7 +77,6 @@ public class ItemOperateCommentAdapter extends RecyclerView.Adapter<ItemOperateC
             time = itemView.findViewById(R.id.time);
             content = itemView.findViewById(R.id.content_title);
             contentImage = itemView.findViewById(R.id.content_image);
-            sendNum = itemView.findViewById(R.id.send_sum);
             commentNum = itemView.findViewById(R.id.comment_num);
             likeNum = itemView.findViewById(R.id.like_num);
             commentContent = itemView.findViewById(R.id.comment_content);

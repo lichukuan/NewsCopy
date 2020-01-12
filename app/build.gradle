@@ -18,7 +18,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -85,4 +85,5 @@ dependencies {
     implementation 'com.zhihu.android:matisse:0.4.3'
     //七牛云sdk
     implementation 'com.qiniu:qiniu-android-sdk:7.4.0'
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
 }

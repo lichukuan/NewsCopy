@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:orientation="vertical"
+    android:layout_marginStart="20dp"
+    android:background="@color/main_word_while"
+    android:layout_marginEnd="20dp"
+    android:layout_height="170dp">
+    <EditText
+        android:id="@+id/tag"
+        android:hint="内容"
+        android:paddingStart="5dp"
+        android:background="@drawable/take_link_edit_bg"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <EditText
+        android:id="@+id/link"
+        android:layout_margin="8dp"
+        android:hint="链接"
+        android:paddingStart="5dp"
+        android:background="@drawable/take_link_edit_bg"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <Button
+        android:text="确定"
+        android:id="@+id/ok"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:layout_width="80dp"
+        android:layout_height="40dp" />
+</LinearLayout>
