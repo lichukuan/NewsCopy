@@ -5,6 +5,9 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.show.net.bean.ArticleDetail;
+import com.person.newscopy.show.net.bean.AttitudeBean;
+import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 public class ShowDepository implements ShowProvide.OnShowCallback{

@@ -4,9 +4,10 @@ import com.person.newscopy.api.Api;
 import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.network.BaseInterceptor;
 import com.person.newscopy.news.network.bean.ContentResult;
-import com.person.newscopy.news.network.bean.ResultBean;
+import com.person.newscopy.show.net.bean.ArticleDetail;
+import com.person.newscopy.show.net.bean.AttitudeBean;
+import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.user.net.bean.BaseResult;
-import com.person.newscopy.user.net.bean.ContentBean;
 
 import java.io.File;
 

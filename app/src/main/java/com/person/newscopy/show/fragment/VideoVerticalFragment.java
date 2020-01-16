@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -33,15 +32,13 @@ import com.person.newscopy.common.MySoftKeyBoardListener;
 import com.person.newscopy.common.RedCircleImageView;
 import com.person.newscopy.common.SmallLoadView;
 import com.person.newscopy.news.network.bean.ResultBean;
-import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.show.adapter.CommentAdapter;
-import com.person.newscopy.show.net.CommentBean;
+import com.person.newscopy.show.net.bean.CommentBean;
 import com.person.newscopy.user.Users;
 
 import java.io.IOException;
 
-import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class VideoVerticalFragment extends Fragment implements ShowVideoActivity.TimeListener{
@@ -186,7 +183,10 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                             break;
                     }
                 }
-            }else Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                care.setClickable(true);
+            }
 
         });
         commentContent.setOnFocusChangeListener((v, hasFocus) -> {

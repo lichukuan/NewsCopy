@@ -2,8 +2,10 @@ package com.person.newscopy.show.net;
 
 import com.person.newscopy.api.Api;
 import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.show.net.bean.ArticleDetail;
+import com.person.newscopy.show.net.bean.AttitudeBean;
+import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.user.net.bean.BaseResult;
-import com.zhihu.matisse.internal.entity.UncapableCause;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -27,7 +29,7 @@ public interface ShowInterface {
                                       @Field("image") String image, @Field("contentId") String contentId);
 
     @GET(Api.SHOW.FEED_DETAIL)
-    Observable<ArticleDetail> queryArticleDetail(@Query("contentId") String contentId,@Query("userId")String userId,@Query("contentUserId")String contentUserId);
+    Observable<ArticleDetail> queryArticleDetail(@Query("contentId") String contentId, @Query("userId")String userId, @Query("contentUserId")String contentUserId);
 
     @GET(Api.SHOW.RECOMMEND)
     Observable<ContentResult> feedNewsRecommend(@Query("contentType") int contentType,@Query("tag")String tag);
@@ -52,6 +54,6 @@ public interface ShowInterface {
                                 @Query("contentId")String contentId);
 
     @GET(Api.SHOW.QUERY_CONTENT_ATTITUDE)
-    Observable<AttitudeBean> queryContentAttitude(@Query("contentId")String contentId,@Query("userId")String userId,@Query("contentUserId")String contentUserId);
+    Observable<AttitudeBean> queryContentAttitude(@Query("contentId")String contentId, @Query("userId")String userId, @Query("contentUserId")String contentUserId);
 
 }

@@ -6,9 +6,9 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.person.newscopy.news.network.bean.ContentResult;
-import com.person.newscopy.show.net.ArticleDetail;
-import com.person.newscopy.show.net.AttitudeBean;
-import com.person.newscopy.show.net.CommentResult;
+import com.person.newscopy.show.net.bean.ArticleDetail;
+import com.person.newscopy.show.net.bean.AttitudeBean;
+import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.show.net.ShowDepository;
 import com.person.newscopy.user.net.bean.BaseResult;
 

@@ -19,7 +19,7 @@ import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.fragment.VideoHorizontalFragment;
 import com.person.newscopy.show.fragment.VideoVerticalFragment;
-import com.person.newscopy.show.net.CommentResult;
+import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
 

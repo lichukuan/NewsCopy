@@ -28,13 +28,17 @@ import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class VideoAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_NORMAL = 0;
 
     public static final int TYPE_LIVE = 1;
+
+    private Set<String> key = new HashSet<>();
 
     private int type;
 
@@ -61,10 +65,16 @@ public class VideoAdapter extends RecyclerView.Adapter {
     }
 
     public void setChannelBeans(List<ResultBean> beans,boolean isInit) {
-        int size = channelBeans.size();
-        if (isInit&&size>0)return;
-        channelBeans.addAll(beans);
-        notifyItemRangeInserted(size,beans.size());
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                key.add(bean.getId());
+                channelBeans.add(bean);
+                sum++;
+            }
+        }
+        int startSize = channelBeans.size();
+        notifyItemRangeInserted(startSize,sum);
     }
 
 
@@ -116,18 +126,40 @@ public class VideoAdapter extends RecyclerView.Adapter {
         popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
     }
 
-    public int getDownTime(){
-       return channelBeans.get(channelBeans.size() - 2 >= 0 ? channelBeans.size() - 2 : 0).getReleaseTime();
+    public void addTopData(List<ResultBean> beans){
+        int sum = 0;
+        for (int i = beans.size() - 1; i >= 0; i--) {
+            if(!key.contains(beans.get(i).getId())){
+                key.add(beans.get(i).getId());
+                channelBeans.add(0,beans.get(i));
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(0,sum);
     }
 
-    public void addTopData(List<ResultBean> beans){
-        channelBeans.addAll(0,beans);
-        notifyItemRangeInserted(0,beans.size());
+    public void addDownData(List<ResultBean> beans){
+        int startSize = channelBeans.size();
+        int sum = 0;
+        for (ResultBean bean : beans) {
+            if (!key.contains(bean.getId())){
+                channelBeans.add(bean);
+                key.add(bean.getId());
+                sum++;
+            }
+        }
+        notifyItemRangeInserted(startSize,sum);
+    }
+
+    public int getDownTime(){
+        if (channelBeans.size() >=1)
+            return channelBeans.get(channelBeans.size()-1).getReleaseTime();
+        else return 0;
     }
 
     public int getTopTime(){
-        if (channelBeans.size()>0)
-        return channelBeans.get(0).getReleaseTime();
+        if (channelBeans.size() >0)
+            return channelBeans.get(0).getReleaseTime();
         else return 0;
     }
 
@@ -155,7 +187,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
              normalViewHolder.videoSource.setText(bean.getUserName());
              normalViewHolder.playTime.setText(bean.getTime());
              normalViewHolder.videoTitle.setText(bean.getTitle());
-             normalViewHolder.commentCount.setText(bean.getCommentCount()+"评论");
+             normalViewHolder.commentCount.setText(bean.getCommentCount()+"");
              normalViewHolder.playNum.setText(bean.getPlayCount()+"播放");
              Glide.with(fragment)
                      .load(bean.getImage())
@@ -196,7 +228,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
          NormalViewHolder(View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.video_image);
-            videoMore=itemView.findViewById(R.id.video_more);
+            //videoMore=itemView.findViewById(R.id.video_more);
             videoTitle=itemView.findViewById(R.id.video_title);
             playNum=itemView.findViewById(R.id.play_num);
             playTime=itemView.findViewById(R.id.play_time);
