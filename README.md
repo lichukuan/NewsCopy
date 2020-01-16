@@ -1,10 +1,10 @@
-# 仿今日头条项目
+# 微应用
 
 此[项目](https://github.com/lichukuan/NewsCopy)是个人练习作品，还在测试阶段，且只用于学习目的
 
 ## Preview
 
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc397725860ed?w=1080&h=2280&f=png&s=495959)
+![](https://github.com/lichukuan/NewsCopy/blob/master/image/Screenshot_2020-01-16-18-55-50-581_com.person.new.jpg)
 ![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc39b870ef189?w=1080&h=2280&f=png&s=1293926)
 ![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a0a4c930b1?w=1080&h=2280&f=png&s=1327702)
 ![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a2dda4d655?w=1080&h=2280&f=png&s=477908)
@@ -26,16 +26,6 @@
 * Android 4.4 及以上版本的状态栏适配
 * 数据离线缓存 
 
-## 版本信息
-
-### 1.x.x
-
-1. 由于火山小视频网站无法爬取数据，所以用梨视频代替。
-2. 完成了今日头条的基本功能
-
-## 声明
-
-该项目中所有的数据都是出于学习的目的从今日头条和梨视频网站，原作公司拥有所有权利。本程序仅供测试学习，用于其他用途所造成的纠纷与本人无关。
 
 
 
