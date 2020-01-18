@@ -91,6 +91,28 @@ public final class UserInfoProvide {
                 });
     }
 
+    public void querySave(String userId){
+        userInterface.querySave(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseResult -> {
+                    callback.onQuerySave(baseResult);
+                },throwable -> {
+                    callback.error(throwable);
+                });
+    }
+
+    public void deleteSave(String userId,String contentId){
+        userInterface.deleteSave(userId,contentId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseResult -> {
+                    callback.onDeleteSave(baseResult);
+                },throwable -> {
+                    callback.error(throwable);
+                });
+    }
+
     public void queryIsCare(String userId,String searchId){
         userInterface.queryIsCare(userId,searchId)
                 .subscribeOn(Schedulers.io())
@@ -526,6 +548,10 @@ public final class UserInfoProvide {
     }
 
     public interface OnUserInfoLoadCallback{
+
+        void onQuerySave(ContentResult result);
+
+        void onDeleteSave(BaseResult baseResult);
 
         void onSimpleTalk(SimpleTalkData simpleTalkBean);
 

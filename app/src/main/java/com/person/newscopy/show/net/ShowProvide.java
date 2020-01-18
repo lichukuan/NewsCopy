@@ -7,6 +7,7 @@ import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.show.net.bean.ArticleDetail;
 import com.person.newscopy.show.net.bean.AttitudeBean;
 import com.person.newscopy.show.net.bean.CommentResult;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 import java.io.File;
@@ -99,6 +100,18 @@ public class ShowProvide {
                     }
                 });
     }
+
+    public void queryNewAttitude(String userId,String contentId,String contentUserId){
+        showInterface.queryNewAttitude(userId,contentId,contentUserId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseResult -> {
+                    callback.onQueryNewAttitude(baseResult);
+                },throwable -> {
+                    callback.error(throwable);
+                });
+    }
+
 
     public void feedNewsRecommend( int contentType,String tag){
         showInterface.feedNewsRecommend(contentType,tag)
@@ -273,6 +286,8 @@ public class ShowProvide {
         void queryArticleDetail(ArticleDetail detail);
 
         void onAddComment(BaseResult baseResult);
+
+        void onQueryNewAttitude(NewAttitudeBean newAttitudeBean);
     }
 
 }

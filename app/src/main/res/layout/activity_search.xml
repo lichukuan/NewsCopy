@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:background="@color/tool_bar_red"
+        android:background="@drawable/linear_graphics_bg"
         android:layout_height="@dimen/bottom_navigation_height">
         <ImageView
             android:id="@+id/back"
@@ -40,22 +40,30 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:text="热搜"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/main_word_color"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:id="@+id/hot_new_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
+        android:id="@+id/history_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp">
         <TextView
             android:text="历史纪录"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-        <ImageView
-            android:src="@drawable/down_show"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
         <View
@@ -63,13 +71,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <ImageView
+            android:id="@+id/delete_history"
             android:layout_marginEnd="10dp"
             android:src="@drawable/garbage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_history"
+    <com.person.newscopy.search.HistoryView
+        android:id="@+id/history"
+        android:background="@color/second_word_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

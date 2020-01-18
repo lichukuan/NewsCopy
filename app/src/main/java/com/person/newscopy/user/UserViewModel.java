@@ -37,6 +37,16 @@ public class UserViewModel extends AndroidViewModel {
         return depository.getContentResultMutableLiveData();
     }
 
+    public LiveData<ContentResult> querySave(String userId){
+        depository.querySave(userId);
+        return depository.getSaveContentLiveData();
+    }
+
+    public LiveData<BaseResult> deleteSave(String userId,String contentId){
+        depository.deleteSave(userId,contentId);
+        return depository.pickRequireData(UserDepository.DELETE_SAVE);
+    }
+
     public LiveData<BaseResult> uploadArticleImages(List<File> files){
         depository.UploadArticleImage(files);
         return depository.pickRequireData(UserDepository.UPLOAD_ARTICLE_IMAGES);

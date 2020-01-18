@@ -64,9 +64,11 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     public static final int QUERY_IS_CARE = 17;
 
+    public static final int DELETE_SAVE = 18;
+
     private UserInfoProvide userInfoProvide;
 
-    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(17);
+    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(18);
 
     private SparseArray<MutableLiveData<AllCareOrFans>> caresOrfans = new SparseArray<>(2);
 
@@ -84,6 +86,8 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     private MutableLiveData<OneContentResult> contentResultMutableLiveData = new MutableLiveData<>();
 
+    private MutableLiveData<ContentResult> saveContentLiveData = new MutableLiveData<>();
+
     public void register(String name,String email,String pas){
        userInfoProvide.register(name,email,pas);
     }
@@ -92,7 +96,11 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
         userInfoProvide.getContent(contentType,contentId);
     }
 
-    public void login(String name,String pas,String salt){
+    public MutableLiveData<ContentResult> getSaveContentLiveData() {
+        return saveContentLiveData;
+    }
+
+    public void login(String name, String pas, String salt){
        userInfoProvide.login(name,pas,salt);
     }
 
@@ -192,6 +200,25 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     public void querySimpleTalk(String userId){
         userInfoProvide.querySimpleTalk(userId);
+    }
+
+
+    public void querySave(String userId){
+        userInfoProvide.querySave(userId);
+    }
+
+    public void deleteSave(String userId,String contentId){
+        userInfoProvide.deleteSave(userId,contentId);
+    }
+
+    @Override
+    public void onQuerySave(ContentResult results) {
+        saveContentLiveData.setValue(results);
+    }
+
+    @Override
+    public void onDeleteSave(BaseResult baseResult) {
+       updateData(DELETE_SAVE,baseResult);
     }
 
     @Override

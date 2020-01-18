@@ -1,5 +1,6 @@
 package com.person.newscopy.show.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.show.adapter.CommentAdapter;
 import com.person.newscopy.show.net.bean.CommentBean;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.Users;
 
 import java.io.IOException;
@@ -118,6 +120,8 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
     @Override
     public void onResume() {
         super.onResume();
+        if (Users.LOGIN_FLAG)
+
         icon.setOnClickListener(v -> activity.showUserInfo());
         commentIcon.setIcon(R.drawable.pinglun,R.drawable.pinglun_un);
         commentIcon.setShowNumber(true);
@@ -189,6 +193,14 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             }
 
         });
+        activity.queryNewAttitude(Users.userId,bean.getId(),bean.getUserId()).observe(this, newAttitudeBean -> {
+            isCare = newAttitudeBean.getResult().getIsCare();
+            isLike = newAttitudeBean.getResult().getIsLike();
+            isSave = newAttitudeBean.getResult().getIsSave();
+            if (isLike == 1)likeIcon.changeIcon();
+            if (isCare == 1)care.setText("已关注");
+            if (isSave == 1)saveIcon.changeIcon();
+        });
         commentContent.setOnFocusChangeListener((v, hasFocus) -> {
             layout.removeViewAt(1);
             if (hasFocus){
@@ -238,7 +250,6 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                 Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
 
         });
-
         seekBar.setMax(100);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -268,7 +279,6 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             if (commentResult.getResult().size() > 0)noCommentFlag.setVisibility(View.GONE);
             comment.setAdapter(commentAdapter);//评论
         });
-
         ijkMediaPlayer = activity.getIjkMediaPlayer();
         ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
              smallLoadView.setVisibility(View.GONE);
@@ -296,18 +306,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             isPlaying = !isPlaying;
         });
         title.setText(bean.getTitle());
-        MySoftKeyBoardListener.setListener(getActivity(), new MySoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
-            @Override
-            public void keyBoardShow(int height) {
-                layout.setTranslationY(-height);
-            }
 
-            @Override
-            public void keyBoardHide(int height) {
-                layout.setTranslationY(0);
-                commentContent.setFocusable(false);
-            }
-        });
         Glide.with(this)
                 .load(bean.getUserIcon())
                 .asBitmap()

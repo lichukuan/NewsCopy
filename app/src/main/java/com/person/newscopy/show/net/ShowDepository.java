@@ -8,6 +8,7 @@ import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.show.net.bean.ArticleDetail;
 import com.person.newscopy.show.net.bean.AttitudeBean;
 import com.person.newscopy.show.net.bean.CommentResult;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 public class ShowDepository implements ShowProvide.OnShowCallback{
@@ -40,6 +41,8 @@ public class ShowDepository implements ShowProvide.OnShowCallback{
     private MutableLiveData<ArticleDetail> articleDetail = new MutableLiveData<>();
 
     private MutableLiveData<AttitudeBean> attitude = new MutableLiveData<>();
+
+    private MutableLiveData<NewAttitudeBean> newAttitudeBeanMutableLiveData = new MutableLiveData<>();
 
     public ShowDepository() {
         showProvide = ShowProvide.getInstance();
@@ -185,5 +188,18 @@ public class ShowDepository implements ShowProvide.OnShowCallback{
     @Override
     public void onAddComment(BaseResult baseResult) {
         dataChange(baseResult,ADD_COMMENT_TYPE);
+    }
+
+    public void queryNewAttitude(String userId,String contentId,String contentUserId){
+        showProvide.queryNewAttitude(userId,contentId,contentUserId);
+    }
+
+    public MutableLiveData<NewAttitudeBean> getNewAttitudeLiveData() {
+        return newAttitudeBeanMutableLiveData;
+    }
+
+    @Override
+    public void onQueryNewAttitude(NewAttitudeBean newAttitudeBean) {
+        newAttitudeBeanMutableLiveData.setValue(newAttitudeBean);
     }
 }

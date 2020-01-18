@@ -63,10 +63,8 @@ public class NewsFragment extends Fragment {
         }
         search.setText("搜你想搜...");
         search.setOnClickListener(v->{
-            Toast.makeText(activity, "此功能暂不可用", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(activity, SearchActivity.class);
-//            intent.putExtra(SearchActivity.SEARCH_KEY,HOT_NEWS_KEY);
-//            activity.startActivity(intent);
+            Intent intent = new Intent(activity, SearchActivity.class);
+            activity.startActivity(intent);
 });
         tabLayout.setupWithViewPager(pager);
         pager.setAdapter(new NewsFragmentAdapter(getChildFragmentManager(),Config.TYPE,null));

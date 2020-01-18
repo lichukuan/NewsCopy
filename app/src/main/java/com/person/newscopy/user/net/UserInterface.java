@@ -31,6 +31,12 @@ import rx.Observable;
 
 public interface UserInterface {
 
+    @GET(Api.USER.DELETE_SAVE)
+    Observable<BaseResult> deleteSave(@Query("userId")String userId,@Query("contentId")String contentId);
+
+    @GET(Api.USER.QUERY_SAVE)
+    Observable<ContentResult> querySave(@Query("userId")String userId);
+
     @POST(Api.USER.REGISTER)
     @FormUrlEncoded
     Observable<BaseResult> register(@Field("name") String name,@Field("email")String email ,@Field("pas") String pas);

@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.person.newscopy.R;
+import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.Config;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
 
 import java.util.List;
 
@@ -20,25 +23,9 @@ public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdap
 
     private List<ResultBean> content;
 
-    private List<ResultBean> videoSearchBeanList;
-
-    private boolean isVideoSearch=false;
-
-    public HotNewsSearchAdapter(Activity context, List<ResultBean> content,  List<ResultBean> videoSearchBeanList) {
+    public HotNewsSearchAdapter(Activity context, List<ResultBean> content) {
         this.context=context;
-        if (content==null)isVideoSearch=true;
         this.content=content;
-        this.videoSearchBeanList=videoSearchBeanList;
-    }
-
-    public void setContent(List<ResultBean> content) {
-        this.content = content;
-        notifyDataSetChanged();
-    }
-
-    public void setVideoSearchBeanList(List<ResultBean> videoSearchBeanList) {
-        this.videoSearchBeanList = videoSearchBeanList;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,40 +38,41 @@ public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-          if(isVideoSearch){
-              holder.left.setText(videoSearchBeanList.get(position*2).getTitle());
-              holder.right.setText(videoSearchBeanList.get(position*2+1).getTitle());
-              holder.left.setOnClickListener(v->showWebInfo("https://www.ixigua.com/search/"+videoSearchBeanList.get(position*2).getTitle()));
-              holder.right.setOnClickListener(v->showWebInfo("https://www.ixigua.com/search/"+videoSearchBeanList.get(position*2+1).getTitle()));
-          }else {
-              holder.left.setText(content.get(position*2).getTitle());
-              holder.right.setText(content.get(position*2+1).getTitle());
-              holder.left.setOnClickListener(v->showWebInfo("https://www.toutiao.com/a"+content.get(position*2).getId()));
-              holder.right.setOnClickListener(v->showWebInfo("https://www.toutiao.com/a"+content.get(position*2+1).getId()));
-          }
+          ResultBean resultBean = content.get(position);
+          holder.content.setText(resultBean.getTitle());
+          holder.content.setOnClickListener(v -> {
+              if (resultBean.getType() == Config.CONTENT.NEWS_TYPE){
+                  goToShowNewActivity(BaseUtil.getGson().toJson(resultBean));
+              }else{
+                  goToVideoNewActivity(BaseUtil.getGson().toJson(resultBean));
+              }
+          });
     }
 
-    private void showWebInfo(String url){
+    private void goToShowNewActivity(String url){
         Intent intent = new Intent(context,ShowNewsActivity.class);
         intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,url);
         context.startActivity(intent);
         context.finish();
     }
 
+    private void goToVideoNewActivity(String url){
+        Intent intent = new Intent(context,ShowVideoActivity.class);
+        intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,url);
+        context.startActivity(intent);
+        context.finish();
+    }
+
     @Override
     public int getItemCount() {
-        if (!isVideoSearch)
-        return content.size()/2;
-        else return videoSearchBeanList.size()/2;
+        return content.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView left;
-        TextView right;
+        TextView content;
         ViewHolder(View itemView) {
             super(itemView);
-            left = itemView.findViewById(R.id.content_left);
-            right = itemView.findViewById(R.id.content_right);
+            content = itemView.findViewById(R.id.content);
         }
     }
 

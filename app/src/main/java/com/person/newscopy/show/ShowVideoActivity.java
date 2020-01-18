@@ -20,6 +20,7 @@ import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.fragment.VideoHorizontalFragment;
 import com.person.newscopy.show.fragment.VideoVerticalFragment;
 import com.person.newscopy.show.net.bean.CommentResult;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
 
@@ -31,9 +32,7 @@ public class ShowVideoActivity extends AppCompatActivity {
     VideoHorizontalFragment horizontalFragment;
     VideoVerticalFragment verticalFragment;
     public static int state = 2;
-
     public static final int STATE_HORIZONTAL = 1;
-
     public static final int STATE_VERTICAL = 2;
     private IjkMediaPlayer ijkMediaPlayer;
     private ResultBean bean;
@@ -82,6 +81,18 @@ public class ShowVideoActivity extends AppCompatActivity {
         handler.postDelayed(time,1000);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!ijkMediaPlayer.isPlaying())ijkMediaPlayer.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (ijkMediaPlayer.isPlaying())
+        ijkMediaPlayer.pause();
+    }
 
     public interface TimeListener{
         void now(int now);
@@ -162,6 +173,10 @@ public class ShowVideoActivity extends AppCompatActivity {
 
     public LiveData<BaseResult> save(String isSave, String userId, String contentId){
         return viewModel.save(isSave,userId,contentId);
+    }
+
+    public LiveData<NewAttitudeBean> queryNewAttitude(String userId,String contentId,String contentUserId){
+        return viewModel.queryNewAttitude(userId,contentId,contentUserId);
     }
 
     public void showUserInfo(){

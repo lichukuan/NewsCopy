@@ -8,7 +8,18 @@ public interface Api {
 
     String DOWNLOAD_NEWEST_APP = "http://www.fingertips.vip/download/app";
 
+    interface SEARCH{
+
+        String SEARCH_REQUIREED_CONTENT = "phone/query/search";
+
+        String QUERY_HOT_CONTENT = "phone/query/hot";
+    }
+
     interface USER{
+
+        String QUERY_SAVE = "phone/query/save";
+
+        String DELETE_SAVE = "phone/delete/save";
 
         String HISTORY = "phone/query/read";
 
@@ -104,6 +115,8 @@ public interface Api {
         String QUERY_CONTENT_ATTITUDE = "phone/query/attitude";
 
         String QUERY_IS_CARE = "phone/query/isCare";
+
+        String QUERY_ATTITUDE = "phone/query/allAttitude";
     }
 
     interface TYPE{

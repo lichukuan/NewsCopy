@@ -5,6 +5,7 @@ import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.show.net.bean.ArticleDetail;
 import com.person.newscopy.show.net.bean.AttitudeBean;
 import com.person.newscopy.show.net.bean.CommentResult;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 import retrofit2.http.Field;
@@ -15,6 +16,10 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface ShowInterface {
+
+    @GET(Api.SHOW.QUERY_ATTITUDE)
+    Observable<NewAttitudeBean> queryNewAttitude(@Query("userId")String userId,@Query("contentId")String contentId,@Query("contentUserId")String contentUserId);
+
 
     @GET(Api.SHOW.ADD_HISTORY)
     Observable<BaseResult> addReadHistory(@Query("userId") String userId, @Query("contentId") String contentId, @Query("contentType") int contentType,

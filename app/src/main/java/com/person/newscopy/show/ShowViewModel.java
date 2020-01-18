@@ -10,6 +10,7 @@ import com.person.newscopy.show.net.bean.ArticleDetail;
 import com.person.newscopy.show.net.bean.AttitudeBean;
 import com.person.newscopy.show.net.bean.CommentResult;
 import com.person.newscopy.show.net.ShowDepository;
+import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 public class ShowViewModel extends AndroidViewModel {
@@ -31,6 +32,12 @@ public class ShowViewModel extends AndroidViewModel {
         showDepository.addMessage(userId,messageType,fromUserId,content,image,contentId);
         return showDepository.pickData(ShowDepository.MESSAGE_TYPE);
     }
+
+    public LiveData<NewAttitudeBean> queryNewAttitude(String userId,String contentId,String contentUserId){
+        showDepository.queryNewAttitude(userId,contentId,contentUserId);
+        return showDepository.getNewAttitudeLiveData();
+    }
+
 
     public LiveData<ContentResult> feedNewsRecommend(int contentType,String tag){
         showDepository.feedNewsRecommend(contentType,tag);

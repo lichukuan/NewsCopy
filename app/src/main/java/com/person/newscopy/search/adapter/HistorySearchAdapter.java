@@ -8,20 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
 
+import java.util.Set;
+
 public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdapter.ViewHolder> {
 
-    private boolean isShowAll = false;
-
     private Context context;
+    private Set<String> value;
 
-    public void setShowAll(boolean showAll) {
-        isShowAll = showAll;
-        notifyDataSetChanged();
+    public HistorySearchAdapter(Context context,Set<String> value){
+        this.context = context;
+        this.value = value;
     }
 
-    public void clear(){
-
-    }
 
     @NonNull
     @Override

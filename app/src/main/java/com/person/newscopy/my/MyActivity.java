@@ -342,6 +342,14 @@ public class MyActivity extends AppCompatActivity {
         return userViewModel.uploadArticleImages(files);
     }
 
+    public LiveData<BaseResult> deleteSave(String userId,String contentId){
+        return userViewModel.deleteSave(userId,contentId);
+    }
+
+    public LiveData<ContentResult> querySave(String userId){
+        return userViewModel.querySave(userId);
+    }
+
     public LiveData<BaseResult> releaseArticle(String userId,  String content,String title,
                                                String image,String imageList,String tag, String rec){
         return userViewModel.releaseArticle(userId,content,title,image,imageList,tag,rec);
