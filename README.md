@@ -1,41 +1,29 @@
-# 仿今日头条项目
+# 微应用
 
 此[项目](https://github.com/lichukuan/NewsCopy)是个人练习作品，还在测试阶段，且只用于学习目的
 
 ## Preview
 
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc397725860ed?w=1080&h=2280&f=png&s=495959)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc39b870ef189?w=1080&h=2280&f=png&s=1293926)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a0a4c930b1?w=1080&h=2280&f=png&s=1327702)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a2dda4d655?w=1080&h=2280&f=png&s=477908)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a5ff894380?w=1080&h=2280&f=png&s=67330)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3a9d8e71361?w=1080&h=2280&f=png&s=1304883)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3ad344eef5f?w=1080&h=2280&f=png&s=101661)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3b74be317ff?w=1080&h=2280&f=png&s=602584)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3b023a20801?w=1080&h=2280&f=png&s=246284)
-![](https://user-gold-cdn.xitu.io/2019/9/4/16cfc3b2cc7d5148?w=2280&h=1080&f=png&s=734180)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0ad0970b91c?w=1080&h=2280&f=jpeg&s=80727)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0b09f6e60e8?w=1080&h=2280&f=jpeg&s=227165)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0b3ebfae9cd?w=1080&h=2280&f=jpeg&s=570678)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0bc2612075c?w=1080&h=2280&f=jpeg&s=569885)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0bf5d155957?w=1080&h=2280&f=jpeg&s=149550)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0c6cb0e4022?w=1080&h=2280&f=jpeg&s=1156809)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0c9971b3d1a?w=1080&h=2280&f=jpeg&s=448523)
+![](https://user-gold-cdn.xitu.io/2020/1/16/16fae0cbf916a0d3?w=1080&h=2280&f=jpeg&s=115219)
 
 ## Points
 
-* 使用RxJava配合Retrofit2做网络请求
 * 使用MVVM架构
-* 使用RecyclerView实现下拉加载
+* 下拉加载和上拉刷新
 * 使用RecyclerView多布局
 * 自定义View
 * 使用ijkplayer播放视频
 * Android 4.4 及以上版本的状态栏适配
-* 数据离线缓存 
+* 使用RxJava配合Retrofit2做网络请求
+* Android屏幕适配
 
-## 版本信息
-
-### 1.x.x
-
-1. 由于火山小视频网站无法爬取数据，所以用梨视频代替。
-2. 完成了今日头条的基本功能
-
-## 声明
-
-该项目中所有的数据都是出于学习的目的从今日头条和梨视频网站，原作公司拥有所有权利。本程序仅供测试学习，用于其他用途所造成的纠纷与本人无关。
 
 
 
