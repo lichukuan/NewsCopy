@@ -12,6 +12,7 @@ import com.person.newscopy.R;
 import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.news.network.bean.ResultBean;
+import com.person.newscopy.search.SearchActivity;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 
@@ -19,11 +20,11 @@ import java.util.List;
 
 public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdapter.ViewHolder> {
 
-    private Activity context;
+    private SearchActivity context;
 
     private List<ResultBean> content;
 
-    public HotNewsSearchAdapter(Activity context, List<ResultBean> content) {
+    public HotNewsSearchAdapter(SearchActivity context, List<ResultBean> content) {
         this.context=context;
         this.content=content;
     }
@@ -41,6 +42,7 @@ public class HotNewsSearchAdapter extends RecyclerView.Adapter<HotNewsSearchAdap
           ResultBean resultBean = content.get(position);
           holder.content.setText(resultBean.getTitle());
           holder.content.setOnClickListener(v -> {
+              context.addToHistory(resultBean.getTitle());
               if (resultBean.getType() == Config.CONTENT.NEWS_TYPE){
                   goToShowNewActivity(BaseUtil.getGson().toJson(resultBean));
               }else{

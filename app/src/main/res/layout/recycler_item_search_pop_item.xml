@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingStart="5dp"
+    android:id="@+id/search_result"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:gravity="center"
+    android:textColor="@color/main_word_color"
+    android:textSize="18sp"
+    android:layout_height="40dp">
+
+</TextView>
