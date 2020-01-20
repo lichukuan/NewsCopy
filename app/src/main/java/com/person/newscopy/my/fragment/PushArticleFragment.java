@@ -1,6 +1,7 @@
 package com.person.newscopy.my.fragment;
 
 import android.Manifest;
+import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,6 +55,7 @@ import com.person.newscopy.common.MoreResourceEditText;
 import com.person.newscopy.common.MyRichEditText;
 import com.person.newscopy.common.SoftKeyBoardListener;
 import com.person.newscopy.my.MyActivity;
+import com.person.newscopy.my.SetContentAndLinkFragment;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.qiniu.android.http.ResponseInfo;
@@ -90,7 +93,7 @@ import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PushArticleFragment extends Fragment {
+public class PushArticleFragment extends Fragment implements SetContentAndLinkFragment.OnOkListener{
 
     ImageView back;
     TextView release;
@@ -127,7 +130,11 @@ public class PushArticleFragment extends Fragment {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
-        takeLink.setOnClickListener(v -> createTakeLinkPop());
+        takeLink.setOnClickListener(v -> {
+            SetContentAndLinkFragment fragment = new SetContentAndLinkFragment();
+            fragment.setListener(PushArticleFragment.this);
+            fragment.show(getChildFragmentManager(),"SetContentAndLinkFragment");
+        });
         tagAdapter = ArrayAdapter.createFromResource(getContext(), R.array.tag, android.R.layout.simple_spinner_item);
         // android.R.layout.simple_spinner_item是系统默认布局，用于已选中时的布局
         tagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -192,38 +199,16 @@ public class PushArticleFragment extends Fragment {
         return true;
     }
 
-    public void createTakeLinkPop(){
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.take_link_pop_view,null);
-        EditText content = view.findViewById(R.id.tag);
-        EditText link = view.findViewById(R.id.link);
-        Button ok = view.findViewById(R.id.ok);
-        PopupWindow popupWindow = new PopupWindow(view,(int) (300* ScreenFitUtil.getDensity()),(int) (170* ScreenFitUtil.getDensity()));
-        popupWindow.setTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.showAtLocation(parent, Gravity.CENTER,0,0);
-        backgroundAlpha(0.5f);
-        popupWindow.setOnDismissListener(() -> backgroundAlpha(1));
-        ok.setOnClickListener(v -> {
-            String tag = content.getText().toString();
-            if (tag.equals("")) {
-                Toast.makeText(getContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String l = link.getText().toString();
-            if (l.equals("")){
-                Toast.makeText(getContext(), "链接不能为空", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            richEditor.insertUrl(tag,l);
-        });
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 1 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+             takePicture();
+        }else{
+            Toast.makeText(myActivity, "您禁用了该权限,无法获取图片", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        getActivity().getWindow().setAttributes(lp);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -265,5 +250,10 @@ public class PushArticleFragment extends Fragment {
                 .thumbnailScale(0.85f) // 缩略图的比例
                 .imageEngine(new GlideEngine()) // 使用的图片加载引擎
                 .forResult(REQUEST_CODE_CHOOSE); // 设置作为标记的请求码
+    }
+
+    @Override
+    public void ok(String tag, String l) {
+        if (richEditor != null)richEditor.insertUrl(tag,l);
     }
 }
