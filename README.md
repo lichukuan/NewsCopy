@@ -1,4 +1,4 @@
-# 微应用
+# 微进步
 
 此[项目](https://github.com/lichukuan/NewsCopy)是个人练习作品，还在测试阶段，且只用于学习目的
 
