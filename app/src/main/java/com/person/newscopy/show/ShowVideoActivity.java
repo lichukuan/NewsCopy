@@ -161,8 +161,8 @@ public class ShowVideoActivity extends AppCompatActivity {
         return viewModel.careOrNot(userId,careUserId,isCare);
     }
 
-    public void sendMessage(int type,String content){
-        viewModel.addMessage(bean.getUserId(),type,Users.userId,content,bean.getImage(),bean.getId()).observe(this,baseResult -> {
+    public void sendMessage(String title,int type,String content){
+        viewModel.addMessage(bean.getUserId(),type,Users.userId,content,title).observe(this,baseResult -> {
             if (baseResult.getCode() != Config.SUCCESS)Log.d("==ShowVideoActivity","上传消息出错了");
         });
     }

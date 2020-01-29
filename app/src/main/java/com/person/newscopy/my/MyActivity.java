@@ -108,7 +108,6 @@ public class MyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //android.R.color.dimen.notification_large_icon_width
         ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
-        TranslucentUtil.setTranslucent(this, Color.WHITE, (int) (25*ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_my);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         Intent intent = getIntent();
@@ -220,6 +219,7 @@ public class MyActivity extends AppCompatActivity {
     }
 
     public void back(){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0)finish();
         getSupportFragmentManager().popBackStack();
     }
 
@@ -348,6 +348,10 @@ public class MyActivity extends AppCompatActivity {
 
     public LiveData<ContentResult> querySave(String userId){
         return userViewModel.querySave(userId);
+    }
+
+    public LiveData<BaseResult> sendMessage(String title,String userId,String fromUserId,int type,String content){
+        return userViewModel.addMessage(userId,type,fromUserId,content,title);
     }
 
     public LiveData<BaseResult> releaseArticle(String userId,  String content,String title,

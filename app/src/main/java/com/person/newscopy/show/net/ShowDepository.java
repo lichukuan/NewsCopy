@@ -75,8 +75,8 @@ public class ShowDepository implements ShowProvide.OnShowCallback{
     }
 
     public void addMessage(String userId, int messageType, String fromUserId, String content,
-                           String image,  String contentId){
-       showProvide.addMessage(userId,messageType,fromUserId,content,image,contentId);
+                           String title){
+       showProvide.addMessage(userId,messageType,fromUserId,content,title);
     }
 
     public void feedNewsRecommend( int contentType,String tag){

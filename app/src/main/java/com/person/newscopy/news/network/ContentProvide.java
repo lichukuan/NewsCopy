@@ -5,6 +5,7 @@ import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.user.net.bean.BaseResult;
 import java.io.File;
+import java.net.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class ContentProvide {
                     .client(new OkHttpClient()
                             .newBuilder()
                             .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),CONTENT_CACHE_STORAGE),MAX_CACHE_SPACE))
+                            .proxy(Proxy.NO_PROXY)
                             .addInterceptor(new BaseInterceptor())
                             .addNetworkInterceptor(new BaseInterceptor())
                             .build())

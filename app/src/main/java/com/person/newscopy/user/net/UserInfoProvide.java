@@ -19,6 +19,7 @@ import com.person.newscopy.user.net.bean.UserBean;
 import com.person.newscopy.user.net.bean.VersionBean;
 
 import java.io.File;
+import java.net.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public final class UserInfoProvide {
                     .client(new OkHttpClient()
                             .newBuilder()
                             .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),USER_CACHE_STORAGE), ContentProvide.MAX_CACHE_SPACE))
+                            .proxy(Proxy.NO_PROXY)
                             .addInterceptor(new BaseInterceptor())
                             .addNetworkInterceptor(new BaseInterceptor())
                             .build())
@@ -67,6 +69,29 @@ public final class UserInfoProvide {
             userInterface = retrofit.create(UserInterface.class);
         }
         return provide;
+    }
+
+    public void addMessage(String userId, int messageType, String fromUserId, String content,
+                           String title){
+        userInterface.addMessage(userId,messageType,fromUserId,content,title)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BaseResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (callback!=null)callback.error(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+                        if (callback!=null)callback.onMessageLoad(baseResult);
+                    }
+                });
     }
 
     public void changeEmail(String userId,String email){
@@ -548,6 +573,8 @@ public final class UserInfoProvide {
     }
 
     public interface OnUserInfoLoadCallback{
+
+        void onMessageLoad(BaseResult baseResult);
 
         void onQuerySave(ContentResult result);
 

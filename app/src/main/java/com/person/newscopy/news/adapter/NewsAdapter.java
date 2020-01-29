@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
@@ -35,6 +37,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ResultBean> dataBeanList=new ArrayList<>();
     private Set<String> key = new HashSet<>();
+    private Set<String> unLike = new HashSet<>();
     private Context context;
     private Fragment fragment;
     private boolean isNeedRefresh=false;
@@ -92,6 +95,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void setDataBeanList(List<ResultBean> beans,boolean isInit) {
         int sum = 0;
         for (ResultBean bean : beans) {
+            if (unLike.contains(bean.getId()))continue;
             if (!key.contains(bean.getId())){
                 key.add(bean.getId());
                 dataBeanList.add(bean);
@@ -106,6 +110,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         int startSize = dataBeanList.size();
         int sum = 0;
         for (ResultBean bean : beans) {
+            if (unLike.contains(bean.getId()))continue;
             if (!key.contains(bean.getId())){
                 dataBeanList.add(bean);
                 key.add(bean.getId());
@@ -118,7 +123,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addTopData(List<ResultBean> beans){
         int sum = 0;
         for (int i = beans.size() - 1; i >= 0; i--) {
-            if(!key.contains(beans.get(i).getId())){
+            ResultBean bean = beans.get(i);
+            if (unLike.contains(bean.getId()))continue;
+            if(!key.contains(bean.getId())){
                 key.add(beans.get(i).getId());
                 dataBeanList.add(0,beans.get(i));
                 sum++;
@@ -163,7 +170,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         loadHolder.refreshItem.setVisibility(View.GONE);
     }
 
-    private void createPop(View location){
+    private void createPop(View location,String id,int position){
         float d = ScreenFitUtil.getDensity();
         int l[] = new int[2];
         location.getLocationOnScreen(l);
@@ -178,6 +185,26 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
+        view.findViewById(R.id.un_interesting).setOnClickListener(v -> {
+            unLike.add(id);
+            dataBeanList.remove(position);
+            notifyItemRemoved(position);
+            popupWindow.dismiss();
+        });
+        view.findViewById(R.id.bad_content).setOnClickListener(v -> {
+            unLike.add(id);
+            dataBeanList.remove(position);
+            notifyItemRemoved(position);
+            popupWindow.dismiss();
+            Toast.makeText(context, "反馈成功", Toast.LENGTH_SHORT).show();
+        });
+        view.findViewById(R.id.hate).setOnClickListener(v -> {
+            unLike.add(id);
+            dataBeanList.remove(position);
+            notifyItemRemoved(position);
+            popupWindow.dismiss();
+            Toast.makeText(context, "已屏蔽", Toast.LENGTH_SHORT).show();
+        });
         if(y>height/2){
            top.setVisibility(View.INVISIBLE);
            bottom.setX(x-5*d);
@@ -197,14 +224,15 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (position==getItemCount()-1)
             return TYPE_REFRESH;
         final ResultBean bean = dataBeanList.get(position);
-        if (bean.getImageList()==null&&bean.getImage()==null){
+        if ((bean.getImageList()==null&&bean.getImage()==null)){
             return TYPE_TOP;
         }
-        final List<String> list = BaseUtil.jsonToStringList(dataBeanList.get(position).getImageList());
-        bean.setImages(list);
         if (bean.getImage() != null)
             return TYPE_ONE;
-        else if (bean.getImages().size() >= 3){
+        final List<String> list = BaseUtil.jsonToStringList(dataBeanList.get(position).getImageList());
+        bean.setImages(list);
+        if (list == null||list.size() <= 0)return TYPE_TOP;
+        if (bean.getImages().size() >= 3){
             return TYPE_THREE;
         }else
             return TYPE_BIG;
@@ -226,14 +254,17 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             bigViewHolder.title.setText(bean.getTitle());
             bigViewHolder.comment.setText(bean.getCommentCount()+"评论");
             bigViewHolder.bigNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
-            if (fragment!=null)
-            Glide.with(fragment)
-                    .load(bean.getImages().get(0))
-                    .into(bigViewHolder.bigPic);
-            else Glide.with(context)
-                    .load(bean.getImages().get(0))
-                    .into(bigViewHolder.bigPic);
-            bigViewHolder.close.setOnClickListener(this::createPop);
+            if(bean.getImages().size() > 0){
+                if (fragment!=null)
+                    Glide.with(fragment)
+                            .load(bean.getImages().get(0))
+                            .into(bigViewHolder.bigPic);
+                else Glide.with(context)
+                        .load(bean.getImages().get(0))
+                        .into(bigViewHolder.bigPic);
+                bigViewHolder.close.setOnClickListener(v -> createPop(v,bean.getId(),position));
+            }
+
         }else if (holder instanceof OneViewHolder){
                OneViewHolder oneViewHolder = (OneViewHolder) holder;
                oneViewHolder.title.setText(bean.getTitle());
@@ -248,7 +279,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                else  Glide.with(context)
                        .load(bean.getImage())
                        .into(oneViewHolder.pic);
-               oneViewHolder.close.setOnClickListener(this::createPop);
+               oneViewHolder.close.setOnClickListener(v -> createPop(v,bean.getId(),position));
         }else if (holder instanceof ThreeViewHolder){
              ThreeViewHolder threeViewHolder= (ThreeViewHolder) holder;
              threeViewHolder.title.setText(bean.getTitle());
@@ -278,14 +309,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         .load(list.get(2))
                         .into(threeViewHolder.pic3);
             }
-            threeViewHolder.close.setOnClickListener(this::createPop);
+            threeViewHolder.close.setOnClickListener(v->createPop(v,bean.getId(),position));
         }else if (holder instanceof TopViewHolder){
             TopViewHolder topViewHolder= (TopViewHolder) holder;
             topViewHolder.comment.setText(bean.getCommentCount()+"评论");
             topViewHolder.source.setText(bean.getUserName());
             topViewHolder.title.setText(bean.getTitle());
             topViewHolder.topNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
-            topViewHolder.close.setOnClickListener(this::createPop);
+            topViewHolder.close.setOnClickListener(v -> createPop(v,bean.getId(),position));
         }
     }
 

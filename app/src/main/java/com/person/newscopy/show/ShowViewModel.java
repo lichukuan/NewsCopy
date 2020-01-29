@@ -28,8 +28,8 @@ public class ShowViewModel extends AndroidViewModel {
     }
 
     public LiveData<BaseResult> addMessage(String userId, int messageType, String fromUserId, String content,
-                                           String image,  String contentId){
-        showDepository.addMessage(userId,messageType,fromUserId,content,image,contentId);
+                                           String title){
+        showDepository.addMessage(userId,messageType,fromUserId,content,title);
         return showDepository.pickData(ShowDepository.MESSAGE_TYPE);
     }
 

@@ -31,7 +31,7 @@ public interface ShowInterface {
     @POST(Api.SHOW.ADD_MESSAGE)
     @FormUrlEncoded
     Observable<BaseResult> addMessage(@Field("userId") String userId, @Field("messageType") int messageType, @Field("fromUserId") String fromUserId, @Field("content") String content,
-                                      @Field("image") String image, @Field("contentId") String contentId);
+                                      @Field("title") String title);
 
     @GET(Api.SHOW.FEED_DETAIL)
     Observable<ArticleDetail> queryArticleDetail(@Query("contentId") String contentId, @Query("userId")String userId, @Query("contentUserId")String contentUserId);

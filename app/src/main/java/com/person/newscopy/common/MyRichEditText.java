@@ -16,6 +16,7 @@ import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.textclassifier.TextLinks;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,7 +118,7 @@ public class MyRichEditText extends android.support.v7.widget.AppCompatEditText{
             int index1 = editable.getSpanStart(b);
             return Integer.compare(index0, index1);
         });
-        html.append("<html>");
+        html.append("<html><article>");
         html.append(getText().toString());
         for (MyImageSpan word : words) {
             int start = html.indexOf(IMAGE_FLAG);
@@ -130,8 +131,8 @@ public class MyRichEditText extends android.support.v7.widget.AppCompatEditText{
             int end = start+urlSpan.tag.length();
             html.replace(start,end,createHtmlLink(urlSpan.getURL(),urlSpan.tag));
         }
-        html.append("</html>");
-        return html.toString().replace("\n","</br>");
+        html.append("</article></html>");
+        return html.toString();
     }
 
     private String createHtmlLink(String url,String content){
@@ -195,6 +196,20 @@ public class MyRichEditText extends android.support.v7.widget.AppCompatEditText{
             e.printStackTrace();
         }
         return degree;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_ENTER)
+        {
+            Editable edit_text = getEditableText();
+            SpannableString newLine = new SpannableString("\n");
+            edit_text.insert(getSelectionStart(), newLine);//换行
+            return true;
+        }
+        // Handle all other keys in the default way
+        return super.onKeyDown(keyCode, event);
     }
 
     /**

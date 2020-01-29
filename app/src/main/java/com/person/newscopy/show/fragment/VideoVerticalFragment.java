@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -36,10 +37,14 @@ import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.show.adapter.CommentAdapter;
 import com.person.newscopy.show.net.bean.CommentBean;
+import com.person.newscopy.show.net.bean.MessageCommentBean;
+import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
+import com.person.newscopy.show.net.bean.MessageUserBean;
 import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.Users;
 
 import java.io.IOException;
+import java.util.List;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -78,6 +83,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
     private EditText commentContent;
     private CommentAdapter commentAdapter;
     private SmallLoadView smallLoadView;
+    CardView commentParent;
 
     @Nullable
     @Override
@@ -85,6 +91,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
         View view = inflater.inflate(R.layout.fragment_show_vertical,container,false);
         TranslucentUtil.setTranslucent(getActivity(), Color.TRANSPARENT, 0);
         videoView = view.findViewById(R.id.video_view);
+        commentParent = view.findViewById(R.id.comment_parent);
         activity = (ShowVideoActivity) getActivity();
         activity.setListener(this);
         normalCommentView = inflater.inflate(R.layout.comment_normal_view,null);
@@ -138,8 +145,14 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                 activity.like(isLike,Users.userId,bean.getId(),bean.getUserId()).observe(this, baseResult -> {
                     if (baseResult.getCode() != 1)
                         Toast.makeText(getContext(), "出错了", Toast.LENGTH_SHORT).show();
-                    else
-                        activity.sendMessage(Config.MESSAGE.LIKE_TYPE,null);
+                    else {
+                        MessageSaveAndLikeBean messageSaveAndLikeBean = new MessageSaveAndLikeBean();
+                        messageSaveAndLikeBean.setData(BaseUtil.getGson().toJson(bean));
+                        messageSaveAndLikeBean.setIcon(Users.userIcon);
+                        messageSaveAndLikeBean.setUserId(Users.userId);
+                        messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        activity.sendMessage(Users.userName+"赞了您的视频 "+bean.getTitle(),Config.MESSAGE.LIKE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
+                    }
                 });
             }else Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
         });
@@ -152,7 +165,14 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                 activity.save(isSave,Users.userId,bean.getId()).observe(this,baseResult -> {
                     if (baseResult.getCode() != 1)
                         Toast.makeText(getContext(), "出错了", Toast.LENGTH_SHORT).show();
-                    else activity.sendMessage(Config.MESSAGE.SAVE_TYPE,null);
+                    else {
+                        MessageSaveAndLikeBean messageSaveAndLikeBean = new MessageSaveAndLikeBean();
+                        messageSaveAndLikeBean.setData(BaseUtil.getGson().toJson(bean));
+                        messageSaveAndLikeBean.setIcon(Users.userIcon);
+                        messageSaveAndLikeBean.setUserId(Users.userId);
+                        messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        activity.sendMessage(Users.userName+"收藏了您的视频 "+bean.getTitle(),Config.MESSAGE.SAVE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
+                    }
                 });
             }else
                 Toast.makeText(getContext(), "请先登陆", Toast.LENGTH_SHORT).show();
@@ -180,7 +200,11 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                                     Toast.makeText(getContext(), "出错了", Toast.LENGTH_SHORT).show();
                                 }else {
                                     care.setText("已关注");
-                                    activity.sendMessage(Config.MESSAGE.CARE_TYPE,null);
+                                    MessageUserBean messageUserBean = new MessageUserBean();
+                                    messageUserBean.setUserId(Users.userId);
+                                    messageUserBean.setIcon(Users.userIcon);
+                                    messageUserBean.setRecommend(Users.userRecommend);
+                                    activity.sendMessage(Users.userName+"关注了您",Config.MESSAGE.CARE_TYPE,BaseUtil.getGson().toJson(messageUserBean));
                                 }
                                 care.setClickable(true);
                             });
@@ -227,7 +251,7 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                         send.setClickable(false);
                         if (baseResult.getCode() == Config.SUCCESS){
                             CommentBean commentBean = new CommentBean();
-                            commentBean.setContent(commentContent.getText().toString());
+                            commentBean.setContent(val);
                             commentBean.setContentId(bean.getId());
                             commentBean.setIcon(Users.userIcon);
                             commentBean.setId(baseResult.getResult());
@@ -241,7 +265,12 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                             commentAdapter.addComment(commentBean);
                             commentContent.setText("");
                             noCommentFlag.setVisibility(View.GONE);
-                            activity.sendMessage(Config.MESSAGE.COMMENT_TYPE,val);
+                            MessageCommentBean messageCommentBean = new MessageCommentBean();
+                            messageCommentBean.setUserId(Users.userId);
+                            messageCommentBean.setIcon(Users.userIcon);
+                            messageCommentBean.setArticleData(BaseUtil.getGson().toJson(bean));
+                            messageCommentBean.setCommentContent(val);
+                            activity.sendMessage(Users.userName+"评论了您的视频 "+bean.getTitle(),Config.MESSAGE.COMMENT_TYPE,BaseUtil.getGson().toJson(messageCommentBean));
                         }else
                             Toast.makeText(getContext(), "发送失败", Toast.LENGTH_SHORT).show();
                         send.setClickable(true);
@@ -274,10 +303,20 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
         toHor.setOnClickListener(v->activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
         comment.setLayoutManager(new LinearLayoutManager(getContext()));
         activity.queryComment(activity.getBean().getId()).observe(this,commentResult -> {
+            List<CommentBean> l =  commentResult.getResult();
             if (commentAdapter == null)
-                commentAdapter = new CommentAdapter(commentResult.getResult(),this);
-            if (commentResult.getResult().size() > 0)noCommentFlag.setVisibility(View.GONE);
+                commentAdapter = new CommentAdapter(l,this);
+            if (l.size() > 0){
+                noCommentFlag.setVisibility(View.GONE);
+                commentIcon.setNumber(l.size());
+            }
             comment.setAdapter(commentAdapter);//评论
+            for (int i = 0; i < l.size(); i++) {
+                if (l.get(i).getUserId().equals(Users.userId)){
+                    commentIcon.changeIcon();
+                    break;
+                }
+            }
         });
         ijkMediaPlayer = activity.getIjkMediaPlayer();
         ijkMediaPlayer.setOnPreparedListener(iMediaPlayer -> {
@@ -306,7 +345,19 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             isPlaying = !isPlaying;
         });
         title.setText(bean.getTitle());
+        MySoftKeyBoardListener.setListener(activity, new MySoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                commentParent.setTranslationY(-height);
+            }
 
+            @Override
+            public void keyBoardHide(int height) {
+                commentParent.setTranslationY(0);
+                commentContent.setFocusable(false);
+                commentContent.setFocusableInTouchMode(true);
+            }
+        });
         Glide.with(this)
                 .load(bean.getUserIcon())
                 .asBitmap()

@@ -1,8 +1,18 @@
 package com.person.newscopy.push;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.system.Os;
 import android.text.TextUtils;
 
+import com.person.newscopy.R;
+import com.person.newscopy.common.Config;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -10,6 +20,8 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import java.util.List;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * 要实现的推送功能：关注的人发文章、用户关注、私信
@@ -28,15 +40,67 @@ public class NewsMessageReceiver extends PushMessageReceiver {
     //onReceivePassThroughMessage 方法用来接收服务器向客户端发送的透传消息
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
-        mMessage = message.getContent();
-        if(!TextUtils.isEmpty(message.getTopic())) {
-            mTopic=message.getTopic();
-        } else if(!TextUtils.isEmpty(message.getAlias())) {
-            mAlias=message.getAlias();
-        } else if(!TextUtils.isEmpty(message.getUserAccount())) {
-            mUserAccount=message.getUserAccount();
+//        mMessage = message.getContent();
+//        if(!TextUtils.isEmpty(message.getTopic())) {
+//            mTopic=message.getTopic();
+//        } else if(!TextUtils.isEmpty(message.getAlias())) {
+//            mAlias=message.getAlias();
+//        } else if(!TextUtils.isEmpty(message.getUserAccount())) {
+//            mUserAccount=message.getUserAccount();
+//        }
+
+    }
+
+    private PendingIntent createPendingIntent(int type,Context context){
+        Intent intent = null;
+        switch (type){
+            case PushType.LIKE://赞
+                break;
+            case PushType.COMMENT://评论
+                break;
+            case PushType.SAVE://收藏
+                break;
+            case PushType.CARE://关注
+                break;
+            case PushType.PRIVATE_TALK://私信
+                break;
+            case PushType.SYSTEM://系统
+                break;
+        }
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
+        return pendingIntent;
+    }
+
+    private void startNotice(Context context,MiPushMessage message){
+        PendingIntent intent = createPendingIntent(Integer.valueOf(message.getExtra().get("notice_type")),context);
+        NotificationManager manager=(NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        if (manager == null)return;
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+            Notification notification=new NotificationCompat.Builder(context)
+                    .setContentTitle(message.getTitle())
+                    .setContentText(message.getContent())
+                    .setSmallIcon(R.mipmap.wei_icon)  //设置通知的小图标
+                    .setAutoCancel(true) //设置通知点击后取消
+                    .setContentIntent(intent)  //设置PendingIntent
+                    .build();
+            manager.notify(1,notification); //让通知显示出来
+        }else{
+            String id="id";
+            //android 8 以后要用这个方法创建channel
+            NotificationChannel channel=new NotificationChannel("id","name",NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("微进步通知");
+            //设置channel
+            manager.createNotificationChannel(channel);
+            Notification m= new NotificationCompat.Builder(context,id)
+                    .setContentTitle(message.getTitle())
+                    .setContentText(message.getContent())
+                    .setSmallIcon(R.mipmap.wei_icon)
+                    .build();
+            manager.notify(1,m);
         }
     }
+
+
     //onNotificationMessageClicked 方法用来接收服务器向客户端发送的通知消息，
     // 这个回调方法会在用户手动点击通知后触发。
     @Override

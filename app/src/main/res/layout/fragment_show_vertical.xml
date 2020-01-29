@@ -133,6 +133,7 @@
        android:layout_height="70dp" />
    <android.support.v7.widget.CardView
        app:cardElevation="20dp"
+       android:id="@+id/comment_parent"
        android:layout_gravity="bottom"
        android:layout_width="match_parent"
        android:layout_height="50dp">

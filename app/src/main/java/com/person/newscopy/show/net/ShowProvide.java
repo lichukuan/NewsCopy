@@ -11,6 +11,7 @@ import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.net.bean.BaseResult;
 
 import java.io.File;
+import java.net.Proxy;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -41,6 +42,7 @@ public class ShowProvide {
                     .client(new OkHttpClient()
                             .newBuilder()
                             .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),CONTENT_CACHE_STORAGE),MAX_CACHE_SPACE))
+                            .proxy(Proxy.NO_PROXY)
                             .addInterceptor(new BaseInterceptor())
                             .addNetworkInterceptor(new BaseInterceptor())
                             .build())
@@ -79,8 +81,8 @@ public class ShowProvide {
     }
 
     public void addMessage(String userId, int messageType, String fromUserId, String content,
-                           String image,  String contentId){
-        showInterface.addMessage(userId,messageType,fromUserId,content,image,contentId)
+                           String title){
+        showInterface.addMessage(userId,messageType,fromUserId,content,title)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BaseResult>() {

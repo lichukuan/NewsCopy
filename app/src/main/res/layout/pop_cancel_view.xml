@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="260dp">
+    android:layout_height="200dp">
     <ImageView
         android:id="@+id/top"
         android:src="@drawable/pop_cancel_top"
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/un_interesting"
             android:drawableStart="@drawable/pop_un_interest"
             android:text="不感兴趣"
             android:drawablePadding="10dp"
@@ -24,6 +25,7 @@
             android:gravity="center_vertical"
             android:layout_height="60dp" />
         <TextView
+            android:id="@+id/bad_content"
             android:drawableStart="@drawable/pop_feedback"
             android:text="反馈垃圾内容"
             android:drawablePadding="10dp"
@@ -34,16 +36,7 @@
             android:gravity="center_vertical"
             android:layout_height="60dp" />
         <TextView
-            android:drawableStart="@drawable/pop_hate"
-            android:text="拉黑作者"
-            android:textColor="#000"
-            android:drawablePadding="10dp"
-            android:paddingStart="10dp"
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:layout_height="60dp"/>
-        <TextView
+            android:id="@+id/hate"
             android:drawableStart="@drawable/pop_hide"
             android:text="屏蔽"
             android:drawablePadding="10dp"

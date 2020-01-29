@@ -44,6 +44,11 @@ public interface UserInterface {
     @GET(Api.USER.QUERY_CONTENT_INFO)
     Observable<OneContentResult> getContent(@Query("contentType")int contentType, @Query("contentId")String contentId);
 
+    @POST(Api.SHOW.ADD_MESSAGE)
+    @FormUrlEncoded
+    Observable<BaseResult> addMessage(@Field("userId") String userId, @Field("messageType") int messageType, @Field("fromUserId") String fromUserId, @Field("content") String content,
+                                      @Field("title") String title);
+
     @POST(Api.USER.LOGIN)
     @FormUrlEncoded
     Observable<UserBean> login(@Field("name")String name, @Field("pas")String pas, @Field("salt")String salt);

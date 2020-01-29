@@ -30,6 +30,8 @@ public final class Config {
         public static final int COMMENT_TYPE = 4;
 
         public static final int SAVE_TYPE = 5;
+
+        public static final int PRIVATE_TALK_TYPE = 6;
     }
 
     public static class CONTENT{

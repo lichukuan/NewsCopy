@@ -15,6 +15,7 @@ import com.person.newscopy.common.Config;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.IOException;
 
@@ -96,7 +97,6 @@ public class WelcomeActivity extends AppCompatActivity {
 //            flag5 = true;
 //            check();
 //        });
-
     }
 
     private void jumpToMain(){
@@ -111,6 +111,7 @@ public class WelcomeActivity extends AppCompatActivity {
             Users.userWork = sharedPreferences.getInt("work",-1);
             Users.userCare = sharedPreferences.getInt("care",-1);
             Users.userFans = sharedPreferences.getInt("fans",-1);
+            MiPushClient.setAlias(getApplicationContext(),Users.userId,null);
         }
         startActivity(new Intent(this, NewsActivity.class));
         finish();

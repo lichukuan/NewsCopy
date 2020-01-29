@@ -25,14 +25,14 @@ import com.person.newscopy.user.Users;
 
 public class UserFragment extends Fragment {
 
-    public static final String[] content = {"消息通知","我的收藏","发布文章","阅读纪录","私信"};
+    public static final String[] content = {"消息通知","我的收藏","阅读纪录","私信"};
 
-    public static final int[] res = {R.drawable.ic_notification,R.drawable.user_collectionset,R.drawable.bianxie,R.drawable.history
+    public static final int[] res = {R.drawable.ic_notification,R.drawable.user_collectionset,R.drawable.history
     ,R.drawable.tab_feidian};
 
-    public static final String[] content2 = {"用户反馈","设置"};
+    public static final String[] content2 = {"用户反馈","设置","关于"};
 
-    public static final int[] res2 = {R.drawable.icon_feed_back,R.drawable.settings};
+    public static final int[] res2 = {R.drawable.icon_feed_back,R.drawable.settings,R.drawable.info};
 
     View loginView;
     View unloginView;

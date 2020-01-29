@@ -2,8 +2,10 @@ package com.person.newscopy.my;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,6 +93,31 @@ public class MyListViewLayout extends FrameLayout implements View.OnClickListene
             case "发布文章":
                 startRequireFragment(MyActivity.RELEASE_ARTICLE,c);
                 break;
+            case "关于":
+                launchAppDetail(getContext().getPackageName(),"");
+                break;
+        }
+    }
+
+    /**
+     * 启动到应用商店app详情界面
+     *
+     * @param appPkg    目标App的包名
+     * @param marketPkg 应用商店包名 ,如果为""则由系统弹出应用商店列表供用户选择,否则调转到目标市场的应用详情界面，某些应用商店可能会失败
+     */
+    public void launchAppDetail(String appPkg, String marketPkg) {
+        try {
+            if (TextUtils.isEmpty(appPkg)) return;
+
+            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!TextUtils.isEmpty(marketPkg)) {
+                intent.setPackage(marketPkg);
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -8,6 +8,8 @@ import com.person.newscopy.type.bean.ShortVideoType;
 import com.person.newscopy.type.bean.VideoType;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 
+import java.net.Proxy;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;

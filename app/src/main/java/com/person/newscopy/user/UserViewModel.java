@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.show.net.ShowDepository;
 import com.person.newscopy.user.depository.UserDepository;
 import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
@@ -45,6 +46,12 @@ public class UserViewModel extends AndroidViewModel {
     public LiveData<BaseResult> deleteSave(String userId,String contentId){
         depository.deleteSave(userId,contentId);
         return depository.pickRequireData(UserDepository.DELETE_SAVE);
+    }
+
+    public LiveData<BaseResult> addMessage(String userId, int messageType, String fromUserId, String content,
+                                           String title){
+        depository.addMessage(userId,messageType,fromUserId,content,title);
+        return depository.pickRequireData(UserDepository.SEND_MESSAGE_TYPE);
     }
 
     public LiveData<BaseResult> uploadArticleImages(List<File> files){

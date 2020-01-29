@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.UserInfoProvide;
 import com.person.newscopy.user.net.bean.AllCareOrFans;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
@@ -66,9 +67,11 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     public static final int DELETE_SAVE = 18;
 
+    public static final int SEND_MESSAGE_TYPE = 19;
+
     private UserInfoProvide userInfoProvide;
 
-    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(18);
+    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(20);
 
     private SparseArray<MutableLiveData<AllCareOrFans>> caresOrfans = new SparseArray<>(2);
 
@@ -209,6 +212,16 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     public void deleteSave(String userId,String contentId){
         userInfoProvide.deleteSave(userId,contentId);
+    }
+
+    public void addMessage(String userId, int messageType, String fromUserId, String content,
+                           String title){
+        userInfoProvide.addMessage(userId,messageType,fromUserId,content,title);
+    }
+
+    @Override
+    public void onMessageLoad(BaseResult baseResult) {
+        updateData(SEND_MESSAGE_TYPE,baseResult);
     }
 
     @Override

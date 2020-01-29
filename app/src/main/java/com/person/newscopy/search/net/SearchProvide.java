@@ -7,6 +7,7 @@ import com.person.newscopy.news.network.ContentProvide;
 import com.person.newscopy.news.network.bean.ContentResult;
 
 import java.io.File;
+import java.net.Proxy;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -45,6 +46,7 @@ public class SearchProvide {
                     .client(new OkHttpClient()
                             .newBuilder()
                             .cache(new Cache(new File(MyApplication.getContext().getCacheDir(),USER_CACHE_STORAGE), ContentProvide.MAX_CACHE_SPACE))
+                            .proxy(Proxy.NO_PROXY)
                             .addInterceptor(new BaseInterceptor())
                             .addNetworkInterceptor(new BaseInterceptor())
                             .build())

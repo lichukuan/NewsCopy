@@ -17,6 +17,8 @@ public interface Api {
 
     interface USER{
 
+        String ADD_MESSAGE = "phone/add/message";
+
         String QUERY_SAVE = "phone/query/save";
 
         String DELETE_SAVE = "phone/delete/save";

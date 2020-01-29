@@ -32,6 +32,9 @@ import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.adapter.CommentAdapter;
 import com.person.newscopy.show.adapter.RecommendAdapter;
 import com.person.newscopy.show.net.bean.CommentBean;
+import com.person.newscopy.show.net.bean.MessageCommentBean;
+import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
+import com.person.newscopy.show.net.bean.MessageUserBean;
 import com.person.newscopy.user.Users;
 import com.zzhoujay.richtext.RichText;
 import java.util.List;
@@ -147,8 +150,14 @@ public class ShowNewsActivity extends SwipeBackActivity {
                 showViewModel.like(isLike,Users.userId,b.getId(),b.getUserId()).observe(ShowNewsActivity.this,baseResult -> {
                     if (baseResult.getCode() != 1)
                         Toast.makeText(this, "出错了", Toast.LENGTH_SHORT).show();
-                    else if (result.equals("true"))
-                        sendMessage(Config.MESSAGE.LIKE_TYPE,Users.userName+"点赞了你的文章《"+b.getTitle()+"》");
+                    else if (result.equals("true")){
+                        MessageSaveAndLikeBean messageSaveAndLikeBean = new MessageSaveAndLikeBean();
+                        messageSaveAndLikeBean.setData(BaseUtil.getGson().toJson(b));
+                        messageSaveAndLikeBean.setIcon(Users.userIcon);
+                        messageSaveAndLikeBean.setUserId(Users.userId);
+                        messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        sendMessage(Users.userName+"赞了您的文章《"+b.getTitle()+"》",Config.MESSAGE.LIKE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
+                    }
                 });
             }else
                 Toast.makeText(this, "请先登陆", Toast.LENGTH_SHORT).show();
@@ -163,8 +172,14 @@ public class ShowNewsActivity extends SwipeBackActivity {
                 showViewModel.save(isSave,Users.userId,b.getId()).observe(ShowNewsActivity.this,baseResult -> {
                     if (baseResult.getCode() != 1)
                         Toast.makeText(this, "出错了", Toast.LENGTH_SHORT).show();
-                    else if (result.equals("true"))
-                        sendMessage(Config.MESSAGE.SAVE_TYPE,Users.userName+"收藏了你的文章《"+b.getTitle()+"》");
+                    else if (result.equals("true")){
+                        MessageSaveAndLikeBean messageSaveAndLikeBean = new MessageSaveAndLikeBean();
+                        messageSaveAndLikeBean.setData(BaseUtil.getGson().toJson(b));
+                        messageSaveAndLikeBean.setIcon(Users.userIcon);
+                        messageSaveAndLikeBean.setUserId(Users.userId);
+                        messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        sendMessage(Users.userName+"收藏了您的文章《"+b.getTitle()+"》",Config.MESSAGE.SAVE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
+                    }
                 });
             }else
                 Toast.makeText(this, "请先登陆", Toast.LENGTH_SHORT).show();
@@ -192,7 +207,11 @@ public class ShowNewsActivity extends SwipeBackActivity {
                                     Toast.makeText(this, "出错了", Toast.LENGTH_SHORT).show();
                                 }else {
                                     care.setText("已关注");
-                                    sendMessage(Config.MESSAGE.CARE_TYPE,Users.userName+"关注了你");
+                                    MessageUserBean userBean = new MessageUserBean();
+                                    userBean.setUserId(b.getUserId());
+                                    userBean.setIcon(b.getUserIcon());
+                                    userBean.setRecommend(b.getUserRecommend());
+                                    sendMessage(Users.userName+"关注了你",Config.MESSAGE.CARE_TYPE,BaseUtil.getGson().toJson(userBean));
                                 }
                                 care.setClickable(true);
                             });
@@ -230,7 +249,6 @@ public class ShowNewsActivity extends SwipeBackActivity {
                     break;
                 }
             }
-            commentIcon.setFixed(true);
         });
         commentContent.setOnFocusChangeListener((v, hasFocus) -> {
             layout.removeViewAt(1);
@@ -250,7 +268,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
                         send.setClickable(false);
                         if (baseResult.getCode() == Config.SUCCESS){
                             CommentBean commentBean = new CommentBean();
-                            commentBean.setContent(commentContent.getText().toString());
+                            String commentDetail = commentContent.getText().toString();
+                            commentBean.setContent(commentDetail);
                             commentBean.setContentId(b.getId());
                             commentBean.setIcon(Users.userIcon);
                             commentBean.setId(baseResult.getResult());
@@ -263,7 +282,12 @@ public class ShowNewsActivity extends SwipeBackActivity {
                             commentBean.setTime(BaseUtil.getFormatTime());
                             commentAdapter.addComment(commentBean);
                             commentContent.setText("");
-                            sendMessage(Config.MESSAGE.COMMENT_TYPE,val);
+                            MessageCommentBean messageCommentBean = new MessageCommentBean();
+                            messageCommentBean.setUserId(Users.userId);
+                            messageCommentBean.setIcon(Users.userIcon);
+                            messageCommentBean.setCommentContent(commentDetail);
+                            messageCommentBean.setArticleData(BaseUtil.getGson().toJson(b));
+                            sendMessage(Users.userName+"评论了您的文章《"+b.getTitle()+"》",Config.MESSAGE.COMMENT_TYPE,BaseUtil.getGson().toJson(messageCommentBean));
                             noCommentFlag.setVisibility(View.GONE);
                         }else
                             Toast.makeText(this, "发送失败", Toast.LENGTH_SHORT).show();
@@ -288,8 +312,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
         });
     }
 
-    private void sendMessage(int type,String content){
-       showViewModel.addMessage(b.getUserId(),type,Users.userId,content,b.getImage(),b.getId()).observe(this,baseResult -> {
+    private void sendMessage(String title,int type,String content){
+       showViewModel.addMessage(b.getUserId(),type,Users.userId,content,title).observe(this,baseResult -> {
             if (baseResult.getCode() != Config.SUCCESS)Log.d("==ShowNewsActivity","上传消息出错了");
        });
     }
