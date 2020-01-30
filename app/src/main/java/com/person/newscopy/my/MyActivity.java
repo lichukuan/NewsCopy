@@ -54,6 +54,8 @@ public class MyActivity extends AppCompatActivity {
 
     public static final String MY_TYPE = "show_type";
 
+    public static final String PRIVATE_TALK_REQUIRE_ID = "private_talk_require_id";
+
     public static final int LOGIN_TYPE = 0;
 
     public static final int REGISTER_TYPE = 1;
@@ -113,6 +115,7 @@ public class MyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int type = intent.getIntExtra(MY_TYPE,-1);
         searchId = intent.getStringExtra(SEARCH_KEY);
+        privateTalkRequireId = intent.getStringExtra(PRIVATE_TALK_REQUIRE_ID);
         updateFragment(type);
         addFragment();
     }

@@ -1,6 +1,7 @@
 package com.person.newscopy.my.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
+import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.my.MyActivity;
+import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
+import com.person.newscopy.show.net.bean.MessageCommentBean;
+import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
+import com.person.newscopy.show.net.bean.MessageUserBean;
 import com.person.newscopy.user.net.bean.MessageContentBean;
 
 import java.util.List;
@@ -56,28 +64,78 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     .load(b.getIcon())
                     .asBitmap()
                     .into(careMessageViewHolder.icon);
-            careMessageViewHolder.name.setText(b.getContent());
+            careMessageViewHolder.icon.setOnClickListener(v -> {
+                Intent intent = new Intent(context, MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.USER_WORK_TYPE);
+                intent.putExtra(MyActivity.SEARCH_KEY,b.getFromId());
+                context.startActivity(intent);
+            });
+            careMessageViewHolder.name.setText(b.getName()+"关注了你");
             careMessageViewHolder.time.setText(b.getTime());
         }else {
             CommentMessageViewHolder commentMessageViewHolder = (CommentMessageViewHolder) viewHolder;
-            commentMessageViewHolder.name.setText(b.getName()+"评论了你");
             commentMessageViewHolder.time.setText(b.getTime());
-            commentMessageViewHolder.content.setText(b.getContent());
             Glide.with(fragment)
                     .load(b.getIcon())
                     .asBitmap()
                     .into(commentMessageViewHolder.icon);
-            final int type = messageBeans.get(i).getType();
+            commentMessageViewHolder.icon.setOnClickListener(v -> {
+                Intent intent = new Intent(context, MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.USER_WORK_TYPE);
+                intent.putExtra(MyActivity.SEARCH_KEY,b.getFromId());
+                context.startActivity(intent);
+            });
+            final int type = b.getType();
             if (type == Config.MESSAGE.COMMENT_TYPE){
-
+                MessageCommentBean messageCommentBean = BaseUtil.getGson().fromJson(b.getContent(),MessageCommentBean.class);
+                commentMessageViewHolder.name.setText(b.getName()+"评论了你");
+                commentMessageViewHolder.content.setText(messageCommentBean.getCommentContent());
             }else if (type == Config.MESSAGE.SAVE_TYPE){
-
-            }else if (type == Config.MESSAGE.SEND_TYPE){
-
-            }else{//type.equals(valueOf(R.string.message_type_system))
-
+                MessageSaveAndLikeBean messageSaveAndLikeBean = BaseUtil.getGson().fromJson(b.getContent(),MessageSaveAndLikeBean.class);
+                if (messageSaveAndLikeBean.getType() == Config.CONTENT.NEWS_TYPE){
+                    commentMessageViewHolder.name.setText(b.getName()+"收藏了您发布的文章《"+messageSaveAndLikeBean.getTitle()+"》");
+                    commentMessageViewHolder.name.setOnClickListener(v -> goToArticle(messageSaveAndLikeBean.getData()));
+                }else{
+                    commentMessageViewHolder.name.setText(b.getName()+"收藏了您发布的视频《"+messageSaveAndLikeBean.getTitle()+"》");
+                    commentMessageViewHolder.name.setOnClickListener(v -> goToVideo(messageSaveAndLikeBean.getData()));
+                }
+                commentMessageViewHolder.content.setVisibility(View.GONE);
+            }else if (type == Config.MESSAGE.LIKE_TYPE){
+                MessageSaveAndLikeBean messageSaveAndLikeBean = BaseUtil.getGson().fromJson(b.getContent(),MessageSaveAndLikeBean.class);
+                if (messageSaveAndLikeBean.getType() == Config.CONTENT.NEWS_TYPE){
+                    commentMessageViewHolder.name.setText(b.getName()+"赞了您发布的文章《"+messageSaveAndLikeBean.getTitle()+"》");
+                    commentMessageViewHolder.name.setOnClickListener(v -> goToArticle(messageSaveAndLikeBean.getData()));
+                }else{
+                    commentMessageViewHolder.name.setText(b.getName()+"赞了您发布的视频《"+messageSaveAndLikeBean.getTitle()+"》");
+                    commentMessageViewHolder.name.setOnClickListener(v -> goToVideo(messageSaveAndLikeBean.getData()));
+                }
+                commentMessageViewHolder.content.setVisibility(View.GONE);
+            }else if (type == Config.MESSAGE.PRIVATE_TALK_TYPE){
+                 commentMessageViewHolder.name.setText(b.getName()+"私信了你");
+                 commentMessageViewHolder.content.setText(b.getContent());
+                 commentMessageViewHolder.name.setOnClickListener(v -> goToPrivateTalk(b.getFromId()) );
+                 commentMessageViewHolder.content.setOnClickListener(v -> goToPrivateTalk(b.getFromId()));
             }
         }
+    }
+
+    private void goToPrivateTalk(String id){
+        Intent intent = new Intent(context,MyActivity.class);
+        intent.putExtra(MyActivity.MY_TYPE,MyActivity.PRIVATE_TALK_INFO_TYPE);
+        intent.putExtra(MyActivity.PRIVATE_TALK_REQUIRE_ID,id);
+        context.startActivity(intent);
+    }
+
+    private void goToArticle(String data){
+        Intent intent = new Intent(context, ShowNewsActivity.class);
+        intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,data);
+        context.startActivity(intent);
+    }
+
+    private void goToVideo(String data){
+        Intent intent = new Intent(context, ShowVideoActivity.class);
+        intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,data);
+        context.startActivity(intent);
     }
 
     @Override

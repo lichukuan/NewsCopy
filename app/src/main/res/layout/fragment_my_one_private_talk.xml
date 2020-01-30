@@ -48,14 +48,19 @@
            android:layout_weight="1"
            android:id="@+id/talk_content"
            android:layout_width="0dp"
-           android:paddingStart="20dp"
+           android:paddingStart="10dp"
+           android:layout_marginTop="10dp"
+           android:layout_marginBottom="10dp"
            android:background="@drawable/news_show_edit_bg"
            android:layout_height="match_parent" />
        <Button
+           android:textColor="@color/main_word_while"
+           android:textSize="15sp"
            android:text="发送"
+           android:layout_margin="10dp"
            android:id="@+id/talk_send"
-           android:background="@drawable/linear_graphics_bg"
-           android:layout_width="wrap_content"
+           android:background="@drawable/private_talk_button_bg"
+           android:layout_width="60dp"
            android:layout_height="match_parent" />
    </LinearLayout>
 </LinearLayout>

@@ -198,7 +198,7 @@ public final class BaseUtil {
             return;
         }
         request.setTitle(infoName);
-        request.setDescription("这是描述");
+        request.setDescription("现在下载请稍后....");
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, storeApk);

@@ -1,7 +1,8 @@
 package com.person.newscopy.my.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.person.newscopy.common.Config;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
+import com.person.newscopy.user.net.bean.ResultBeanXX;
 import com.person.newscopy.user.net.bean.VersionBean;
 
 public class SettingFragment extends Fragment {
@@ -45,7 +47,17 @@ public class SettingFragment extends Fragment {
         outLogin = view.findViewById(R.id.out_login);
         view.findViewById(R.id.update).setOnClickListener(v -> {
             myActivity.findNewVersion().observe(SettingFragment.this, versionBean -> {
-                  createDownloadPop(versionBean.getResult().getInfo());
+                if (versionBean == null)return;
+                PackageManager packageManager = myActivity.getPackageManager();
+                try {
+                    PackageInfo info = packageManager.getPackageInfo(myActivity.getPackageName(),0);
+                    Log.d("======",info.versionName+" "+versionBean.getResult().getVersion());
+                    if (!info.versionName.equals(versionBean.getResult().getVersion()))
+                        createDownloadPop(versionBean.getResult());
+                    else Toast.makeText(myActivity, "当前是最新版", Toast.LENGTH_SHORT).show();
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
             });
         });
         view.findViewById(R.id.get_back_pas).setOnClickListener(v -> {
@@ -79,13 +91,19 @@ public class SettingFragment extends Fragment {
                 .apply();
     }
 
-    private void createDownloadPop(String recommend){
+    private void createDownloadPop(ResultBeanXX xx){
+        String recommend = xx.getInfo();
+        String version = xx.getVersion();
         float d = ScreenFitUtil.getDensity();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_new_version,null);
         PopupWindow popupWindow = new PopupWindow(view, (int)(d*300),(int)(d*200));
         TextView t = view.findViewById(R.id.recommend);
         t.setText(recommend);
-        view.findViewById(R.id.download).setOnClickListener(v -> BaseUtil.downloadApk("正在下载","news.apk"));
+        view.findViewById(R.id.download).setOnClickListener(v -> {
+            Toast.makeText(myActivity, "开始下载", Toast.LENGTH_SHORT).show();
+            BaseUtil.downloadApk("正在下载","news.apk");
+            popupWindow.dismiss();
+        });
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);

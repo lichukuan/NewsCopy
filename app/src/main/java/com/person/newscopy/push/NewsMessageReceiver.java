@@ -12,7 +12,13 @@ import android.system.Os;
 import android.text.TextUtils;
 
 import com.person.newscopy.R;
+import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.my.MyActivity;
+import com.person.newscopy.news.network.bean.ResultBean;
+import com.person.newscopy.show.ShowNewsActivity;
+import com.person.newscopy.show.ShowVideoActivity;
+import com.person.newscopy.user.net.bean.BaseResult;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -48,31 +54,46 @@ public class NewsMessageReceiver extends PushMessageReceiver {
 //        } else if(!TextUtils.isEmpty(message.getUserAccount())) {
 //            mUserAccount=message.getUserAccount();
 //        }
-
+          startNotice(context,message);
     }
 
-    private PendingIntent createPendingIntent(int type,Context context){
+    private PendingIntent createPendingIntent(int type,Context context,String content){
         Intent intent = null;
         switch (type){
             case PushType.LIKE://赞
+                intent = new Intent(context, MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.MESSAGE_TYPE);
                 break;
             case PushType.COMMENT://评论
+                ResultBean b = BaseUtil.getGson().fromJson(content,ResultBean.class);
+                if (b.getType() == Config.CONTENT.NEWS_TYPE){
+                    intent = new Intent(context, ShowNewsActivity.class);
+                    intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,content);
+                }else{
+                    intent = new Intent(context, ShowVideoActivity.class);
+                    intent.putExtra(ShowVideoActivity.SHORT_VIDEO_INFO_KEY,content);
+                }
                 break;
             case PushType.SAVE://收藏
+                intent = new Intent(context,MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.SAVE_TYPE);
                 break;
             case PushType.CARE://关注
+                intent = new Intent(context,MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.CARE_TYPE);
                 break;
             case PushType.PRIVATE_TALK://私信
+                intent = new Intent(context,MyActivity.class);
+                intent.putExtra(MyActivity.MY_TYPE,MyActivity.PRIVATE_TALK_TYPE);
                 break;
             case PushType.SYSTEM://系统
                 break;
         }
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
-        return pendingIntent;
+        return PendingIntent.getActivity(context,0,intent,0);
     }
 
     private void startNotice(Context context,MiPushMessage message){
-        PendingIntent intent = createPendingIntent(Integer.valueOf(message.getExtra().get("notice_type")),context);
+        PendingIntent intent = createPendingIntent(Integer.valueOf(message.getExtra().get("notice_type")),context,message.getContent());
         NotificationManager manager=(NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (manager == null)return;
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
