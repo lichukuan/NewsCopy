@@ -7,16 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
-import com.person.newscopy.common.LoadView;
+import com.person.newscopy.common.view.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.VideoAdapter;
-import com.person.newscopy.type.Types;
 
 public class ItemNormalVideoFragment extends Fragment {
 
@@ -64,7 +61,7 @@ public class ItemNormalVideoFragment extends Fragment {
         refreshLayout.setColorSchemeResources(R.color.main_color);//设置刷新进度条的颜色
         //设置监听
         refreshLayout.setOnRefreshListener(() -> {//当下拉时，会调用这个方法
-            newsActivity.queryNewsData(type,adapter.getTopTime(),"up").observe(this, contentResult -> {
+            newsActivity.queryVideoData(type,adapter.getTopTime(),"up").observe(this, contentResult -> {
                 adapter.addTopData(contentResult.getResult());
                 refreshLayout.setRefreshing(false);//设置刷新进度条是否隐藏，false表示隐藏
             });

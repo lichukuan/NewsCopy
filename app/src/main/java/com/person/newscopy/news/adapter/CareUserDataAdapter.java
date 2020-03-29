@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
@@ -178,8 +178,8 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .load(bean.getImage())
                     .into(normalViewHolder.image);
             Glide.with(fragment)
-                    .load(bean.getUserIcon())
                     .asBitmap()
+                    .load(bean.getUserIcon())
                     .into(normalViewHolder.icon);
             normalViewHolder.normalVideo.setOnClickListener(v -> showVideo(BaseUtil.getGson().toJson(bean)));
         }else if (holder instanceof BigViewHolder){
@@ -196,12 +196,12 @@ public class CareUserDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .into(bigViewHolder.bigPic);
             if (fragment!=null)
                 Glide.with(fragment)
-                        .load(bean.getUserIcon())
                         .asBitmap()
+                        .load(bean.getUserIcon())
                         .into(bigViewHolder.icon);
             else Glide.with(context)
-                    .load(bean.getUserIcon())
                     .asBitmap()
+                    .load(bean.getUserIcon())
                     .into(bigViewHolder.icon);
         }
     }

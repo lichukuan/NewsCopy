@@ -8,12 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.user.net.bean.CareOrFansBean;
 
@@ -42,8 +41,8 @@ public class AllFansAdapter extends RecyclerView.Adapter <AllFansAdapter.FansVie
     public void onBindViewHolder(@NonNull FansViewHolder fansViewHolder, int i) {
         CareOrFansBean bean = fans.get(i);
         Glide.with(fragment)
-                .load(bean.getIcon())
                 .asBitmap()
+                .load(bean.getIcon())
                 .into(fansViewHolder.fansIcon);
         fansViewHolder.fansName.setText(bean.getName());
         fansViewHolder.fansRecommend.setText(bean.getRecommend());

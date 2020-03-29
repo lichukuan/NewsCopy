@@ -1,21 +1,14 @@
 package com.person.newscopy.search;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.Nullable;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,33 +21,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
-import com.google.gson.Gson;
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MyTranslucentUtil;
-import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.search.adapter.HistorySearchAdapter;
 import com.person.newscopy.search.adapter.HotNewsSearchAdapter;
 import com.person.newscopy.search.net.SearchViewModel;
-import com.person.newscopy.show.ShowNewsActivity;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.person.newscopy.news.fragment.VideoFragment.HOT_VIDEO_KEY;
-
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -74,7 +54,6 @@ public class SearchActivity extends AppCompatActivity {
         ScreenFitUtil.fit(getApplication(), this, ScreenFitUtil.FIT_WIDTH);
         MyTranslucentUtil.setTranslucent(this, Color.parseColor("#ffff4444"), (int) (30 * ScreenFitUtil.getDensity()));
         setContentView(R.layout.activity_search);
-
         content = findViewById(R.id.search_content);
         cancel = findViewById(R.id.cancel);
         hotNews = findViewById(R.id.hot_new_list);
@@ -99,7 +78,6 @@ public class SearchActivity extends AppCompatActivity {
         }else layout.setVisibility(View.GONE);
         Log.d("==History","history top = "+history.getTop()+" left = "+history.getLeft()+" right = "+history.getRight()+" bottom = "+history.getBottom());
         searchViewModel.queryHotData().observe(this, contentResult -> {
-
             List<ResultBean> data =  contentResult.getResult();
             Map<String,ResultBean> map = new HashMap<>(data.size());
             for (ResultBean datum : data) {

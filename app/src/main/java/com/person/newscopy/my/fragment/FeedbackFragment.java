@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.MyTranslucentUtil;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 
 public class FeedbackFragment extends Fragment {

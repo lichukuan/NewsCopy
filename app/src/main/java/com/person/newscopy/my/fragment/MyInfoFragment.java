@@ -6,11 +6,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,9 +29,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.MyGlideEngine;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.ChangeEmailDialogFragment;
 import com.person.newscopy.my.ChangeNameDialogFragment;
 import com.person.newscopy.my.ChangeRecommendDialogFragment;
@@ -81,8 +80,8 @@ public class MyInfoFragment extends Fragment {
         back.setOnClickListener(v ->myActivity.back());
         icon = myIcon.findViewById(R.id.icon);
         Glide.with(this)
-                .load(Users.userIcon)
                 .asBitmap()
+                .load(Users.userIcon)
                 .into(icon);
         return view;
     }
@@ -118,7 +117,7 @@ public class MyInfoFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
             List<Uri> uris = Matisse.obtainResult(data);
             String n = BaseUtil.buildImageName();
-            String url = Config.DEFACULT_IMAGE_BASE_URL + n;
+            String url = Config.DEFAULT_IMAGE_BASE_URL + n;
             String path = BaseUtil.getImagePath(uris.get(0));
             BaseUtil.pushImageToQiNiu(path,n,(key, info, res) -> {
                 //res包含hash、key等信息，具体字段取决于上传策略的设置
@@ -127,8 +126,8 @@ public class MyInfoFragment extends Fragment {
                     myActivity.changeUserIcon(url).observe(this,baseResult -> {
                         if (baseResult.getCode() == Config.SUCCESS){
                             Glide.with(this)
-                                    .load(url)
                                     .asBitmap()
+                                    .load(url)
                                     .into(icon);
                             Users.userIcon = url;
                         }
@@ -153,7 +152,7 @@ public class MyInfoFragment extends Fragment {
                 .maxSelectable(1) // 图片选择的最多数量
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 .thumbnailScale(0.85f) // 缩略图的比例
-                .imageEngine(new GlideEngine()) // 使用的图片加载引擎
+                .imageEngine(new MyGlideEngine()) // 使用的图片加载引擎
                 .forResult(REQUEST_CODE_CHOOSE); // 设置作为标记的请求码
     }
 

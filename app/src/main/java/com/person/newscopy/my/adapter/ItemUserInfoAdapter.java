@@ -13,15 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
-import com.person.newscopy.type.Types;
-import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.ContentBean;
 
 import java.util.List;

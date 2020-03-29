@@ -6,7 +6,7 @@ public final class Config {
 
     public static final int FAIL = 2;
 
-    public static final String DEFACULT_IMAGE_BASE_URL = "http://q0g9t9jc8.bkt.clouddn.com/";
+    public static final String DEFAULT_IMAGE_BASE_URL = "http://cdn.fingertips.vip/";
 
     public static final String USER_INFO_STORE_KEY = "user_info_store_key";
 

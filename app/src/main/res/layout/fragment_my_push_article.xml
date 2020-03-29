@@ -19,6 +19,7 @@
         app:layout_constraintVertical_bias="0.0"
         android:layout_height="56dp">
         <LinearLayout
+            android:background="@drawable/linear_graphics_bg"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_navigation_height"
             android:orientation="horizontal"
@@ -27,118 +28,163 @@
             <ImageView
                 android:id="@+id/back"
                 android:layout_width="30dp"
+                android:layout_marginStart="10dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/back_gray" />
+                android:src="@drawable/back_while" />
             <TextView
+                android:text="视频分享"
+                android:gravity="center"
+                android:textColor="@color/main_word_while"
                 android:layout_width="0dp"
+                android:textSize="20sp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/release"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:gravity="center_vertical"
-                android:text="发布"
                 android:textSize="20sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
-    <LinearLayout
-        android:id="@+id/main"
+
+    <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="120dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.0">
-
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:hint="请输入标题"
-            android:singleLine="true" />
-
-        <ImageView
-            android:id="@+id/take_main_pic"
-            android:layout_width="40dp"
-            android:padding="4dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/picture" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.041">
+                <ImageView
+                    android:id="@+id/cover"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:textSize="60sp"
+                    android:text="封面"
+                    android:alpha="0.8"
+                    android:textColor="@color/black_overlay"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+    </FrameLayout>
+    <EditText
+        android:id="@+id/cover_link"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:hint="封面链接"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main"
-        app:layout_constraintVertical_bias="0.0">
-
-        <ImageView
-            android:id="@+id/take_pic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:src="@drawable/picture" />
-
-        <ImageView
-            android:id="@+id/take_link"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:src="@drawable/link" />
-
-        <Spinner
-            android:id="@+id/tag_spinner"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/frame"
+        app:layout_constraintVertical_bias="0.029" />
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:hint="请输入标题"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/cover_link"
+        app:layout_constraintVertical_bias="0.029" />
 
-        <com.person.newscopy.common.MyRichEditText
-            android:id="@+id/editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="0dp"
-            android:minHeight="500dp"
-            android:textSize="20sp"
-            android:hint="请输入文章"
-            android:gravity="start"
-            android:background="@null"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"/>
-    </android.support.v4.widget.NestedScrollView>
+    <EditText
+        android:id="@+id/video_link"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:hint="请输入视频链接"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintVertical_bias="0.029" />
 
+    <EditText
+        android:id="@+id/rec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="请输入介绍"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_link"
+        app:layout_constraintVertical_bias="0.029" />
+    <EditText
+        android:id="@+id/time_second"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:hint="请输入视频时长(单位是秒)"
+        android:singleLine="true"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rec"
+        app:layout_constraintVertical_bias="0.029" />
+    <TextView
+        android:id="@+id/tag"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:text="请设置标签"
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_second"
+        app:layout_constraintVertical_bias="0.029" />
+    <Button
+        android:id="@+id/release"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:text="发布"
+        android:background="@drawable/linear_graphics_bg"
+        android:textColor="@color/main_word_while"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag"
+        app:layout_constraintVertical_bias="0.029" />
     <ProgressBar
         android:id="@+id/progress"
         style="?android:attr/progressBarStyle"
@@ -148,7 +194,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

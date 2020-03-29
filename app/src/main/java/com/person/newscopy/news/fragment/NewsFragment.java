@@ -2,7 +2,6 @@ package com.person.newscopy.news.fragment;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -17,26 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
-import com.google.gson.Gson;
 import com.person.newscopy.R;
-import com.person.newscopy.common.ColorClipTabLayout;
+import com.person.newscopy.common.view.ColorClipTabLayout;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MyTranslucentUtil;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsFragmentAdapter;
-import com.person.newscopy.news.network.bean.ContentResult;
-import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.search.SearchActivity;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class NewsFragment extends Fragment {
     ColorClipTabLayout tabLayout;

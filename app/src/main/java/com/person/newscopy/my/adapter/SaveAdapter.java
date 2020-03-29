@@ -3,30 +3,26 @@ package com.person.newscopy.my.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.my.fragment.SaveFragment;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
-import com.person.newscopy.user.net.bean.ContentBean;
 import com.person.newscopy.news.network.bean.ResultBean;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 
 public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {

@@ -1,0 +1,3 @@
+Applications Database Info:
+
+** Database info for pid 13674 [com.person.newscopy] **

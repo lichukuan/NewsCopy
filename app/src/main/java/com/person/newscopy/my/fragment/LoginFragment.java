@@ -1,6 +1,5 @@
 package com.person.newscopy.my.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +9,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.user.Users;
@@ -55,25 +54,7 @@ public class LoginFragment extends Fragment {
                     login.setClickable(true);
                 }else {
                     Users.LOGIN_FLAG = true;
-                    Users.userCare = userInfoBean.getResult().getCareCount();
-                    Users.userFans = userInfoBean.getResult().getFansCount();
-                    Users.userIcon = userInfoBean.getResult().getIcon();
-                    Users.userId = userInfoBean.getResult().getId();
-                    Users.userName = userInfoBean.getResult().getName();
-                    Users.userWork = userInfoBean.getResult().getReleaseCount();
-                    Users.userRecommend = userInfoBean.getResult().getRecommend();
-                    Users.email = userInfoBean.getResult().getEmail();
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences(Config.USER_INFO_STORE_KEY,0);
-                    sharedPreferences.edit().putBoolean("isLogin",true)
-                            .putString("userId",Users.userId)
-                            .putString("userIcon",Users.userIcon)
-                            .putString("userName",Users.userName)
-                            .putString("userRecommend",Users.userRecommend)
-                            .putString("email",Users.email)
-                            .putInt("care",Users.userCare)
-                            .putInt("fans",Users.userFans)
-                            .putInt("work",Users.userWork)
-                            .apply();
+                    BaseUtil.updateUserInfo(userInfoBean.getResult(),getActivity().getApplication());
                     userInfoBean = null;
                     Toast.makeText(activity, "登陆成功", Toast.LENGTH_SHORT).show();
                     activity.startActivity(new Intent(activity, NewsActivity.class));

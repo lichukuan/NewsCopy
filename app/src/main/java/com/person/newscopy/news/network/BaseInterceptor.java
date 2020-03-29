@@ -1,6 +1,6 @@
 package com.person.newscopy.news.network;
 
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.NetState;
 
 import java.io.IOException;

@@ -15,13 +15,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendAdapter extends RecyclerView.Adapter {

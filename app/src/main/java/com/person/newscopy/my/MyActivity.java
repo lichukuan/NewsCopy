@@ -3,14 +3,12 @@ package com.person.newscopy.my;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.my.fragment.ChangePasFragment;
 import com.person.newscopy.my.fragment.CommentFragment;
@@ -26,7 +24,7 @@ import com.person.newscopy.my.fragment.MyCareFragment;
 import com.person.newscopy.my.fragment.MyInfoFragment;
 import com.person.newscopy.my.fragment.OnePrivateMessageFragment;
 import com.person.newscopy.my.fragment.PrivateMessageFragment;
-import com.person.newscopy.my.fragment.PushArticleFragment;
+import com.person.newscopy.my.fragment.VideoShareFragment;
 import com.person.newscopy.my.fragment.SaveFragment;
 import com.person.newscopy.my.fragment.SettingFragment;
 import com.person.newscopy.my.fragment.UserInfoFragment;
@@ -40,7 +38,6 @@ import com.person.newscopy.user.net.bean.MessageBean;
 import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
-import com.person.newscopy.user.net.bean.SimpleTalkBean;
 import com.person.newscopy.user.net.bean.SimpleTalkData;
 import com.person.newscopy.user.net.bean.UserBean;
 import com.person.newscopy.user.net.bean.VersionBean;
@@ -91,7 +88,7 @@ public class MyActivity extends AppCompatActivity {
 
     public static final int FANS_TYPE = 16;
 
-    public static final int RELEASE_ARTICLE = 17;
+    public static final int VIDEO_SHARE = 17;
 
     public static final int GET_USER_PAS = 18;
 
@@ -198,8 +195,8 @@ public class MyActivity extends AppCompatActivity {
             case FANS_TYPE:
                 fragment = new FansFragment();
                 break;
-            case RELEASE_ARTICLE:
-                fragment = new PushArticleFragment();
+            case VIDEO_SHARE:
+                fragment = new VideoShareFragment();
                 break;
             case GET_USER_PAS:
                 fragment = new GetUserPasFragment();
@@ -355,6 +352,12 @@ public class MyActivity extends AppCompatActivity {
 
     public LiveData<BaseResult> sendMessage(String title,String userId,String fromUserId,int type,String content){
         return userViewModel.addMessage(userId,type,fromUserId,content,title);
+    }
+
+    public LiveData<BaseResult> addVideo(String userId, String videoUrl, String title,
+                                         String image, String videoTime, String tag,
+                                         String rec, int second){
+        return userViewModel.addVideo(userId,videoUrl,title,image,videoTime,tag,rec,second);
     }
 
     public LiveData<BaseResult> releaseArticle(String userId,  String content,String title,

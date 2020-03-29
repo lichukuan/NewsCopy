@@ -6,7 +6,7 @@
     android:id="@+id/all"
     android:layout_height="wrap_content">
 
-    <com.person.newscopy.common.ShapeImageView
+    <com.person.newscopy.common.view.ShapeImageView
         android:id="@+id/fans_icon"
         android:layout_width="60dp"
         android:layout_height="60dp"

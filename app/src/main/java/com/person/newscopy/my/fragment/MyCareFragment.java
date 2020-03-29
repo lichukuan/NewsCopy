@@ -1,6 +1,5 @@
 package com.person.newscopy.my.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.AllFansAdapter;
 import com.person.newscopy.user.Users;

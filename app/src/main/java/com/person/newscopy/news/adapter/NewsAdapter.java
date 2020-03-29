@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +21,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
-import com.google.gson.reflect.TypeToken;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowNewsActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -250,7 +247,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof BigViewHolder){
             BigViewHolder bigViewHolder = (BigViewHolder) holder;
             bigViewHolder.source.setText(bean.getUserName());
-            bigViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
+            bigViewHolder.releaseTime.setText(BaseUtil.createComeTime(bean.getReleaseTime()));
             bigViewHolder.title.setText(bean.getTitle());
             bigViewHolder.comment.setText(bean.getCommentCount()+"评论");
             bigViewHolder.bigNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
@@ -270,7 +267,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                oneViewHolder.title.setText(bean.getTitle());
                oneViewHolder.comment.setText(bean.getCommentCount()+"评论");
                oneViewHolder.source.setText(bean.getUserName());
-               oneViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
+               oneViewHolder.releaseTime.setText(BaseUtil.createComeTime(bean.getReleaseTime()));
                oneViewHolder.oneNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
                if (fragment!=null)
                Glide.with(fragment)
@@ -285,7 +282,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
              threeViewHolder.title.setText(bean.getTitle());
              threeViewHolder.comment.setText(bean.getCommentCount()+"评论");
              threeViewHolder.source.setText(bean.getUserName());
-             threeViewHolder.releaseTime.setText(createComeTime(bean.getReleaseTime()));
+             threeViewHolder.releaseTime.setText(BaseUtil.createComeTime(bean.getReleaseTime()));
              threeViewHolder.threeNews.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
             final List<String> list = bean.getImages();
             if (fragment!=null){
@@ -324,23 +321,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Intent intent = new Intent(context,ShowNewsActivity.class);
         intent.putExtra(ShowNewsActivity.SHOW_WEB_INFO,data);
         context.startActivity(intent);
-    }
-
-    private String createComeTime(int time){
-        long l = BaseUtil.getTime() - time;
-        long allMinute = l/60;
-        if (allMinute == 0)
-            return "刚刚";
-        else if (allMinute < 60)
-            return allMinute+"分钟前";
-        long allHour = allMinute/60;
-        if (allHour < 24)
-            return allHour+"小时前";
-        int allDay = (int)allHour/24;
-        if (allDay < 30)return allDay+"天前";
-        int allMouth = allDay/30;
-        if (allMouth < 12)return allMouth+"月前";
-        return allMouth/12+"年前";
     }
 
     @Override

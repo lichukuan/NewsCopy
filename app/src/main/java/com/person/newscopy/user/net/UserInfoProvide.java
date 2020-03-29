@@ -1,7 +1,6 @@
 package com.person.newscopy.user.net;
 
 import com.person.newscopy.api.Api;
-import com.person.newscopy.common.BaseUtil;
 import com.person.newscopy.common.MyApplication;
 import com.person.newscopy.news.network.BaseInterceptor;
 import com.person.newscopy.news.network.ContentProvide;
@@ -13,7 +12,6 @@ import com.person.newscopy.user.net.bean.MessageBean;
 import com.person.newscopy.user.net.bean.OneContentResult;
 import com.person.newscopy.user.net.bean.OtherUserInfo;
 import com.person.newscopy.user.net.bean.ReadBean;
-import com.person.newscopy.user.net.bean.SimpleTalkBean;
 import com.person.newscopy.user.net.bean.SimpleTalkData;
 import com.person.newscopy.user.net.bean.UserBean;
 import com.person.newscopy.user.net.bean.VersionBean;
@@ -32,6 +30,7 @@ import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -178,6 +177,20 @@ public final class UserInfoProvide {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseResult -> {
                     callback.onFeedFans(baseResult);
+                },throwable -> {
+                    callback.error(throwable);
+                });
+
+    }
+
+    public void addVideo(String userId, String videoUrl, String title,
+                         String image, String videoTime, String tag,
+                         String rec, int second){
+        userInterface.addVideo(userId,videoUrl,title,image,videoTime,tag,rec,second)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseResult -> {
+                    callback.addVideo(baseResult);
                 },throwable -> {
                     callback.error(throwable);
                 });
@@ -573,6 +586,8 @@ public final class UserInfoProvide {
     }
 
     public interface OnUserInfoLoadCallback{
+
+        void addVideo(BaseResult baseResult);
 
         void onMessageLoad(BaseResult baseResult);
 

@@ -18,7 +18,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.util.BaseUtil;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.UserInfoStatePagerAdapter;
 import com.person.newscopy.user.Users;
@@ -73,6 +74,7 @@ public class UserInfoFragment extends Fragment {
         myActivity.queryRequireUserInfo(searchId).observe(this, otherUserInfo -> {
             List<ContentBean> b = otherUserInfo.getResult().getContent();
             user = otherUserInfo.getResult().getUser();
+            BaseUtil.updateUserInfo(user,getActivity().getApplication());
             contents.clear();
             contents.addAll(b);
             TextView releaseNum = view.findViewById(R.id.release_count);
@@ -87,8 +89,8 @@ public class UserInfoFragment extends Fragment {
             name.setText(user.getName());
             ShapeImageView icon = view.findViewById(R.id.icon);
             Glide.with(this)
-                    .load(user.getIcon())
                     .asBitmap()
+                    .load(user.getIcon())
                     .into(icon);
             if (searchId.equals(Users.userId)){//查询自己的信息
                  careButton.setVisibility(View.GONE);

@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.ndk.JavaUtil;
 import com.person.newscopy.news.fragment.CareFragment;
 import com.person.newscopy.news.fragment.NewsFragment;
 import com.person.newscopy.news.fragment.UserFragment;
@@ -33,6 +35,8 @@ public class NewsActivity extends AppCompatActivity {
     private List<BottomNavigationItem> bottomNavigationItems=new ArrayList<>(4);
     private List<Fragment> fragments=new ArrayList<>(4);
     private static int heightResult = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,9 @@ public class NewsActivity extends AppCompatActivity {
         fragmentLayout=findViewById(R.id.fragment);
         dealBottomNavigation();
         dealFragment();
+        //JavaUtil j = new JavaUtil();
         contentViewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
+        //Toast.makeText(this, ""+j.add(2,10) , Toast.LENGTH_SHORT).show();
     }
 
 
@@ -69,12 +75,10 @@ public class NewsActivity extends AppCompatActivity {
         bottomNavigationBar=findViewById(R.id.navigation);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar.setActiveColor(R.color.colorAccent);
-        //BottomNavigationItem item=new BottomNavigationItem(R.drawable.news_refresh_final,R.string.main_home_label);
         BottomNavigationItem item1=new BottomNavigationItem(R.drawable.main_home,R.string.main_home_label);
         BottomNavigationItem item2=new BottomNavigationItem(R.drawable.main_video,R.string.main_video_label);
         BottomNavigationItem item3=new BottomNavigationItem(R.drawable.main_short_video,R.string.main_short_video_label);
         BottomNavigationItem item4=new BottomNavigationItem(R.drawable.main_person,R.string.main_person_label);
-        //item.setBadgeItem()
         bottomNavigationItems.add(item1);
         bottomNavigationItems.add(item2);
         bottomNavigationItems.add(item3);

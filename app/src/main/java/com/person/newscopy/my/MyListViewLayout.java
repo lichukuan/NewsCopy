@@ -21,6 +21,7 @@ import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.edit.EditActivity;
 import com.person.newscopy.user.Users;
 
 public class MyListViewLayout extends FrameLayout implements View.OnClickListener{
@@ -90,11 +91,14 @@ public class MyListViewLayout extends FrameLayout implements View.OnClickListene
             case "设置":
                 startRequireFragment(MyActivity.SETTING_TYPE,c);
                 break;
-            case "发布文章":
-                startRequireFragment(MyActivity.RELEASE_ARTICLE,c);
+            case "发布内容":
+                getContext().startActivity(new Intent(getContext(), EditActivity.class));
                 break;
             case "关于":
                 launchAppDetail(getContext().getPackageName(),"");
+                break;
+            case "视频分享":
+                startRequireFragment(MyActivity.VIDEO_SHARE,c);
                 break;
         }
     }

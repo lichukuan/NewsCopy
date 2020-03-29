@@ -15,4 +15,9 @@
     <style name="TabLayoutStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="AnimationStyle" parent="Animation.Design.BottomSheetDialog">
+        <item name="android:windowEnterAnimation">@anim/dropdown_in</item>
+        <item name="android:windowExitAnimation">@anim/dropdown_out</item>
+    </style>
 </resources>

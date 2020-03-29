@@ -22,19 +22,21 @@ import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MySoftKeyBoardListener;
-import com.person.newscopy.common.RedCircleImageView;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.MySoftKeyBoardListener;
+import com.person.newscopy.common.view.RedCircleImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.adapter.CommentAdapter;
 import com.person.newscopy.show.adapter.RecommendAdapter;
+import com.person.newscopy.show.fragment.ShowArticleFragment;
 import com.person.newscopy.show.net.bean.CommentBean;
 import com.person.newscopy.show.net.bean.MessageCommentBean;
 import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
 import com.person.newscopy.show.net.bean.MessageUserBean;
+import com.person.newscopy.test.TestActivity;
 import com.person.newscopy.user.Users;
 import com.zzhoujay.richtext.RichText;
 import java.util.List;
@@ -111,8 +113,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
         comment.setLayoutManager(new LinearLayoutManager(this));
         name.setText(b.getUserName());
         Glide.with(this)
-                .load(b.getUserIcon())
                 .asBitmap()
+                .load(b.getUserIcon())
                 .into(shapeImageView);
         title.setText(b.getTitle());
         shapeImageView.setOnClickListener(v->{
@@ -156,6 +158,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
                         messageSaveAndLikeBean.setIcon(Users.userIcon);
                         messageSaveAndLikeBean.setUserId(Users.userId);
                         messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        messageSaveAndLikeBean.setTitle(b.getTitle());
+                        messageSaveAndLikeBean.setType(b.getType());
                         sendMessage(Users.userName+"赞了您的文章《"+b.getTitle()+"》",Config.MESSAGE.LIKE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
                     }
                 });
@@ -178,6 +182,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
                         messageSaveAndLikeBean.setIcon(Users.userIcon);
                         messageSaveAndLikeBean.setUserId(Users.userId);
                         messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        messageSaveAndLikeBean.setTitle(b.getTitle());
+                        messageSaveAndLikeBean.setType(b.getType());
                         sendMessage(Users.userName+"收藏了您的文章《"+b.getTitle()+"》",Config.MESSAGE.SAVE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
                     }
                 });
@@ -222,16 +228,24 @@ public class ShowNewsActivity extends SwipeBackActivity {
 
         });
         showViewModel.queryArticleDetail(b.getId(), Users.userId == null?"no":Users.userId,b.getUserId()).observe(this, baseResult -> {
-            RichText.fromHtml(baseResult.getResult().getDetail())
-                    .bind(ShowNewsActivity.this)
-                    .into(detail);
-            isLike = baseResult.getResult().getIsLike();
-            isSave = baseResult.getResult().getIsSave();
-            isCare = baseResult.getResult().getIsCare();
-            Log.d("====","isLike = "+isLike+"  isSave = "+isSave);
-            if (isLike == 1)likeIcon.changeIcon();
-            if (isCare == 1)care.setText("已关注");
-            if (isSave == 1)saveIcon.changeIcon();
+            String html = baseResult.getResult().getDetail();
+            if (!html.contains("<json>")){
+                RichText.fromHtml(html.replaceAll("&nbsp"," ").replaceAll("<json>",""))
+                        .bind(ShowNewsActivity.this)
+                        .into(detail);
+                isLike = baseResult.getResult().getIsLike();
+                isSave = baseResult.getResult().getIsSave();
+                isCare = baseResult.getResult().getIsCare();
+                Log.d("====","isLike = "+isLike+"  isSave = "+isSave);
+                if (isLike == 1)likeIcon.changeIcon();
+                if (isCare == 1)care.setText("已关注");
+                if (isSave == 1)saveIcon.changeIcon();
+            }else {
+                Intent intent = new Intent(this, TestActivity.class);
+                intent.putExtra("data",html.substring(html.indexOf("<json>")));
+                startActivity(intent);
+            }
+
         });
         showViewModel.feedNewsRecommend(b.getType(),b.getTag()).observe(this,contentData->{
             RecommendAdapter adapter = new RecommendAdapter(contentData.getResult(),ShowNewsActivity.this);
@@ -254,7 +268,6 @@ public class ShowNewsActivity extends SwipeBackActivity {
             layout.removeViewAt(1);
             if (hasFocus){
                 layout.addView(sendCommentView,1);
-
             }else {
                 layout.addView(normalCommentView,1);
             }

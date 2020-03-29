@@ -14,20 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.MyTranslucentUtil;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.util.MyTranslucentUtil;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.MyListViewLayout;
-import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.user.Users;
 
 public class UserFragment extends Fragment {
 
-    public static final String[] content = {"消息通知","我的收藏","阅读纪录","私信"};
+    public static final String[] content = {"消息通知","我的收藏","发布内容","视频分享","阅读纪录","私信"};
 
-    public static final int[] res = {R.drawable.ic_notification,R.drawable.user_collectionset,R.drawable.history
+    public static final int[] res = {R.drawable.ic_notification,R.drawable.user_collectionset,R.drawable.release_article,R.drawable.video_release,R.drawable.history
     ,R.drawable.tab_feidian};
 
     public static final String[] content2 = {"用户反馈","设置","关于"};
@@ -80,8 +78,8 @@ public class UserFragment extends Fragment {
         userFans.setOnClickListener(v -> showUser(MyActivity.FANS_TYPE,null));
         loginView.setOnClickListener(v->showUser(MyActivity.USER_WORK_TYPE,Users.userId));
         Glide.with(this)
-                .load(Users.userIcon)
                 .asBitmap()
+                .load(Users.userIcon)
                 .into(shape);
         userName.setText(Users.userName);
         userCare.setText(Users.userCare+"关注");

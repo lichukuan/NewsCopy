@@ -76,7 +76,28 @@
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/clear"
+                    android:text="清除缓存"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/cache"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
             <!--<LinearLayout-->
                 <!--android:orientation="horizontal"-->
                 <!--android:layout_width="match_parent"-->
@@ -93,24 +114,7 @@
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="match_parent" />-->
             <!--</LinearLayout>-->
-            <!--<LinearLayout-->
-                <!--android:orientation="horizontal"-->
-                <!--android:layout_marginEnd="10dp"-->
-                <!--android:layout_marginStart="20dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="40dp">-->
-                <!--<TextView-->
-                    <!--android:text="清除缓存"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center_vertical"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent" />-->
-                <!--<TextView-->
-                    <!--android:text="1111.11kb"-->
-                    <!--android:gravity="center_vertical"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent" />-->
-            <!--</LinearLayout>-->
+
             <!--<LinearLayout-->
                 <!--android:orientation="horizontal"-->
                 <!--android:layout_marginEnd="10dp"-->

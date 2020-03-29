@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,17 +65,18 @@ public class CommentAdapter extends RecyclerView.Adapter {
          holder1.reply.setText(bean.getReplyNum()+"");
          holder1.like.setText(bean.getLikeNum()+"");
          holder1.content.setText(bean.getContent());
+        Log.d("=====","评论的时间"+bean.getTime());
          holder1.time.setText(bean.getTime());
          holder1.name.setText(bean.getName());
          if (fragment!=null)
          Glide.with(fragment)
+                 .asBitmap()
                 .load(bean.getIcon())
-                .asBitmap()
                 .into(holder1.icon);
          else
              Glide.with(activity)
-                     .load(bean.getIcon())
                      .asBitmap()
+                     .load(bean.getIcon())
                      .into(holder1.icon);
          holder1.icon.setOnClickListener(v->{
              Intent intent = new Intent(context, MyActivity.class);

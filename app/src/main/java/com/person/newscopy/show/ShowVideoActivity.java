@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.network.bean.ResultBean;
@@ -91,7 +91,7 @@ public class ShowVideoActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (ijkMediaPlayer.isPlaying())
-        ijkMediaPlayer.pause();
+            ijkMediaPlayer.pause();
     }
 
     public interface TimeListener{
@@ -114,7 +114,6 @@ public class ShowVideoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
         release();
     }
 

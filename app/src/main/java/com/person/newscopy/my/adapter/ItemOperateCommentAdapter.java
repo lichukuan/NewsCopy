@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.user.net.bean.CommentsBean;
 
 import java.util.List;
@@ -40,8 +40,8 @@ public class ItemOperateCommentAdapter extends RecyclerView.Adapter<ItemOperateC
     public void onBindViewHolder(@NonNull CommentViewHolder commentViewHolder, int i) {
         CommentsBean commentsBean = comments.get(i);
         Glide.with(fragment)
-                .load(commentsBean.getIcon())
                 .asBitmap()
+                .load(commentsBean.getIcon())
                 .into(commentViewHolder.icon);
         Glide.with(fragment)
                 .load(commentsBean.getImage())

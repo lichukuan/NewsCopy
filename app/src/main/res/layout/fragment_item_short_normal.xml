@@ -6,7 +6,7 @@
         android:id="@+id/recycler_short_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.person.newscopy.common.LoadView
+    <com.person.newscopy.common.view.LoadView
         android:id="@+id/load"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

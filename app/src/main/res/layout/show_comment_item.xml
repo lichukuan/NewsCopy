@@ -6,7 +6,7 @@
     android:minHeight="100dp"
     xmlns:easy="http://schemas.android.com/apk/res-auto">
 
-    <com.person.newscopy.common.ShapeImageView
+    <com.person.newscopy.common.view.ShapeImageView
         android:id="@+id/icon"
         android:layout_width="40dp"
         android:layout_height="40dp"

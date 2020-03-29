@@ -15,7 +15,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center"/>
-      <com.person.newscopy.common.SmallLoadView
+      <com.person.newscopy.common.view.SmallLoadView
           android:id="@+id/load"
           android:layout_gravity="center"
           android:layout_width="100dp"
@@ -77,7 +77,7 @@
        android:layout_marginTop="20dp"
        android:layout_width="match_parent"
        android:layout_height="50dp">
-      <com.person.newscopy.common.ShapeImageView
+      <com.person.newscopy.common.view.ShapeImageView
           android:id="@+id/icon"
           easy:shape="circle"
           android:layout_marginStart="10dp"

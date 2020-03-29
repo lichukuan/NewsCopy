@@ -22,7 +22,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
-                <com.person.newscopy.common.ShapeImageView
+                <com.person.newscopy.common.view.ShapeImageView
                     android:id="@+id/image_1"
                     easy:shape="rectangle"
                     easy:topLeftRadius="4dp"
@@ -90,7 +90,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
-                <com.person.newscopy.common.ShapeImageView
+                <com.person.newscopy.common.view.ShapeImageView
                     android:id="@+id/image_2"
                     easy:shape="rectangle"
                     easy:topLeftRadius="4dp"

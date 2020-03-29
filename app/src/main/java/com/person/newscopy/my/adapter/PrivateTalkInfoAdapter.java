@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.AllPrivateTalkInfoBean;
 import com.person.newscopy.user.net.bean.ContentsBean;
-import com.person.newscopy.user.net.bean.ResultBeanX;
 
 import java.util.List;
 
@@ -65,16 +63,16 @@ public class PrivateTalkInfoAdapter extends RecyclerView.Adapter {
             leftViewHolder.content.setText(d.getContent());
             leftViewHolder.name.setText(leftName);
             Glide.with(fragment)
-                    .load(leftIcon)
                     .asBitmap()
+                    .load(leftIcon)
                     .into(leftViewHolder.icon);
         }else if (viewHolder instanceof RightViewHolder){
             RightViewHolder rightViewHolder = (RightViewHolder) viewHolder;
             rightViewHolder.content.setText(d.getContent());
             rightViewHolder.name.setText(Users.userName);
             Glide.with(fragment)
-                    .load(Users.userIcon)
                     .asBitmap()
+                    .load(Users.userIcon)
                     .into(rightViewHolder.icon);
         }
     }

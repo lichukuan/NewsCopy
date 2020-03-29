@@ -1,6 +1,5 @@
 package com.person.newscopy.show.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,11 +27,11 @@ import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MySoftKeyBoardListener;
-import com.person.newscopy.common.RedCircleImageView;
-import com.person.newscopy.common.SmallLoadView;
+import com.person.newscopy.common.view.MySoftKeyBoardListener;
+import com.person.newscopy.common.view.RedCircleImageView;
+import com.person.newscopy.common.view.SmallLoadView;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.show.adapter.CommentAdapter;
@@ -40,7 +39,6 @@ import com.person.newscopy.show.net.bean.CommentBean;
 import com.person.newscopy.show.net.bean.MessageCommentBean;
 import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
 import com.person.newscopy.show.net.bean.MessageUserBean;
-import com.person.newscopy.show.net.bean.NewAttitudeBean;
 import com.person.newscopy.user.Users;
 
 import java.io.IOException;
@@ -151,6 +149,8 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                         messageSaveAndLikeBean.setIcon(Users.userIcon);
                         messageSaveAndLikeBean.setUserId(Users.userId);
                         messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        messageSaveAndLikeBean.setTitle(bean.getTitle());
+                        messageSaveAndLikeBean.setType(bean.getType());
                         activity.sendMessage(Users.userName+"赞了您的视频 "+bean.getTitle(),Config.MESSAGE.LIKE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
                     }
                 });
@@ -171,6 +171,8 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
                         messageSaveAndLikeBean.setIcon(Users.userIcon);
                         messageSaveAndLikeBean.setUserId(Users.userId);
                         messageSaveAndLikeBean.setRecommend(Users.userRecommend);
+                        messageSaveAndLikeBean.setTitle(bean.getTitle());
+                        messageSaveAndLikeBean.setType(bean.getType());
                         activity.sendMessage(Users.userName+"收藏了您的视频 "+bean.getTitle(),Config.MESSAGE.SAVE_TYPE,BaseUtil.getGson().toJson(messageSaveAndLikeBean));
                     }
                 });
@@ -359,8 +361,8 @@ public class VideoVerticalFragment extends Fragment implements ShowVideoActivity
             }
         });
         Glide.with(this)
-                .load(bean.getUserIcon())
                 .asBitmap()
+                .load(bean.getUserIcon())
                 .into(icon);
         author.setText(bean.getUserName());
         new newInit().start();

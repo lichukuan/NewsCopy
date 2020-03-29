@@ -1,7 +1,9 @@
 package com.person.newscopy.news.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,15 +11,20 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.person.newscopy.R;
-import com.person.newscopy.common.LoadView;
+import com.person.newscopy.common.view.LoadView;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.NewsAdapter;
-import com.person.newscopy.news.network.bean.ContentResult;
+import com.person.newscopy.news.network.bean.ResultBean;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 public class ItemNormalNewsFragment extends Fragment {
 
@@ -32,7 +39,8 @@ public class ItemNormalNewsFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     LoadView loadView;
     private boolean isInit = false;
-
+    HandlerThread handlerThread = new HandlerThread("newsDataLoadTask");
+    Handler sendTaskHandler = null;
     public String getName() {
         return name;
     }
@@ -50,6 +58,25 @@ public class ItemNormalNewsFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         refreshLayout = view.findViewById(R.id.refresh);
         loadView = view.findViewById(R.id.load);
+        handlerThread.start();
+        sendTaskHandler = new Handler(handlerThread.getLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                List<ResultBean> resultBeanList = (List<ResultBean>) msg.obj;
+                File file = new File(getActivity().getCacheDir().getPath(),"news.txt");
+                try {
+                    if (!file.exists())file.createNewFile();
+                    FileOutputStream fileOutputStream = new FileOutputStream(file,true);
+                    for (int i = 0; i < resultBeanList.size(); i++) {
+                        ResultBean resultBean = resultBeanList.get(i);
+                        fileOutputStream.write((resultBean.getTitle()+"$#$"+resultBean.getId()+"$,$").getBytes());
+                    }
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         return view;
     }
 
@@ -76,6 +103,7 @@ public class ItemNormalNewsFragment extends Fragment {
                         adapter.refresh();
                         newsActivity.queryNewsData(name,adapter.getDownTime(),"down").observe(ItemNormalNewsFragment.this,newsResult -> {
                             adapter.addDownDataBeanList(newsResult.getResult());
+                            sendDataLoadMessage(newsResult.getResult());
                             adapter.hideLoad();
                         });
                     }
@@ -94,16 +122,25 @@ public class ItemNormalNewsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(() -> {//当下拉时，会调用这个方法
             newsActivity.queryNewsData(name,adapter.getTopTime(),"up").observe(this, contentResult -> {
                 adapter.addTopData(contentResult.getResult());
+                sendDataLoadMessage(contentResult.getResult());
                 refreshLayout.setRefreshing(false);//设置刷新进度条是否隐藏，false表示隐藏
             });
         });
         if (!adapter.isInit()){
             newsActivity.queryNewsData(name,0,"up").observe(this, contentResult -> {
                 adapter.setDataBeanList(contentResult.getResult(),true);
+                sendDataLoadMessage(contentResult.getResult());
                 loadView.cancel();
                 loadView.setVisibility(View.GONE);
             });
             isInit = true;
         }
     }
+
+    private void sendDataLoadMessage(List<ResultBean> resultBeanList){
+         Message message = Message.obtain();
+         message.obj = resultBeanList;
+         sendTaskHandler.sendMessage(message);
+    }
+
 }

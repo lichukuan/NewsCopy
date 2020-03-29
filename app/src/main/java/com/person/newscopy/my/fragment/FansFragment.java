@@ -11,16 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.AllFansAdapter;
 import com.person.newscopy.user.Users;
-import com.person.newscopy.user.net.bean.AllCareOrFans;
 
 public class FansFragment extends Fragment {
 

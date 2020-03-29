@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <com.person.newscopy.common.ShapeImageView
+        <com.person.newscopy.common.view.ShapeImageView
             android:id="@+id/user_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"

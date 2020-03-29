@@ -1,5 +1,6 @@
 package com.person.newscopy;
 
+import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -7,11 +8,13 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.api.Api;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.edit.EditActivity;
+import com.person.newscopy.image.ImageActivity;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
@@ -46,6 +49,7 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         TranslucentUtil.setTranslucent(this, Color.WHITE,0);
         OkHttpClient client = new OkHttpClient();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationLifeListener());
         Request request = new Request.Builder()
                 .url(Api.BASE_URL+"phone/get/key")
                 .build();
@@ -113,14 +117,9 @@ public class WelcomeActivity extends AppCompatActivity {
             Users.userFans = sharedPreferences.getInt("fans",-1);
             MiPushClient.setAlias(getApplicationContext(),Users.userId,null);
         }
-        startActivity(new Intent(this, NewsActivity.class));
+        startActivity(new Intent(this, ImageActivity.class));
         finish();
     }
-
-    //    private void check(){
-//        if(flag1&&flag2&&flag3&&flag4&&flag5)finish();
-//    }
-
     public native String decode(String code);
 
     public native String encode(String code);

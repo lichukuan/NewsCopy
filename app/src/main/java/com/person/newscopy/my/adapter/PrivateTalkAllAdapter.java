@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.user.net.bean.SimpleTalkBean;
 
@@ -39,8 +39,8 @@ public class PrivateTalkAllAdapter extends RecyclerView.Adapter<PrivateTalkAllAd
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         SimpleTalkBean privateTalkOutBeansBean = l.get(i);
         Glide.with(fragment)
-                .load(privateTalkOutBeansBean.getIcon())
                 .asBitmap()
+                .load(privateTalkOutBeansBean.getIcon())
                 .into(viewHolder.icon);
         viewHolder.content.setText(privateTalkOutBeansBean.getLastContent());
         viewHolder.name.setText(privateTalkOutBeansBean.getName());

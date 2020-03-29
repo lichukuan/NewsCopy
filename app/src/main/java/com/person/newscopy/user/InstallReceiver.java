@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 
 public class InstallReceiver extends BroadcastReceiver {
     @Override

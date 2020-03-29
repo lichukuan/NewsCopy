@@ -66,33 +66,6 @@ public class HistoryView extends LinearLayout{
         this.clickListener = clickListener;
     }
 
-//    public void setData(Collection<String> s){
-//        data.addAll(s);
-//        for (String s1 : s) {
-//            TextView textView = new TextView(getContext());
-//            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,(int) (30*density));
-//            textView.setLayoutParams(layoutParams);
-//            textView.setTextSize(17);
-//            textView.setTextColor(Color.RED);
-//            textView.setText(s1);
-//            textView.setGravity(Gravity.CENTER);
-//            textView.setOnClickListener(v -> {
-//                if (clickListener != null)clickListener.click(s1);
-//            });
-//            addView(textView);
-//        }
-//        requestLayout();
-//    }
-//
-//    public void setData(String s){
-//        data.add(s);
-//        TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.history_text,null);
-//        textView.setOnClickListener(v -> {
-//            if (clickListener != null)clickListener.click(s);
-//        });
-//        textView.setText(s);
-//        addView(textView);
-//    }
 
     public void clearAll(){
         data.clear();
@@ -123,11 +96,11 @@ public class HistoryView extends LinearLayout{
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        Log.d("====History","left = "+left+" top = "+top+" right = "
-                +right+" bottom = "+bottom+" childCount = "+getChildCount()+"  screenHeight = "+screenHeight);
+//        Log.d("====History","left = "+left+" top = "+top+" right = "
+//                +right+" bottom = "+bottom+" childCount = "+getChildCount()+"  screenHeight = "+screenHeight);
         float x = margin;
         float y = margin;
-        Log.d("===History","top = "+top+" getTop = "+getTop()+" getPivotY = "+getPivotY()+" getY() = "+getY());
+        //Log.d("===History","top = "+top+" getTop = "+getTop()+" getPivotY = "+getPivotY()+" getY() = "+getY());
         for (int i = 0; i < getChildCount(); i++) {
             View child =  getChildAt(i);
             if(x + child.getMeasuredWidth() + margin > screenWidth){
@@ -135,7 +108,6 @@ public class HistoryView extends LinearLayout{
                 y += child.getMeasuredHeight() + margin;
             }
             child.layout((int)x,(int)y,(int)(x+child.getMeasuredWidth()),(int) (y+child.getMeasuredHeight()));
-            Log.d("==History",x+" , "+y+" , "+(x+child.getMeasuredWidth())+" , "+(y+child.getMeasuredHeight()));
             x += child.getMeasuredWidth() + margin;
         }
     }

@@ -34,7 +34,7 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <com.person.newscopy.common.ShapeImageView
+    <com.person.newscopy.common.view.ShapeImageView
         android:id="@+id/icon"
         android:layout_width="80dp"
         android:layout_height="80dp"

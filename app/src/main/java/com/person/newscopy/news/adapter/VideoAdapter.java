@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +20,9 @@ import com.bumptech.glide.Glide;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.util.BaseUtil;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.news.network.bean.ResultBean;
-import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 
 import java.util.ArrayList;
@@ -193,8 +191,8 @@ public class VideoAdapter extends RecyclerView.Adapter {
                      .load(bean.getImage())
                      .into(normalViewHolder.image);
              Glide.with(fragment)
-                     .load(bean.getUserIcon())
                      .asBitmap()
+                     .load(bean.getUserIcon())
                      .into(normalViewHolder.icon);
              normalViewHolder.normalVideo.setOnClickListener(v -> showWebInfo(BaseUtil.getGson().toJson(bean)));
          }

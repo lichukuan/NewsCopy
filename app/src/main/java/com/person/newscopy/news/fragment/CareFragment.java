@@ -1,6 +1,5 @@
 package com.person.newscopy.news.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,14 +16,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
-import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.MyRichEditText;
-import com.person.newscopy.common.MyTranslucentUtil;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.NewsActivity;
 import com.person.newscopy.news.adapter.CareUserDataAdapter;
-import com.person.newscopy.news.network.bean.ContentResult;
 import com.person.newscopy.user.Users;
 
 /**

@@ -69,9 +69,11 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
 
     public static final int SEND_MESSAGE_TYPE = 19;
 
+    public static final int ADD_VIDEO = 20;
+
     private UserInfoProvide userInfoProvide;
 
-    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(20);
+    private SparseArray<MutableLiveData<BaseResult>> baseResultArray = new SparseArray<>(30);
 
     private SparseArray<MutableLiveData<AllCareOrFans>> caresOrfans = new SparseArray<>(2);
 
@@ -217,6 +219,17 @@ public class UserDepository implements UserInfoProvide.OnUserInfoLoadCallback {
     public void addMessage(String userId, int messageType, String fromUserId, String content,
                            String title){
         userInfoProvide.addMessage(userId,messageType,fromUserId,content,title);
+    }
+
+    public void addVideo(String userId, String videoUrl, String title,
+                         String image, String videoTime, String tag,
+                         String rec, int second){
+        userInfoProvide.addVideo(userId,videoUrl,title,image,videoTime,tag,rec,second);
+    }
+
+    @Override
+    public void addVideo(BaseResult baseResult) {
+        baseResultArray.get(ADD_VIDEO).setValue(baseResult);
     }
 
     @Override

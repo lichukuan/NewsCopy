@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".show.ShowVideoActivity">
-    <com.person.newscopy.common.ShortVideoView
+    <com.person.newscopy.common.view.ShortVideoView
         android:id="@+id/video"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"

@@ -38,6 +38,13 @@ public class UserViewModel extends AndroidViewModel {
         return depository.getContentResultMutableLiveData();
     }
 
+    public LiveData<BaseResult> addVideo(String userId, String videoUrl, String title,
+                                         String image, String videoTime, String tag,
+                                         String rec, int second){
+        depository.addVideo(userId,videoUrl,title,image,videoTime,tag,rec,second);
+        return depository.pickRequireData(UserDepository.ADD_VIDEO);
+    }
+
     public LiveData<ContentResult> querySave(String userId){
         depository.querySave(userId);
         return depository.getSaveContentLiveData();

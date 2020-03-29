@@ -129,6 +129,12 @@ public interface UserInterface {
                                           @Field("image")String image,@Field("imageList")String imageList,@Field("tag")String tag,
                                           @Field("rec")String rec);
 
+    @POST(Api.USER.ADD_VIDEO)
+    @FormUrlEncoded
+    Observable<BaseResult> addVideo(@Field("userId") String userId, @Field("videoUrl") String videoUrl,@Field("title")String title,
+                                    @Field("image")String image,@Field("videoTime")String videoTime,@Field("tag")String tag,
+                                    @Field("rec")String rec,@Field("second")int second);
+
     @Multipart
     @POST(Api.CONTENT.UPLOAD_ARTICLE_IMAGE)
     Observable<BaseResult> uploadArticleImage(@PartMap Map<String, RequestBody> map);

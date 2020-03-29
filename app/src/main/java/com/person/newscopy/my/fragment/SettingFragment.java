@@ -1,5 +1,6 @@
 package com.person.newscopy.my.fragment;
 
+import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -7,7 +8,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,13 +25,14 @@ import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.util.FileUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.user.Users;
-import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.ResultBeanXX;
-import com.person.newscopy.user.net.bean.VersionBean;
+
+import java.io.File;
 
 public class SettingFragment extends Fragment {
 
@@ -44,6 +49,17 @@ public class SettingFragment extends Fragment {
         view.findViewById(R.id.back).setOnClickListener(v -> myActivity.finish());
         view.findViewById(R.id.edit_info).setOnClickListener(v -> myActivity.changeFragment(MyActivity.MY_INFO_TYPE,true));
         view.findViewById(R.id.change_pas).setOnClickListener(v -> myActivity.changeFragment(MyActivity.CHANGE_PASSWORD_TYPE,true));
+        TextView cache = view.findViewById(R.id.cache);
+        TextView clear = view.findViewById(R.id.clear);
+        cache.setText(FileUtil.getAutoFileOrFilesSize(getActivity().getCacheDir().getPath()));
+        clear.setOnClickListener(v -> {
+            if(FileUtil.delete(getActivity().getCacheDir().getPath())){
+                cache.setText("0kB");
+                Toast.makeText(myActivity, "清除成功", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(myActivity, "操作失败,请重试", Toast.LENGTH_SHORT).show();
+            }
+        });
         outLogin = view.findViewById(R.id.out_login);
         view.findViewById(R.id.update).setOnClickListener(v -> {
             myActivity.findNewVersion().observe(SettingFragment.this, versionBean -> {
@@ -64,6 +80,29 @@ public class SettingFragment extends Fragment {
           myActivity.changeFragment(MyActivity.GET_USER_PAS,false);
         });
         return view;
+    }
+
+    private boolean requestDangerousPermission(AppCompatActivity activity) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            //第二步 申请权限(注意为了兼容，建议使用 ActivityCompat)
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 22);
+            return false;
+        }else
+            return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+                case 22:
+                    if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(myActivity, "开始下载", Toast.LENGTH_SHORT).show();
+                        BaseUtil.downloadApk("正在下载","news.apk");
+                    }else{
+                        Toast.makeText(myActivity, "没有该权限无法下载应用", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
     }
 
     @Override
@@ -100,6 +139,10 @@ public class SettingFragment extends Fragment {
         TextView t = view.findViewById(R.id.recommend);
         t.setText(recommend);
         view.findViewById(R.id.download).setOnClickListener(v -> {
+            if (!requestDangerousPermission(myActivity)){
+                popupWindow.dismiss();
+                return;
+            }
             Toast.makeText(myActivity, "开始下载", Toast.LENGTH_SHORT).show();
             BaseUtil.downloadApk("正在下载","news.apk");
             popupWindow.dismiss();

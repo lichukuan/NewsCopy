@@ -1,7 +1,6 @@
 package com.person.newscopy.my.fragment;
 
 
-import android.arch.lifecycle.Observer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,13 +20,12 @@ import android.widget.Toast;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.MyTranslucentUtil;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.adapter.PrivateTalkInfoAdapter;
 import com.person.newscopy.user.Users;
-import com.person.newscopy.user.net.bean.BaseResult;
 import com.person.newscopy.user.net.bean.ContentsBean;
 
 //用于显示一个具体的私聊

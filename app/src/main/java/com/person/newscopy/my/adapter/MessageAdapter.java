@@ -12,15 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
+import com.person.newscopy.common.view.ShapeImageView;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.show.ShowNewsActivity;
 import com.person.newscopy.show.ShowVideoActivity;
 import com.person.newscopy.show.net.bean.MessageCommentBean;
 import com.person.newscopy.show.net.bean.MessageSaveAndLikeBean;
-import com.person.newscopy.show.net.bean.MessageUserBean;
 import com.person.newscopy.user.net.bean.MessageContentBean;
 
 import java.util.List;
@@ -61,8 +60,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof CareMessageViewHolder){
             CareMessageViewHolder careMessageViewHolder = (CareMessageViewHolder) viewHolder;
             Glide.with(fragment)
-                    .load(b.getIcon())
                     .asBitmap()
+                    .load(b.getIcon())
                     .into(careMessageViewHolder.icon);
             careMessageViewHolder.icon.setOnClickListener(v -> {
                 Intent intent = new Intent(context, MyActivity.class);
@@ -76,8 +75,8 @@ public class MessageAdapter extends RecyclerView.Adapter {
             CommentMessageViewHolder commentMessageViewHolder = (CommentMessageViewHolder) viewHolder;
             commentMessageViewHolder.time.setText(b.getTime());
             Glide.with(fragment)
-                    .load(b.getIcon())
                     .asBitmap()
+                    .load(b.getIcon())
                     .into(commentMessageViewHolder.icon);
             commentMessageViewHolder.icon.setOnClickListener(v -> {
                 Intent intent = new Intent(context, MyActivity.class);

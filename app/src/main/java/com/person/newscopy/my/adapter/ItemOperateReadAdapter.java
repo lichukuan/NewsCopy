@@ -12,15 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.person.newscopy.R;
-import com.person.newscopy.common.BaseUtil;
+import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
-import com.person.newscopy.common.ShapeImageView;
-import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.my.fragment.HistoryFragment;
-import com.person.newscopy.news.network.bean.ResultBean;
-import com.person.newscopy.type.Types;
 import com.person.newscopy.user.net.bean.ReadContent;
 
 
