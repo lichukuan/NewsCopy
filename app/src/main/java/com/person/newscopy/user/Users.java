@@ -29,7 +29,7 @@ public final class Users {
 
     public static void reset(){
         LOGIN_FLAG = false;
-        userId = "";
+        //userId = "";
         userName = "";
         userIcon = "";
         userRecommend = "";

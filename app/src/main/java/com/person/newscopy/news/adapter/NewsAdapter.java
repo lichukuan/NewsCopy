@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.RequestOptions;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
@@ -236,6 +239,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private static final String TAG = "NewsAdapter";
+
+    private RequestOptions requestOptions = new RequestOptions()
+            .placeholder(R.drawable.picture)
+            .centerCrop();
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof LoadHolder){
@@ -255,9 +263,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (fragment!=null)
                     Glide.with(fragment)
                             .load(bean.getImages().get(0))
+                    .apply(requestOptions)
                             .into(bigViewHolder.bigPic);
                 else Glide.with(context)
                         .load(bean.getImages().get(0))
+                        .apply(requestOptions)
                         .into(bigViewHolder.bigPic);
                 bigViewHolder.close.setOnClickListener(v -> createPop(v,bean.getId(),position));
             }
@@ -272,9 +282,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                if (fragment!=null)
                Glide.with(fragment)
                        .load(bean.getImage())
+                       .apply(requestOptions)
                        .into(oneViewHolder.pic);
                else  Glide.with(context)
                        .load(bean.getImage())
+                       .apply(requestOptions)
                        .into(oneViewHolder.pic);
                oneViewHolder.close.setOnClickListener(v -> createPop(v,bean.getId(),position));
         }else if (holder instanceof ThreeViewHolder){
@@ -288,22 +300,28 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (fragment!=null){
                 Glide.with(fragment)
                         .load(list.get(0))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic1);
                 Glide.with(fragment)
                         .load(list.get(1))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic2);
                 Glide.with(fragment)
                         .load(list.get(2))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic3);
             }else {
                 Glide.with(context)
                         .load(list.get(0))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic1);
                 Glide.with(context)
                         .load(list.get(1))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic2);
                 Glide.with(context)
                         .load(list.get(2))
+                        .apply(requestOptions)
                         .into(threeViewHolder.pic3);
             }
             threeViewHolder.close.setOnClickListener(v->createPop(v,bean.getId(),position));

@@ -33,7 +33,9 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.easy.generaltool.ViewUtil;
 import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.common.MyGlideEngine;
@@ -42,6 +44,7 @@ import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.common.view.CutShapeImageView;
 import com.person.newscopy.edit.EditActivity;
 import com.person.newscopy.image.ImageActivity;
+import com.person.newscopy.image.bean.ImageBean;
 import com.person.newscopy.user.Users;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -93,17 +96,35 @@ public class CutImageFragment extends Fragment {
             String path = activity.saveImageToGallery(bm);
             if(path!=null) Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT).show();
             else Toast.makeText(getContext(), "保存失败", Toast.LENGTH_SHORT).show();
-            Intent intent = null;
-            intent = new Intent(activity, EditActivity.class);
+            Intent intent = new Intent();
             intent.putExtra(ImageActivity.REQUIRE_CODE,requireCode);
             intent.putExtra("type","cut");
             intent.putExtra("data",path);
-            activity.startActivity(intent);
-            activity.finish();
+            activity.setResultData(requireCode,intent);
         });
         if (shape != -1)
         cutShapeImageView.setShape(shape);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TranslucentUtil.setTranslucent(activity,Color.BLACK, (int) (ScreenFitUtil.getDensity()*25));
+        if (activity.getPickedImages() != null){
+            List<ImageBean> l = activity.getPickedImages();
+            if (l.size() == 0){
+                activity.finish();
+                return;
+            }
+            RequestOptions requestOptions = new RequestOptions()
+                    .centerInside();
+            Glide.with(this)
+                    .asBitmap()
+                    .load(l.get(0).getPath())
+                    .apply(requestOptions)
+                    .into(cutShapeImageView);
+        }
     }
 
     public void setShape(int shape) {
@@ -120,31 +141,27 @@ public class CutImageFragment extends Fragment {
         this.requireCode = requireCode;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            List<Uri> uris = Matisse.obtainResult(data);
-            Uri uri = uris.get(0);
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerInside();
-            Glide.with(this)
-                    .asBitmap()
-                    .load(uri)
-                    .apply(requestOptions)
-                    .into(cutShapeImageView);
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+//            List<Uri> uris = Matisse.obtainResult(data);
+//            Uri uri = uris.get(0);
+//
+//        }
+//    }
 
     private void takePicture(){
-        Matisse.from(this)
-                .choose(MimeType.allOf()) // 选择 mime 的类型
-                .countable(true)
-                .maxSelectable(1) // 图片选择的最多数量
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f) // 缩略图的比例
-                .imageEngine(new MyGlideEngine()) // 使用的图片加载引擎
-                .forResult(REQUEST_CODE_CHOOSE); // 设置作为标记的请求码
+//        Matisse.from(this)
+//                .choose(MimeType.allOf()) // 选择 mime 的类型
+//                .countable(true)
+//                .maxSelectable(1) // 图片选择的最多数量
+//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+//                .thumbnailScale(0.85f) // 缩略图的比例
+//                .imageEngine(new MyGlideEngine()) // 使用的图片加载引擎
+//                .forResult(REQUEST_CODE_CHOOSE); // 设置作为标记的请求码
+        if (activity.getPickedImages() == null)
+        activity.pickImages(1);
     }
 
 

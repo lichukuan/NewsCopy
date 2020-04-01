@@ -7,12 +7,13 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <TextView
+    <CheckedTextView
         android:id="@+id/num"
-        android:background="@drawable/un_pick_image_num_bg"
+        android:background="@drawable/all_pick_image_num_bg"
         android:layout_gravity="end|top"
         android:layout_width="20dp"
-        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/main_word_while"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
         android:layout_height="20dp"/>

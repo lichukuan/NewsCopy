@@ -1,6 +1,9 @@
 package com.person.newscopy.image.fragment;
 
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,10 +19,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.util.MyTranslucentUtil;
 import com.person.newscopy.edit.PopupWindowUtil;
 import com.person.newscopy.image.adapter.ListImageAdapter;
 import com.person.newscopy.image.adapter.ListImageGroupAdapter;
@@ -49,6 +56,14 @@ public class ImagesPickFragment extends Fragment {
     List<List<ImageBean>> res;
     List<ImageGroupBean> group;
     View other;
+    LinearLayout toolbar;
+    int groupIndex = 0;
+    int maxCount = 0;
+
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
+    }
+
 
     private static class ImagesPickFragmentHandler extends Handler {
 
@@ -76,34 +91,48 @@ public class ImagesPickFragment extends Fragment {
                 break;
             }
         }
+        if (index == -1)return;
+        groupIndex = index;
+        selector.setText(res.get(index).get(0).getGroupName());
         listImageAdapter.setData(res.get(index));
-        popupWindowUtil.dismiss();
+        popupWindow.dismiss();
     }
 
     public void initData(){
         listImageAdapter.setData(res.get(0));
+        selector.setText(res.get(0).get(0).getGroupName());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pick_images,container,false);
+        MyTranslucentUtil.setTranslucent(getActivity(), Color.parseColor("#fecc11"), (int) (25* ScreenFitUtil.getDensity()));
         recyclerView = view.findViewById(R.id.recycler);
         cancel = view.findViewById(R.id.cancel);
         preview = view.findViewById(R.id.preview);
         selector = view.findViewById(R.id.select);
         other = view.findViewById(R.id.other);
         ok = view.findViewById(R.id.ok);
+        toolbar = view.findViewById(R.id.toolbar);
         group = new ArrayList<>();
         if (listImageAdapter == null)
-            listImageAdapter = new ListImageAdapter(this);
+            listImageAdapter = new ListImageAdapter(this,maxCount);
         handler = new ImagesPickFragmentHandler(this);
-        new Thread(()->{
-            res = new ArrayList<>(readAllImageDirectory());
-            handler.sendEmptyMessage(1);
-        }).start();
+        if (res == null){
+            new Thread(()->{
+                res = new ArrayList<>(readAllImageDirectory());
+                handler.sendEmptyMessage(1);
+            }).start();
+        }
+        ok.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
+        cancel.setOnClickListener(v -> getActivity().finish());
         return view;
     }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -112,17 +141,44 @@ public class ImagesPickFragment extends Fragment {
         selector.setOnClickListener(v -> {
             createPop();
         });
+        preview.setOnClickListener(v -> {
+            listImageAdapter.preview();
+        });
+        if (res!= null && res.size() > groupIndex)
+        selector.setText(res.get(groupIndex).get(0).getGroupName());
     }
-    PopupWindowUtil popupWindowUtil;
+
+    private PopupWindow popupWindow;
+    private ListImageGroupAdapter listImageGroupAdapter = null;
+
     private void createPop(){
-        //android.provider.DocumentsContract.CalendarContract.Browser.BlockedNumberContract.AlarmClock
         View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_pick_images,null);
         RecyclerView recyclerView1 = view.findViewById(R.id.recycler);
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView1.setAdapter(new ListImageGroupAdapter(this,group));
-        popupWindowUtil = new PopupWindowUtil();
-        popupWindowUtil.create(view, ViewGroup.LayoutParams.MATCH_PARENT, (int) ( 500* ScreenFitUtil.getDensity()),getActivity(),other);
-        popupWindowUtil.showAsDropDown(selector);
+        if (listImageGroupAdapter == null)
+            listImageGroupAdapter = new ListImageGroupAdapter(this,group);
+        if (group.size() == 0)
+            group = listImageGroupAdapter.getData();
+        recyclerView1.setAdapter(listImageGroupAdapter);
+        Log.d("=====","group size = "+group.size());
+         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, (int) ( 500* ScreenFitUtil.getDensity()));
+        //动画效果
+        popupWindow.setAnimationStyle(R.style.AnimationStyle);
+        //菜单背景色
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setOnDismissListener(() ->{
+            other.setVisibility(View.GONE);
+        });
+        other.setVisibility(View.VISIBLE);
+        popupWindow.showAsDropDown(toolbar);
+    }
+
+
+    public List<ImageBean> getPickImage(){
+        if (listImageAdapter == null)return null;
+        return listImageAdapter.getSelectedImage();
     }
 
     private Collection<List<ImageBean>> readAllImageDirectory(){
@@ -154,5 +210,12 @@ public class ImagesPickFragment extends Fragment {
         }
         cursor.close();
         return map.values();
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        res.clear();
+        group.clear();
     }
 }

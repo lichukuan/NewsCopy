@@ -3,6 +3,7 @@ package com.person.newscopy.image.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.easy.generaltool.common.ScreenFitUtil;
+import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.view.ScaleImageView;
@@ -56,6 +59,7 @@ public class ShowOneImageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        TranslucentUtil.setTranslucent(imageActivity,Color.BLACK, (int) (ScreenFitUtil.getDensity()*25));
         Glide.with(this)
                 .asBitmap()
                 .load(url)

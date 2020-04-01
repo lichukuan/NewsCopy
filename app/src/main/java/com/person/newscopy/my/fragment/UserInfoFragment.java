@@ -74,11 +74,13 @@ public class UserInfoFragment extends Fragment {
         myActivity.queryRequireUserInfo(searchId).observe(this, otherUserInfo -> {
             List<ContentBean> b = otherUserInfo.getResult().getContent();
             user = otherUserInfo.getResult().getUser();
+            user.setReleaseCount(b.size());
+            if (user.getId().equals(Users.userId))
             BaseUtil.updateUserInfo(user,getActivity().getApplication());
             contents.clear();
             contents.addAll(b);
             TextView releaseNum = view.findViewById(R.id.release_count);
-            releaseNum.setText(user.getReleaseCount()+"投稿");
+            releaseNum.setText(b.size()+"投稿");
             TextView careNum = view.findViewById(R.id.care_count);
             careNum.setText(user.getCareCount()+"关注");
             TextView fansNum = view.findViewById(R.id.fans_count);
@@ -104,7 +106,6 @@ public class UserInfoFragment extends Fragment {
             video.clear();
             if (contents.size() > 0){
                 noFlag.setVisibility(View.GONE);
-                Log.d("========","加载全部");
                 tab.add("全部");
                 for (int i = 0; i < contents.size(); i++) {
                     final ContentBean contentBean = contents.get(i);

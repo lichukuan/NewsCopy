@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.easy.generaltool.common.TranslucentUtil;
 import com.person.newscopy.api.Api;
+import com.person.newscopy.camera.CameraActivity;
 import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.edit.EditActivity;
@@ -20,6 +22,7 @@ import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -30,18 +33,9 @@ import okhttp3.Response;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    // Used to load the 'native-lib' library on application startup.
-
     static {
         System.loadLibrary("little");
     }
-    //TypeViewModel typeViewModel;
-
-//    boolean flag1 = false;
-//    boolean flag2 = false;
-//    boolean flag3 = false;
-//    boolean flag4 = false;
-//    boolean flag5 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,37 +64,6 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("==========encode",encode("12345"));
-        Log.d("==========decode",decode("qwerty"));
-//        typeViewModel = ViewModelProviders.of(this).get(TypeViewModel.class);
-//        typeViewModel.feedContentType().observe(this, contentType -> {
-//            for(ResultBeanX b :contentType.getResult())
-//                 Types.contentType.put(b.getValue(),b.getTag());
-//            flag1 = true;
-//            check();
-//        });
-//        typeViewModel.feedMessageType().observe(this, messageType -> {
-//            for(ResultBeanX b :messageType.getResult())
-//                Types.messageType.put(b.getValue(),b.getTag());
-//            flag2 = true;
-//            check();
-//        });
-//        typeViewModel.feedNewsType().observe(this,newsType -> {
-//                Types.newsType.addAll(newsType.getResult());
-//                flag3 = true;
-//                check();
-//        });
-//        typeViewModel.feedShortVideoType().observe(this,shortVideoType -> {
-//              Types.shortType.addAll(shortVideoType.getResult());
-//              flag4 = true;
-//              check();
-//        });
-//        typeViewModel.feedVideoType().observe(this,videoType -> {
-//            for (ResultBean b :videoType.getResult())
-//                Types.videoType.put(b.getName(),b.getChannelId());
-//            flag5 = true;
-//            check();
-//        });
     }
 
     private void jumpToMain(){
@@ -117,7 +80,7 @@ public class WelcomeActivity extends AppCompatActivity {
             Users.userFans = sharedPreferences.getInt("fans",-1);
             MiPushClient.setAlias(getApplicationContext(),Users.userId,null);
         }
-        startActivity(new Intent(this, ImageActivity.class));
+        startActivity(new Intent(this, NewsActivity.class));
         finish();
     }
     public native String decode(String code);

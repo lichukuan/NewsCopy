@@ -16,20 +16,13 @@ public class PopupWindowUtil {
     public void create(View view, int width, int height, boolean isOutsideTouchable, Activity activity,float alpha,View other){
         popupWindow = new PopupWindow(view, width,height);
         if (isOutsideTouchable){
-            //动画效果
-            popupWindow.setAnimationStyle(R.style.AnimationStyle);
-            //菜单背景色
-            ColorDrawable dw = new ColorDrawable(Color.TRANSPARENT);
-            popupWindow.setBackgroundDrawable(dw);
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setTouchable(true);
+
         }
         popupWindow.setOnDismissListener(() ->{
            other.setVisibility(View.GONE);
         });
         other.setVisibility(View.VISIBLE);
     }
-
     public void showAsDropDown(View view){
         if (popupWindow == null)return;
         popupWindow.showAsDropDown(view);

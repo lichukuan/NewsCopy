@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="#000000"
     android:layout_height="match_parent">
     <com.person.newscopy.common.view.CutShapeImageView
         android:id="@+id/cut_shape_image_view"
-        android:background="#000000"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView

@@ -32,6 +32,10 @@ public class ListImageGroupAdapter extends RecyclerView.Adapter {
         this.data = data;
     }
 
+    public List<ImageGroupBean> getData() {
+        return data;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

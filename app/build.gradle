@@ -93,5 +93,6 @@ dependencies {
     //七牛云sdk
     implementation 'com.qiniu:qiniu-android-sdk:7.4.0'
     implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
-
+    //解析html
+    implementation 'org.jsoup:jsoup:1.13.1'
 }

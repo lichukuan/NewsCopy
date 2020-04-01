@@ -2,6 +2,7 @@ package com.person.newscopy.camera.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -31,7 +32,6 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_item_camera, container, false);
-
         changeCamera = view.findViewById(R.id.camera);
         cameraView = view.findViewById(R.id.camera_view);
         start = view.findViewById(R.id.start);
@@ -63,7 +63,7 @@ public class CameraFragment extends Fragment {
                 Toast.makeText(getContext(), "录制完成", Toast.LENGTH_SHORT).show();
             }else {
                 start.setImageResource(R.drawable.camera_pause);
-                helper.startVideoRecord(getActivity().getCacheDir().getAbsolutePath(), SystemClock.currentThreadTimeMillis()+".mp4");
+                helper.startVideoRecord(Environment.getExternalStoragePublicDirectory("littele").getAbsolutePath(), SystemClock.currentThreadTimeMillis()+".mp4");
                 changeCamera.setClickable(false);
             }
             isStart = !isStart;

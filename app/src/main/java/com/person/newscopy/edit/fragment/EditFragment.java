@@ -107,7 +107,14 @@ public class EditFragment extends Fragment implements DefaultEditAdapter.LoadCal
             hideItem();
         });
         upload.setOnClickListener(v -> {
+            List<String> l = editActivity.getKeywordFilteringUtil().match(defaultEditAdapter.toFormatContent());
+            if (l.size() <= 0)
             createListDialog();
+            else {
+                ShowSensitiveWordsFragment fragment = new ShowSensitiveWordsFragment();
+                fragment.setData(l);
+                fragment.show(getChildFragmentManager(),ShowSensitiveWordsFragment.class.getName());
+            }
         });
         all.setOnClickListener(v -> {
             if(isEditMode){

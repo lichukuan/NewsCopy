@@ -1,5 +1,6 @@
 package com.person.newscopy.edit;
 
+import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
+import com.person.newscopy.common.util.KeywordFilteringUtil;
 import com.person.newscopy.edit.fragment.AddItemFragment;
 import com.person.newscopy.edit.fragment.EditFragment;
 import com.person.newscopy.edit.fragment.PreviewFragment;
@@ -18,12 +20,20 @@ import com.person.newscopy.user.UserViewModel;
 import com.person.newscopy.user.Users;
 import com.person.newscopy.user.net.bean.BaseResult;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 public class EditActivity extends AppCompatActivity {
 
     EditFragment editFragment = null;
     PreviewFragment previewFragment = null;
     UserViewModel userViewModel;
-
+    KeywordFilteringUtil keywordFilteringUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,13 @@ public class EditActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment,editFragment)
                 .commit();
+        keywordFilteringUtil = new KeywordFilteringUtil();
+        getLifecycle().addObserver(keywordFilteringUtil);
+        initData();
+    }
+
+    private void initData(){
+        keywordFilteringUtil.createAcTree(keywordFilteringUtil.getSensitiveWord(getApplication()));
     }
 
     public void preview(String html){
@@ -45,9 +62,14 @@ public class EditActivity extends AppCompatActivity {
         previewFragment.setHtml(html);
     }
 
+    public KeywordFilteringUtil getKeywordFilteringUtil() {
+        return keywordFilteringUtil;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        getLifecycle().removeObserver(keywordFilteringUtil);
     }
 
     public void edit(){

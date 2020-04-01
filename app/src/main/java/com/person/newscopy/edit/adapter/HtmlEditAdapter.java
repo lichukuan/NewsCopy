@@ -113,6 +113,7 @@ public class HtmlEditAdapter extends DefaultEditAdapter {
         return toHtml();
     }
 
+
     @Override
     public void createNewItem(int position) {
         AlertDialog.Builder listDialog = new AlertDialog.Builder(context);
@@ -244,11 +245,10 @@ public class HtmlEditAdapter extends DefaultEditAdapter {
             }
         }
         builder.append("</article></html>");
-        builder.append("<json>");
-        builder.append(getJsonData());
-        builder.append("<json>");
         return builder.toString();
     }
+
+
 
     public String getCover(){
         return data.get(0).getCover();

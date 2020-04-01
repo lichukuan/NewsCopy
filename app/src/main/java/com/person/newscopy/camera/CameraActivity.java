@@ -24,9 +24,7 @@ public class CameraActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 1;
 
     ViewPager viewPager;
-
     TabLayout tabLayout;
-
     TextView cancel;
 
     @Override
@@ -58,7 +56,7 @@ public class CameraActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_DENIED||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_DENIED )
             //第二步 申请权限(注意为了兼容，建议使用 ActivityCompat)
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO},REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_CODE);
         else
             viewPager.setAdapter(new CameraFragmentAdapter(getSupportFragmentManager()));
     }

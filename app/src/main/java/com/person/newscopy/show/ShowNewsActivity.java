@@ -24,13 +24,19 @@ import com.easy.generaltool.common.ViewInfoUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
+import com.person.newscopy.common.util.KeywordFilteringUtil;
 import com.person.newscopy.common.view.MySoftKeyBoardListener;
 import com.person.newscopy.common.view.RedCircleImageView;
 import com.person.newscopy.common.view.ShapeImageView;
+import com.person.newscopy.edit.HtmlType;
+import com.person.newscopy.edit.Type;
+import com.person.newscopy.edit.bean.EditBean;
+import com.person.newscopy.edit.fragment.ShowSensitiveWordsFragment;
 import com.person.newscopy.my.MyActivity;
 import com.person.newscopy.news.network.bean.ResultBean;
 import com.person.newscopy.show.adapter.CommentAdapter;
 import com.person.newscopy.show.adapter.RecommendAdapter;
+import com.person.newscopy.show.adapter.ShowArticleAdapter;
 import com.person.newscopy.show.fragment.ShowArticleFragment;
 import com.person.newscopy.show.net.bean.CommentBean;
 import com.person.newscopy.show.net.bean.MessageCommentBean;
@@ -39,6 +45,13 @@ import com.person.newscopy.show.net.bean.MessageUserBean;
 import com.person.newscopy.test.TestActivity;
 import com.person.newscopy.user.Users;
 import com.zzhoujay.richtext.RichText;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -55,7 +68,7 @@ public class ShowNewsActivity extends SwipeBackActivity {
     ImageView back;
     ShowViewModel showViewModel;
     Button care;
-    TextView detail;
+    RecyclerView detail;
     ResultBean b;
     RedCircleImageView commentIcon;
     RedCircleImageView saveIcon;
@@ -73,7 +86,8 @@ public class ShowNewsActivity extends SwipeBackActivity {
     private Button send;
     private CommentAdapter commentAdapter;
     private ShapeImageView shapeImageView;
-
+    private ShowArticleAdapter showArticleAdapter;
+    private KeywordFilteringUtil keywordFilteringUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +115,7 @@ public class ShowNewsActivity extends SwipeBackActivity {
         TextView name = (TextView) findViewById(R.id.name);
         shapeImageView = (ShapeImageView) findViewById(R.id.icon);
         noCommentFlag = (TextView) findViewById(R.id.no_comment_flag);
-        detail = (TextView) findViewById(R.id.article_detail);
+        detail = (RecyclerView) findViewById(R.id.article_detail);
         recommend = (RecyclerView) findViewById(R.id.recommend);
         comment = (RecyclerView) findViewById(R.id.comment);
         commentContent = (EditText) findViewById(R.id.comment_content);
@@ -117,11 +131,6 @@ public class ShowNewsActivity extends SwipeBackActivity {
                 .load(b.getUserIcon())
                 .into(shapeImageView);
         title.setText(b.getTitle());
-        shapeImageView.setOnClickListener(v->{
-            Intent intent1 = new Intent(this, MyActivity.class);
-            intent1.putExtra(MyActivity.MY_TYPE,MyActivity.USER_WORK_TYPE);
-            startActivity(intent1);
-        });
         if (Users.LOGIN_FLAG)
             showViewModel.addHistory(b.getUserId(),b.getId(),b.getType(),Users.userId).observe(this,baseResult -> {
                 if (baseResult.getCode() != 1)Log.d("==ShowNewsActivity","上传历史纪录出错了");
@@ -129,6 +138,13 @@ public class ShowNewsActivity extends SwipeBackActivity {
         care = (Button) findViewById(R.id.care);
         layout.addView(normalCommentView,1);
         if (b.getUserId().equals(Users.userId))care.setVisibility(View.GONE);
+        keywordFilteringUtil = new KeywordFilteringUtil();
+        getLifecycle().addObserver(keywordFilteringUtil);
+        init();
+    }
+
+    private void init(){
+        keywordFilteringUtil.createAcTree(keywordFilteringUtil.getSensitiveWord(getApplication()));
     }
 
     @Override
@@ -229,22 +245,17 @@ public class ShowNewsActivity extends SwipeBackActivity {
         });
         showViewModel.queryArticleDetail(b.getId(), Users.userId == null?"no":Users.userId,b.getUserId()).observe(this, baseResult -> {
             String html = baseResult.getResult().getDetail();
-            if (!html.contains("<json>")){
-                RichText.fromHtml(html.replaceAll("&nbsp"," ").replaceAll("<json>",""))
-                        .bind(ShowNewsActivity.this)
-                        .into(detail);
-                isLike = baseResult.getResult().getIsLike();
-                isSave = baseResult.getResult().getIsSave();
-                isCare = baseResult.getResult().getIsCare();
-                Log.d("====","isLike = "+isLike+"  isSave = "+isSave);
-                if (isLike == 1)likeIcon.changeIcon();
-                if (isCare == 1)care.setText("已关注");
-                if (isSave == 1)saveIcon.changeIcon();
-            }else {
-                Intent intent = new Intent(this, TestActivity.class);
-                intent.putExtra("data",html.substring(html.indexOf("<json>")));
-                startActivity(intent);
-            }
+            isLike = baseResult.getResult().getIsLike();
+            isSave = baseResult.getResult().getIsSave();
+            isCare = baseResult.getResult().getIsCare();
+            Log.d("====","isLike = "+isLike+"  isSave = "+isSave);
+            if (isLike == 1)likeIcon.changeIcon();
+            if (isCare == 1)care.setText("已关注");
+            if (isSave == 1)saveIcon.changeIcon();
+            List<EditBean> d = fromHtmlToEditBean(html);
+            showArticleAdapter = new ShowArticleAdapter(d,this);
+            detail.setAdapter(showArticleAdapter);
+            detail.setLayoutManager(new LinearLayoutManager(getApplication()));
 
         });
         showViewModel.feedNewsRecommend(b.getType(),b.getTag()).observe(this,contentData->{
@@ -276,36 +287,46 @@ public class ShowNewsActivity extends SwipeBackActivity {
             if (Users.LOGIN_FLAG){
                 final String val = commentContent.getText().toString();
                 if (val.equals("")) Toast.makeText(this, "不能为空", Toast.LENGTH_SHORT).show();
-                else
-                    showViewModel.addComment(Users.userId,b.getId(),commentContent.getText().toString(),Config.CONTENT.COMMENT_TYPE,b.getId()).observe(this,baseResult -> {
-                        send.setClickable(false);
-                        if (baseResult.getCode() == Config.SUCCESS){
-                            CommentBean commentBean = new CommentBean();
-                            String commentDetail = commentContent.getText().toString();
-                            commentBean.setContent(commentDetail);
-                            commentBean.setContentId(b.getId());
-                            commentBean.setIcon(Users.userIcon);
-                            commentBean.setId(baseResult.getResult());
-                            commentBean.setLikeNum(0);
-                            commentBean.setName(Users.userName);
-                            commentBean.setReplyNum(0);
-                            commentBean.setUserId(Users.userId);
-                            commentBean.setToType(Config.CONTENT.NEWS_TYPE);
-                            commentBean.setReleaseTime((int) BaseUtil.getTime());
-                            commentBean.setTime(BaseUtil.getFormatTime());
-                            commentAdapter.addComment(commentBean);
-                            commentContent.setText("");
-                            MessageCommentBean messageCommentBean = new MessageCommentBean();
-                            messageCommentBean.setUserId(Users.userId);
-                            messageCommentBean.setIcon(Users.userIcon);
-                            messageCommentBean.setCommentContent(commentDetail);
-                            messageCommentBean.setArticleData(BaseUtil.getGson().toJson(b));
-                            sendMessage(Users.userName+"评论了您的文章《"+b.getTitle()+"》",Config.MESSAGE.COMMENT_TYPE,BaseUtil.getGson().toJson(messageCommentBean));
-                            noCommentFlag.setVisibility(View.GONE);
-                        }else
-                            Toast.makeText(this, "发送失败", Toast.LENGTH_SHORT).show();
-                        send.setClickable(true);
-                    });
+                else{
+                    List<String> l = keywordFilteringUtil.match(val);
+                    if (l.size() <= 0){
+                        showViewModel.addComment(Users.userId,b.getId(),commentContent.getText().toString(),Config.CONTENT.COMMENT_TYPE,b.getId()).observe(this,baseResult -> {
+                            send.setClickable(false);
+                            if (baseResult.getCode() == Config.SUCCESS){
+                                CommentBean commentBean = new CommentBean();
+                                String commentDetail = commentContent.getText().toString();
+                                commentBean.setContent(commentDetail);
+                                commentBean.setContentId(b.getId());
+                                commentBean.setIcon(Users.userIcon);
+                                commentBean.setId(baseResult.getResult());
+                                commentBean.setLikeNum(0);
+                                commentBean.setName(Users.userName);
+                                commentBean.setReplyNum(0);
+                                commentBean.setUserId(Users.userId);
+                                commentBean.setToType(Config.CONTENT.NEWS_TYPE);
+                                commentBean.setReleaseTime((int) BaseUtil.getTime());
+                                commentBean.setTime(BaseUtil.getFormatTime());
+                                commentAdapter.addComment(commentBean);
+                                commentContent.setText("");
+                                MessageCommentBean messageCommentBean = new MessageCommentBean();
+                                messageCommentBean.setUserId(Users.userId);
+                                messageCommentBean.setIcon(Users.userIcon);
+                                messageCommentBean.setCommentContent(commentDetail);
+                                messageCommentBean.setArticleData(BaseUtil.getGson().toJson(b));
+                                sendMessage(Users.userName+"评论了您的文章《"+b.getTitle()+"》",Config.MESSAGE.COMMENT_TYPE,BaseUtil.getGson().toJson(messageCommentBean));
+                                noCommentFlag.setVisibility(View.GONE);
+                            }else
+                                Toast.makeText(this, "发送失败", Toast.LENGTH_SHORT).show();
+                            send.setClickable(true);
+                        });
+                    }
+                    else {
+                        ShowSensitiveWordsFragment fragment = new ShowSensitiveWordsFragment();
+                        fragment.setData(l);
+                        fragment.show(getSupportFragmentManager(),ShowSensitiveWordsFragment.class.getName());
+                    }
+
+                }
             }else
                 Toast.makeText(this, "请先登陆", Toast.LENGTH_SHORT).show();
 
@@ -325,6 +346,47 @@ public class ShowNewsActivity extends SwipeBackActivity {
         });
     }
 
+    private List<EditBean> fromHtmlToEditBean(String html){
+        List<EditBean> l = new ArrayList<>();
+        Document document = Jsoup.parse(html);
+        for (Element element :document.getAllElements()){
+            EditBean editBean = new EditBean();
+            switch (element.tagName()){
+                case "h1":
+                    editBean.setType(Type.TITLE_TYPE);
+                    editBean.setTitle(element.text().replaceAll("&nbsp"," "));
+                    l.add(editBean);
+                    break;
+                case "h2":
+                    editBean.setType(HtmlType.SECOND_TITLE);
+                    editBean.setTitle(element.text().replaceAll("&nbsp"," "));
+                    l.add(editBean);
+                    break;
+                case "h3":
+                    editBean.setType(HtmlType.THREE_TITLE);
+                    editBean.setTitle(element.text().replaceAll("&nbsp"," "));
+                    l.add(editBean);
+                    break;
+                case "img":
+                    editBean.setType(Type.IMAGE_TYPE);
+                    editBean.setImage(element.attr("src"));
+                    l.add(editBean);
+                    break;
+                case "p":
+                    editBean.setType(HtmlType.TEXT_TYPE);
+                    editBean.setText(element.text().replaceAll("&nbsp"," "));
+                    l.add(editBean);
+                    break;
+                case "a":
+                    editBean.setType(HtmlType.LINK_TYPE);
+                    editBean.setLink(element.text()+"#"+element.attr("href"));
+                    l.add(editBean);
+                    break;
+            }
+        }
+     return l;
+    }
+
     private void sendMessage(String title,int type,String content){
        showViewModel.addMessage(b.getUserId(),type,Users.userId,content,title).observe(this,baseResult -> {
             if (baseResult.getCode() != Config.SUCCESS)Log.d("==ShowNewsActivity","上传消息出错了");
@@ -335,6 +397,7 @@ public class ShowNewsActivity extends SwipeBackActivity {
     protected void onDestroy() {
         super.onDestroy();
         RichText.clear(ShowNewsActivity.this);
+        getLifecycle().removeObserver(keywordFilteringUtil);
     }
 
     private void showUserInfo(){

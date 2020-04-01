@@ -105,7 +105,6 @@ public class MyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //android.R.color.dimen.notification_large_icon_width
         ScreenFitUtil.fit(getApplication(),this,ScreenFitUtil.FIT_WIDTH);
         setContentView(R.layout.activity_my);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);

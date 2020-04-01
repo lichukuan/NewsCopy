@@ -138,9 +138,9 @@
     java.lang.Object readResolve();
 }
 # 保留R下面的资源
-#-keep class **.R$* {
-# *;
-#}
+-keep class **.R$* {
+ *;
+}
 #不混淆资源类下static的
 -keepclassmembers class **.R$* {
     public static <fields>;

@@ -1,5 +1,6 @@
 package com.person.newscopy.show.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -35,11 +36,11 @@ public class ShowArticleAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<EditBean> images = new ArrayList<>();
     private ArrayList<String> imagesUrl = new ArrayList<>();
-    private Fragment fragment;
+    private Activity fragment;
 
-    public ShowArticleAdapter(List<EditBean> data, Fragment fragment) {
+    public ShowArticleAdapter(List<EditBean> data,Activity fragment) {
         this.data = data;
-        this.context = fragment.getContext();
+        this.context = fragment;
         this.fragment = fragment;
         for (int i = 0; i <data.size() ; i++) {
             EditBean editBean = data.get(i);
@@ -96,13 +97,13 @@ public class ShowArticleAdapter extends RecyclerView.Adapter {
              float density = ScreenFitUtil.getDensity();
              switch (type){
                  case HtmlType.SECOND_TITLE:
-                     textViewHolder.text.setTextSize(density*18);
+                     textViewHolder.text.setTextSize(18);
                      break;
                  case HtmlType.THREE_TITLE:
-                     textViewHolder.text.setTextSize(density*16);
+                     textViewHolder.text.setTextSize(16);
                      break;
                  case HtmlType.TITLE_TYPE:
-                     textViewHolder.text.setTextSize(density*20);
+                     textViewHolder.text.setTextSize(20);
                      break;
              }
          }else if (viewHolder instanceof LinkViewHolder){
@@ -185,6 +186,5 @@ public class ShowArticleAdapter extends RecyclerView.Adapter {
             image = itemView.findViewById(R.id.image);
         }
     }
-
 
 }

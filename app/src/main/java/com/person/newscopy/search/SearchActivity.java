@@ -44,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     HistoryView history;
     LinearLayout layout;
     ImageView clearHistory;
+    LinearLayout parent;
     public static final String STORE_NAME = "search_history";
     public static final String KEY = "history_value";
     private SearchViewModel searchViewModel = null;
@@ -60,11 +61,12 @@ public class SearchActivity extends AppCompatActivity {
         history = findViewById(R.id.history);
         layout  =findViewById(R.id.history_layout);
         clearHistory = findViewById(R.id.delete_history);
+        parent = findViewById(R.id.parent);
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         SharedPreferences preferences = getSharedPreferences(STORE_NAME, 0);
         cancel.setOnClickListener(v -> finish());
-        historySet = preferences.getStringSet(KEY,null);
-        if (historySet != null){
+        historySet = new HashSet<>(preferences.getStringSet(KEY,new HashSet<>()));
+        if (historySet.size() != 0){
             for (String s1 : historySet) {
                 TextView textView = (TextView) LayoutInflater.from(this).inflate(R.layout.history_text,null);
                 ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT,90);
@@ -76,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
                 history.addView(textView);
             }
         }else layout.setVisibility(View.GONE);
-        Log.d("==History","history top = "+history.getTop()+" left = "+history.getLeft()+" right = "+history.getRight()+" bottom = "+history.getBottom());
+        //Log.d("==History","history top = "+history.getTop()+" left = "+history.getLeft()+" right = "+history.getRight()+" bottom = "+history.getBottom());
         searchViewModel.queryHotData().observe(this, contentResult -> {
             List<ResultBean> data =  contentResult.getResult();
             Map<String,ResultBean> map = new HashMap<>(data.size());
@@ -128,7 +130,7 @@ public class SearchActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.search_pop_view,null);
         ImageView refresh = view.findViewById(R.id.refresh);
         RecyclerView recyclerView = view.findViewById(R.id.search_content);
-        PopupWindow popupWindow = new PopupWindow(view,(int) (280*ScreenFitUtil.getDensity()),WRAP_CONTENT);
+        PopupWindow popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,WRAP_CONTENT);
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
@@ -151,7 +153,7 @@ public class SearchActivity extends AppCompatActivity {
             content.setFocusableInTouchMode(true);
             backgroundAlpha(1);
         });
-        popupWindow.showAsDropDown(content,0,(int) (5*ScreenFitUtil.getDensity()));
+        popupWindow.showAsDropDown(parent,0,0);
     }
 
 

@@ -9,6 +9,15 @@ public class ImageBean {
     private String groupName;
     private String type;
     private String size;
+    private int flag;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     public ImageBean(String id, String thumbnailsPath, String path, String groupId, String groupName, String type, String size) {
         this.id = id;

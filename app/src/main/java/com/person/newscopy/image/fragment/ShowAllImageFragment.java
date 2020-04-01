@@ -44,10 +44,8 @@ public class ShowAllImageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (allImageFragmentAdapter == null){
-            allImageFragmentAdapter = new ShowAllImageFragmentAdapter(getChildFragmentManager(),data);
-            pager.setAdapter(allImageFragmentAdapter);
-        }
+        allImageFragmentAdapter = new ShowAllImageFragmentAdapter(getChildFragmentManager(),data);
+        pager.setAdapter(allImageFragmentAdapter);
         index.setText((nowIndex+1)+"/"+data.size());
         save.setOnClickListener(v -> {
             allImageFragmentAdapter.save(nowIndex);
@@ -71,4 +69,5 @@ public class ShowAllImageFragment extends Fragment {
             }
         });
     }
+
 }

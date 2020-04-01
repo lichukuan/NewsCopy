@@ -33,6 +33,8 @@ import com.person.newscopy.common.MyGlideEngine;
 import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
 import com.person.newscopy.common.view.ShapeImageView;
+import com.person.newscopy.edit.EditActivity;
+import com.person.newscopy.image.ImageActivity;
 import com.person.newscopy.my.ChangeEmailDialogFragment;
 import com.person.newscopy.my.ChangeNameDialogFragment;
 import com.person.newscopy.my.ChangeRecommendDialogFragment;
@@ -94,7 +96,12 @@ public class MyInfoFragment extends Fragment {
         ((TextView)email.findViewById(R.id.user_email)).setText(Users.email);
         myIcon.setOnClickListener(v -> {
             if (checkPermission()){
-                takePicture();
+                Intent intent  = new Intent(getContext(), ImageActivity.class);
+                intent.putExtra(ImageActivity.REQUIRE_TYPE,ImageActivity.TYPE_CUT);
+                intent.putExtra(ImageActivity.FROM_ACTIVITY, EditActivity.class.getName());
+                intent.putExtra(ImageActivity.CUT_SHAPE, ShapeImageView.SHAPE_CIRCLE);
+                intent.putExtra(ImageActivity.REQUIRE_CODE,20);
+                startActivityForResult(intent,20);
             }
         });
         myName.setOnClickListener(v -> changeNameDialog());
@@ -113,12 +120,12 @@ public class MyInfoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            progressBar.setVisibility(View.VISIBLE);
-            List<Uri> uris = Matisse.obtainResult(data);
+        if (requestCode == 20){
+            if (data == null)return;
+            String path = data.getStringExtra("data");
+            if (path == null)return;
             String n = BaseUtil.buildImageName();
             String url = Config.DEFAULT_IMAGE_BASE_URL + n;
-            String path = BaseUtil.getImagePath(uris.get(0));
             BaseUtil.pushImageToQiNiu(path,n,(key, info, res) -> {
                 //res包含hash、key等信息，具体字段取决于上传策略的设置
                 if (info.isOK()) {
@@ -143,17 +150,6 @@ public class MyInfoFragment extends Fragment {
                 }
             });
         }
-    }
-
-    private void takePicture(){
-        Matisse.from(this)
-                .choose(MimeType.allOf()) // 选择 mime 的类型
-                .countable(true)
-                .maxSelectable(1) // 图片选择的最多数量
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f) // 缩略图的比例
-                .imageEngine(new MyGlideEngine()) // 使用的图片加载引擎
-                .forResult(REQUEST_CODE_CHOOSE); // 设置作为标记的请求码
     }
 
     private void changeNameDialog(){

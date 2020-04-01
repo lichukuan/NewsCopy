@@ -34,7 +34,6 @@ public class ShowArticleFragment extends Fragment {
     }
 
     public void setJson(String json) {
-        Log.d("===","json = "+json);
         data = BaseUtil.getGson().fromJson(json.replaceAll("<json>",""),new TypeToken<List<EditBean>>(){}.getType());
         data.remove(data.size()-1);
     }
@@ -42,10 +41,10 @@ public class ShowArticleFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (showArticleAdapter == null){
-            showArticleAdapter = new ShowArticleAdapter(data,this);
-        }
-        recyclerView.setAdapter(showArticleAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        if (showArticleAdapter == null){
+//            showArticleAdapter = new ShowArticleAdapter(data,this);
+//        }
+//        recyclerView.setAdapter(showArticleAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

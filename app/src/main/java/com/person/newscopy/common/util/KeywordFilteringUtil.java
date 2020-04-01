@@ -3,7 +3,10 @@ package com.person.newscopy.common.util;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,6 +31,29 @@ public class KeywordFilteringUtil implements LifecycleObserver {
     }
 
     private AcNode root = null;
+
+    public String[] getSensitiveWord(Context context){
+        ArrayList<String> data = new ArrayList<>();
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open("filter.txt") );
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            while((line = bufReader.readLine()) != null){
+                data.add(line);
+            }
+            bufReader.close();
+            inputReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String str[] = new String[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            str[i] = data.get(i);
+        }
+        data.clear();
+        return str;
+    }
+
 
     public void createAcTree(String[] data){
         if (data == null || data.length <= 0)return;

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.person.newscopy.R;
 import com.person.newscopy.common.util.BaseUtil;
 import com.person.newscopy.common.Config;
@@ -41,18 +42,27 @@ public class ItemOperateReadAdapter extends RecyclerView.Adapter {
             return new ArticleViewHolder(view);
     }
 
+    RequestOptions requestOptions = new RequestOptions()
+            .centerCrop();
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         ReadContent readBean = readBeans.get(i);
-        Log.d("=ItemOperateReadAdapter",readBeans.get(i).getTitle()+" : "+readBeans.get(i).getContentType());
+        //Log.d("=ItemOperateReadAdapter",readBeans.get(i).getTitle()+" : "+readBeans.get(i).getContentType());
         if (viewHolder instanceof ArticleViewHolder){
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
                 articleViewHolder.content.setText(readBean.getTitle());
                 articleViewHolder.name.setText(readBean.getName());
                 articleViewHolder.time.setText(BaseUtil.createComeTime(readBean.getTime()));
-                Glide.with(fragment)
-                        .load(readBean.getImage())
-                        .into(((ArticleViewHolder) viewHolder).contentImage);
+                if (readBean.getImage() == null || readBean.getImage().equals(""))
+                    articleViewHolder.contentImage.setVisibility(View.GONE);
+                else {
+                    articleViewHolder.contentImage.setVisibility(View.VISIBLE);
+                    Glide.with(fragment)
+                            .load(readBean.getImage())
+                            .apply(requestOptions)
+                            .into(articleViewHolder.contentImage);
+                }
                 if (readBean.getContentType() == Config.CONTENT.NEWS_TYPE){
                     articleViewHolder.flag.setVisibility(View.GONE);
                 }else articleViewHolder.flag.setVisibility(View.VISIBLE);
