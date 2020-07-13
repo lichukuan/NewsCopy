@@ -64,8 +64,15 @@ public class ImageActivity extends AppCompatActivity  {
         cutImageFragment = new CutImageFragment();
         showAllImageFragment = new ShowAllImageFragment();
         imagesPickFragment = new ImagesPickFragment();
+        if (checkPermission()){
+            init();
+        }
+
+    }
+
+    public void init(){
         Intent intent = getIntent();
-        int type = intent.getIntExtra(REQUIRE_TYPE,TYPE_CUT);
+        int type = intent.getIntExtra(REQUIRE_TYPE,TYPE_PICK);
         switch (type){
             case TYPE_CUT:
                 cutImageFragment.setRequireCode(intent.getIntExtra(REQUIRE_CODE,-1));
@@ -147,17 +154,6 @@ public class ImageActivity extends AppCompatActivity  {
         finish();
     }
 
-//
-//    private void takePicture(int maxSelectedImageNum,int code){
-//        Matisse.from(this)
-//                .choose(MimeType.allOf()) // 选择 mime 的类型
-//                .countable(true)
-//                .maxSelectable(maxSelectedImageNum) // 图片选择的最多数量
-//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-//                .thumbnailScale(0.85f) // 缩略图的比例
-//                .imageEngine(new MyGlideEngine()) // 使用的图片加载引擎
-//                .forResult(code); // 设置作为标记的请求码
-//    }
 
     public boolean checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -171,7 +167,7 @@ public class ImageActivity extends AppCompatActivity  {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 1 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-
+             init();
         }else{
             Toast.makeText(this, "您禁用了该权限,该功能不可用", Toast.LENGTH_SHORT).show();
             finish();

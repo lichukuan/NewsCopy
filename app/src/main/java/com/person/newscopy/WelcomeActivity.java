@@ -3,14 +3,38 @@ package com.person.newscopy;
 import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.bumptech.glide.GenericTransitionOptions;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.TransitionOptions;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.easy.generaltool.common.TranslucentUtil;
+import com.google.android.exoplayer.C;
 import com.person.newscopy.api.Api;
 import com.person.newscopy.camera.CameraActivity;
 import com.person.newscopy.common.util.BaseUtil;
@@ -37,10 +61,13 @@ public class WelcomeActivity extends AppCompatActivity {
         System.loadLibrary("little");
     }
 
+    ImageView image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        image = findViewById(R.id.image);
         TranslucentUtil.setTranslucent(this, Color.WHITE,0);
         OkHttpClient client = new OkHttpClient();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationLifeListener());

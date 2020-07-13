@@ -59,5 +59,4 @@ public class ChangeEmailDialogFragment extends DialogFragment {
             });
         });
     }
-
 }

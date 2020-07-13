@@ -79,7 +79,8 @@ public class ContentProvide {
                 });
     }
 
-    public void feedVideo(String tag,int time,String type){
+
+    public void feedVideo(String tag, int time, String type){
         contentInterface.feedVideo(tag,time,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

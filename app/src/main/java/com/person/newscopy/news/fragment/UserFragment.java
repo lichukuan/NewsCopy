@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.easy.generaltool.common.ScreenFitUtil;
 import com.person.newscopy.R;
 import com.person.newscopy.common.util.MyTranslucentUtil;
@@ -70,6 +71,8 @@ public class UserFragment extends Fragment {
         return view;
     }
 
+    RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.defacult_icon)
+            .error(R.drawable.defacult_icon);
     private void initLoginData(){
         shape.setOnClickListener(v->showUser(MyActivity.MY_INFO_TYPE,null));
         userName.setOnClickListener(v -> showUser(MyActivity.MY_INFO_TYPE,null));
@@ -79,6 +82,7 @@ public class UserFragment extends Fragment {
         loginView.setOnClickListener(v->showUser(MyActivity.USER_WORK_TYPE,Users.userId));
         Glide.with(this)
                 .asBitmap()
+                .apply(requestOptions)
                 .load(Users.userIcon)
                 .into(shape);
         userName.setText(Users.userName);

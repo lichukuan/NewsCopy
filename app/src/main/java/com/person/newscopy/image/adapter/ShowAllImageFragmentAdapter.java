@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.person.newscopy.image.fragment.ShowAllImageFragment;
 import com.person.newscopy.image.fragment.ShowOneImageFragment;
 import com.person.newscopy.show.fragment.ShowArticleFragment;
 
@@ -15,14 +16,14 @@ public class ShowAllImageFragmentAdapter extends FragmentPagerAdapter {
     private List<String> data = null;
 
     private List<ShowOneImageFragment> showOneImageFragments = null;
-
-    public ShowAllImageFragmentAdapter(FragmentManager fm,List<String> data) {
+    public ShowAllImageFragmentAdapter(FragmentManager fm, List<String> data) {
         super(fm);
         this.data = data;
         showOneImageFragments = new ArrayList<>(data.size());
         for (int i = 0; i <data.size() ; i++) {
             showOneImageFragments.add(null);
         }
+
     }
 
     @Override

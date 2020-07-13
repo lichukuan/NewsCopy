@@ -242,7 +242,6 @@ public final class BaseUtil {
         Context appContext = MyApplication.getContext();
         DownloadManager manager = (DownloadManager)
                 appContext.getSystemService(Context.DOWNLOAD_SERVICE);
-
         // 存储下载Key
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(appContext);
         sp.edit().putLong(DOWNLOAD_APK_ID_PREFS, manager.enqueue(request)).apply();

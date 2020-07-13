@@ -126,9 +126,9 @@ public class ImagesPickFragment extends Fragment {
             }).start();
         }
         ok.setOnClickListener(v -> {
-            getActivity().onBackPressed();
+            //getActivity().onBackPressed();
         });
-        cancel.setOnClickListener(v -> getActivity().finish());
+        //cancel.setOnClickListener(v -> getActivity().finish());
         return view;
     }
 
@@ -213,8 +213,8 @@ public class ImagesPickFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyOptionsMenu() {
-        super.onDestroyOptionsMenu();
+    public void onDestroy() {
+        super.onDestroy();
         res.clear();
         group.clear();
     }

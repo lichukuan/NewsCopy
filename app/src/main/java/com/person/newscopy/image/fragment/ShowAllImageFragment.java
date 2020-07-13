@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.person.newscopy.R;
+import com.person.newscopy.image.MyViewPager;
 import com.person.newscopy.image.adapter.ShowAllImageFragmentAdapter;
 
 import java.util.List;
 
 public class ShowAllImageFragment extends Fragment {
 
-    ViewPager pager;
+    MyViewPager pager;
     ShowAllImageFragmentAdapter allImageFragmentAdapter;
     List<String> data;
     int nowIndex = 0;
@@ -40,6 +41,7 @@ public class ShowAllImageFragment extends Fragment {
     public void setNowIndex(int nowIndex) {
         this.nowIndex = nowIndex;
     }
+
 
     @Override
     public void onResume() {

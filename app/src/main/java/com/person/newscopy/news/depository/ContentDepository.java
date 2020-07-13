@@ -39,7 +39,7 @@ public class ContentDepository implements ContentProvide.OnFeedContentCallback{
     private void updateData(int type,BaseResult baseResult){
         MutableLiveData<BaseResult> r = arrayData.get(type);
         r.setValue(baseResult);
-        arrayData.setValueAt(type,r);
+        arrayData.put(type,r);
     }
 
     public void feedNews(String tag, int time, String type){

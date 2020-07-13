@@ -1,7 +1,6 @@
 package com.person.newscopy.image.fragment;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 import com.easy.generaltool.common.ScreenFitUtil;
@@ -55,6 +57,8 @@ public class ShowOneImageFragment extends Fragment {
         this.sum = sum;
         this.index = index;
     }
+
+    RequestOptions requestOptions = new RequestOptions();
 
     @Override
     public void onResume() {
@@ -94,9 +98,10 @@ public class ShowOneImageFragment extends Fragment {
     }
 
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         result = null;
     }
 }
